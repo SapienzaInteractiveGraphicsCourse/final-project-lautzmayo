@@ -1,0 +1,11 @@
+Model Information:
+* title:	City Buildings Downtown Intersection
+* source:	https://sketchfab.com/3d-models/city-buildings-downtown-intersection-6a21ee9f3a3d426d9245730bbbf535fc
+* author:	jimbogies (https://sketchfab.com/jimbogies)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "City Buildings Downtown Intersection" (https://sketchfab.com/3d-models/city-buildings-downtown-intersection-6a21ee9f3a3d426d9245730bbbf535fc) by jimbogies (https://sketchfab.com/jimbogies) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
