@@ -23,6 +23,13 @@ export function init(map, man, trashcan) {
 	changeMaterial(map)
 	scene.add(map)
 
+	var geo = new THREE.PlaneGeometry(10000, 10000)
+	var mat = new THREE.MeshBasicMaterial({ color: 0x000000 })
+	var box = new THREE.Mesh(geo, mat)
+	box.rotation.set(-1.57, 0, 0)
+	box.position.set(0, -2, 0)
+	scene.add(box)
+
 	man.position.set(0, 0, 0)
 	man.rotation.set(3.14, 0, 3.14)
 	changeMaterial(man)
@@ -40,7 +47,7 @@ export function init(map, man, trashcan) {
 	changeMaterial(trashcan)
 	scene.add(trashcan)
 
-	camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 2000)
+	camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000)
 	camera.position.set(0, 40, 200)
 
 	return [scene, camera, map, man, helper, trashcan]
