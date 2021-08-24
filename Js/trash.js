@@ -1,5 +1,5 @@
 import * as THREE from "https://threejs.org/build/three.module.js"
-
+var pos=[];
 export function locatePaper(nObject, objectMesh, scene) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
@@ -7,14 +7,18 @@ export function locatePaper(nObject, objectMesh, scene) {
 	}
 
 	for (var i = 0; i < nObject; i++) {
-		var maxx = 180
-		var minx = -180
-		var maxz = 700
+		var maxx = 900
+		var minx = -900
+		var maxz = 900
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-
-		trashArray[i].position.set(x, 3, z)
+		while(pos.includes([x,z])||((x<-180&&z<-180)||(x<-180&&z>180)||(x>180&&z<-180)||(x>180&&z>180))){
+			var x = Math.random() * (maxx - minx) + minx
+		    var z = Math.random() * (maxz - minz) + minz
+		}
+		pos.push([x,z]);
+		trashArray[i].position.set(x, 3, z);
 	}
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
@@ -31,13 +35,17 @@ export function locatePlastic(nObject, objectMesh, scene) {
 	}
 
 	for (var i = 0; i < nObject; i++) {
-		var maxx = 180
-		var minx = -180
-		var maxz = 700
+		var maxx = 900
+		var minx = -900
+		var maxz = 900
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-
+		while(pos.includes([x,z])||((x<-180&&z<-180)||(x<-180&&z>180)||(x>180&&z<-180)||(x>180&&z>180))){
+			var x = Math.random() * (maxx - minx) + minx
+		    var z = Math.random() * (maxz - minz) + minz
+		}
+		pos.push([x,z]);
 		trashArray[i].position.set(x, -32, z)
 	}
 	for (var i = 0; i < nObject; i++) {
@@ -55,13 +63,17 @@ export function locateGlass(nObject, objectMesh, scene) {
 	}
 
 	for (var i = 0; i < nObject; i++) {
-		var maxx = 180
-		var minx = -180
-		var maxz = 700
+		var maxx = 900
+		var minx = -900
+		var maxz = 900
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-
+		while(pos.includes([x,z])||((x<-180&&z<-180)||(x<-180&&z>180)||(x>180&&z<-180)||(x>180&&z>180))){
+			var x = Math.random() * (maxx - minx) + minx
+		    var z = Math.random() * (maxz - minz) + minz
+		}
+		pos.push([x,z]);
 		trashArray[i].position.set(x, 6.5, z)
 	}
 	for (var i = 0; i < nObject; i++) {
