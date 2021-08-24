@@ -45,3 +45,4 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
     
     camera.lookAt( man.position );
 }
+
