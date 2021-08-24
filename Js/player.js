@@ -15,24 +15,32 @@ var velocity = 0.0;
 var speed = 0.0;
 
 
+
 export function getPlayerDirection(man, camera, enabled,goal,follow) {
-	
-    
+	  var dirZ = new THREE.Vector3(0,0,-2);
+    var dirX = new THREE.Vector3(2,0,0);
+    var diranimation = new THREE.Vector3(0,0,0);
     speed = 0.0;
   
-  if ( enabled.w )
+  if ( enabled.w ){
     speed = 2;
-  else if ( enabled.s )
+    diranimation.sub(dirZ);
+  }
+  if ( enabled.s ){
     speed = -2;
-
+    diranimation.add(dirZ);
+  }
   velocity += ( speed - velocity ) * .3;
   man.translateZ( velocity );
 
-  if ( enabled.a )
+  if ( enabled.a ){
     man.rotateY(0.05);
-  else if ( enabled.d )
+    diranimation.sub(dirX);
+  }
+  if ( enabled.d ){
     man.rotateY(-0.05);
-		
+    diranimation.add(dirX);
+  }	
   
   a.lerp(man.position, 0.1);
   b.copy(goal.position);
@@ -44,5 +52,6 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
     temp.setFromMatrixPosition(follow.matrixWorld);
     
     camera.lookAt( man.position );
+    return diranimation;
 }
 

@@ -157,5 +157,6 @@ var clip = new THREE.AnimationClip( 'Walk', 3, [ KFual,KFlal,KFhl,KFuar,KFlar,KF
 var mixer = new THREE.AnimationMixer(player.children[0]);
 var AnimationAction = mixer.clipAction(clip);
 AnimationAction.clampWhenFinished=true;
-return [mixer,AnimationAction];
+var clock = new THREE.Clock();
+return [mixer,AnimationAction,clock];
 }            

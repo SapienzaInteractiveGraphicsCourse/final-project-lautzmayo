@@ -25,8 +25,9 @@ var enabled;
 //skeleton of player
 var helper;
 //for animation
-var mixer,animaction;
+var mixer,animaction,clock;
 var clip;
+var dir;
 
 loadmodel();
 
@@ -49,6 +50,7 @@ function loadmodel(){
     plasticmodel = data[4];
     glassmodel = data[5];
     init();
+    //doStuff();
   },error => {
     console.log( 'An error happened:',error );
   });
@@ -82,6 +84,7 @@ function init() {
   temp = ANIMATION.getAnimation(man,helper);
   mixer = temp[0];
   animaction = temp[1];
+  clock = temp[2];
 
   //locate trash and trash collector 
   npaper = 3;
@@ -133,12 +136,20 @@ function animate() {
 function render(){
   
     renderer.render( scene, camera );
+    mixer.update(clock.getDelta());
     
 }
 
 function update(){
   //update man and camera position 
-  PLAYER.getPlayerDirection(man,camera,enabled,goal,follow);
+  dir = PLAYER.getPlayerDirection(man,camera,enabled,goal,follow);
+  if (dir.equals(new THREE.Vector3(0,0,0))){
+        animaction.stop();
+      }
+      else{
+        animaction.play();
+      }
+
 }
 
 function onWindowResize() {
@@ -148,3 +159,10 @@ function onWindowResize() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   window.requestAnimationFrame(animate);
 }
+
+/* function doStuff() {
+   console.log(animaction.isRunning());
+   console.log(dir);
+   setTimeout(doStuff, 3000);
+}
+setTimeout(doStuff, 3000); */
