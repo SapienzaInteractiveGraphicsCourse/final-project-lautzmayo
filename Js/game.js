@@ -1,5 +1,5 @@
 import * as THREE from "../build/three.module.js"
-
+var camera;
 export function init(map, man) {
 	var scene, camera
 	scene = new THREE.Scene()
@@ -44,7 +44,8 @@ export function init(map, man) {
 	helper.bones[47].rotation.set(1.6290887780319951, -0.25, 1.3)
 
 	camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000)
-	camera.position.set(0, 40, 200)
+	camera.position.set(0, 100, 0)
+	camera.lookAt(scene.position);
 
 	return [scene, camera, map, man, helper]
 }

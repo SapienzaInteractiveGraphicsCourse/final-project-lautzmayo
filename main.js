@@ -16,26 +16,30 @@ var glass = [];
 var trashcollector = [];
 var npaper,nplastic,nglass,ntrashcollector;
 var manmodel,mapmodel,trashcanmodel,papermodel,plasticmodel,glassmodel;
+//for camera
+var goal,follow;
+var Distance = 200;
 var camera, scene, renderer;
+//for keyboard
 var enabled;
-var pointer;
-var controls;
+//skeleton of player
 var helper;
-var elements;
+//for animation
 var mixer,animaction;
 var clip;
+
 loadmodel();
 
 
 function loadmodel(){
-  //model are loaded 
+  //models are loaded 
   var manload = MODEL.getCharacter();
   var mapload = MODEL.getMap();
   var trashcanload = MODEL.getTrashCan();
   var paperload = MODEL.getPaper();
   var plasticload = MODEL.getPlastic();
   var glassload = MODEL.getGlass();
-  //model are saved
+  //models are saved
   Promise.all([manload,mapload,trashcanload,paperload,plasticload,glassload]).then(
     data => {
     manmodel = data[0];
@@ -66,11 +70,14 @@ function init() {
   map = temp[2]
   man = temp[3];
   helper = temp[4];
-  //added orbitcontrols
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 150;
-  controls.maxDistance = 500;
-  controls.enablePan=false;
+
+  //setup camera orientation
+  goal = new THREE.Object3D;
+  follow = new THREE.Object3D;
+  follow.position.z = -Distance;
+  man.add(follow);
+  goal.add(camera);
+
   //added animation (not working yet)
   temp = ANIMATION.getAnimation(man,helper);
   mixer = temp[0];
@@ -117,19 +124,21 @@ function init() {
 function animate() {
    setTimeout( function() {
        requestAnimationFrame( animate );
-       render();
        update();
+       render();
    }, 1000 / 60 );
+   
  }
 
 function render(){
+  
     renderer.render( scene, camera );
+    
 }
 
 function update(){
   //update man and camera position 
-  PLAYER.getPlayerDirection(man,camera,controls,enabled);
-  
+  PLAYER.getPlayerDirection(man,camera,enabled,goal,follow);
 }
 
 function onWindowResize() {
@@ -139,5 +148,3 @@ function onWindowResize() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   window.requestAnimationFrame(animate);
 }
-
-
