@@ -13,7 +13,8 @@ var man,map,trashcan;
 var paper = [];
 var plastic = [];
 var glass = [];
-var npaper,nplastic,nglass;
+var trashcollector = [];
+var npaper,nplastic,nglass,ntrashcollector;
 var manmodel,mapmodel,trashcanmodel,papermodel,plasticmodel,glassmodel;
 var camera, scene, renderer;
 var enabled;
@@ -27,12 +28,14 @@ loadmodel();
 
 
 function loadmodel(){
+  //model are loaded 
   var manload = MODEL.getCharacter();
   var mapload = MODEL.getMap();
   var trashcanload = MODEL.getTrashCan();
   var paperload = MODEL.getPaper();
   var plasticload = MODEL.getPlastic();
   var glassload = MODEL.getGlass();
+  //model are saved
   Promise.all([manload,mapload,trashcanload,paperload,plasticload,glassload]).then(
     data => {
     manmodel = data[0];
@@ -56,28 +59,33 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth,window.innerHeight);
   document.body.appendChild(renderer.domElement);
-  var temp = GAME.init(mapmodel,manmodel,trashcanmodel);
+  var temp = GAME.init(mapmodel,manmodel);
+  //updated data option of scene,camera,map and man 
   scene = temp[0];
   camera = temp [1];
   map = temp[2]
   man = temp[3];
   helper = temp[4];
-  trashcan = temp[5];
+  //added orbitcontrols
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 150;
   controls.maxDistance = 500;
   controls.enablePan=false;
+  //added animation (not working yet)
   temp = ANIMATION.getAnimation(man,helper);
   mixer = temp[0];
   animaction = temp[1];
-   
+
+  //locate trash and trash collector 
   npaper = 3;
   paper = TRASH.locatePaper(npaper,papermodel,scene);
   nplastic = 3;
   plastic = TRASH.locatePlastic(nplastic,plasticmodel,scene);
   nglass = 3;
   glass = TRASH.locateGlass(nglass,glassmodel,scene); 
-  
+
+  ntrashcollector = 3;
+  trashcollector = TRASH.locateTrashCollector(ntrashcollector,trashcanmodel,scene);
      
  /* 
   // instantiate a listener
@@ -93,6 +101,8 @@ function init() {
  */
  
   window.addEventListener( 'resize', onWindowResize, false );
+
+  //listeners for keyboard event
   window.addEventListener('keydown',function(event){
     temp=CONTROL.keypressedAgent(event,enabled);
     enabled=temp[0];
@@ -117,9 +127,9 @@ function render(){
 }
 
 function update(){
+  //update man and camera position 
   PLAYER.getPlayerDirection(man,camera,controls,enabled);
   
-  console.log
 }
 
 function onWindowResize() {

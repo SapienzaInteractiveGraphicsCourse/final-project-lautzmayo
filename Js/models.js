@@ -50,9 +50,9 @@ export function getTrashCan() {
 	const myPromise = new Promise((resolve, reject) => {
 		const gltfLoader = new GLTFLoader()
 		gltfLoader.load(
-			"./Model/Trash_collector/scene.gltf",
+			"./Model/Trash_Can/scene.gltf",
 			function (gltf) {
-				let scale = 0.4
+				let scale = 35
 				const trashcanMesh = gltf.scene
 				trashcanMesh.scale.set(trashcanMesh.scale.x * scale, trashcanMesh.scale.y * scale, trashcanMesh.scale.z * scale)
 				resolve(trashcanMesh)
