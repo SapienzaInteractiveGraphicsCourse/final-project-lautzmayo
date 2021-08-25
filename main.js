@@ -74,6 +74,7 @@ function init() {
   helper = temp[4];
 
   //setup camera orientation
+  //ORBIT :
   goal = new THREE.Object3D;
   follow = new THREE.Object3D;
   follow.position.z = -Distance;
@@ -81,10 +82,11 @@ function init() {
   goal.add(camera);
 
   //added animation (not working yet)
-  /* temp = ANIMATION.getAnimation(man,helper);
+  //ANIM :
+  temp = ANIMATION.getAnimation(man,helper);
   mixer = temp[0];
   animaction = temp[1];
-  clock = temp[2]; */
+  clock = temp[2]; 
 
   //locate trash and trash collector 
   npaper = 3;
@@ -133,6 +135,7 @@ function init() {
 function animate() {
    setTimeout( function() {
        requestAnimationFrame( animate );
+       //COMMENTO BRUTALE
        update();
        render();
    }, 1000 / 60 );
@@ -142,19 +145,23 @@ function animate() {
 function render(){
   
     renderer.render( scene, camera );
-   // mixer.update(clock.getDelta());
+    //ANIM :
+    mixer.update(clock.getDelta());
     
 }
 
 function update(){
   //update man and camera position 
+  //ORBIT :
+  //commenta
   dir = PLAYER.getPlayerDirection(man,camera,enabled,goal,follow);
-  /* if (dir.equals(new THREE.Vector3(0,0,0))){
+  //ANIM :
+   if (dir.equals(new THREE.Vector3(0,0,0))){
         animaction.stop();
       }
       else{
         animaction.play();
-      } */
+      } 
 
 }
 
