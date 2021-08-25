@@ -1,10 +1,10 @@
 import * as THREE from "../build/three.module.js"
-var camera;
+var camera
 export function init(map, man) {
 	var scene, camera
 	scene = new THREE.Scene()
 	scene.background = new THREE.Color(0x00ccff)
-    
+
 	var lights = []
 	lights[0] = new THREE.PointLight(0xffffff, 0.4, 0)
 	lights[1] = new THREE.PointLight(0xffffff, 0.3, 0)
@@ -39,13 +39,13 @@ export function init(map, man) {
 	helper.material.linewidth = 5
 	helper.visible = false
 	scene.add(helper)
-   //set arms rotation from T-position to A-position
+	//set arms rotation from T-position to A-position
 	helper.bones[15].rotation.set(1.6290887780319951, 0.25, -1.3)
 	helper.bones[47].rotation.set(1.6290887780319951, -0.25, 1.3)
 
 	camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000)
 	camera.position.set(0, 100, 0)
-	camera.lookAt(scene.position);
+	camera.lookAt(scene.position)
 
 	return [scene, camera, map, man, helper]
 }
