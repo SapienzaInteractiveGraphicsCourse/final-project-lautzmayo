@@ -152,7 +152,7 @@ var KFfr = new THREE.QuaternionKeyframeTrack( skeleton.bones[78].name+'.quaterni
 var KFull = new THREE.QuaternionKeyframeTrack( skeleton.bones[81].name+'.quaternion', [ 0, 1, 2, 3, 4, 5, 6, 7], [q1ull.x,q1ull.y,q1ull.z,q1ull.w,q2ull.x,q2ull.y,q2ull.z,q2ull.w,q3ull.x,q3ull.y,q3ull.z,q3ull.w,q4ull.x,q4ull.y,q4ull.z,q4ull.w,q5ull.x,q5ull.y,q5ull.z,q5ull.w,q6ull.x,q6ull.y,q6ull.z,q6ull.w,q7ull.x,q7ull.y,q7ull.z,q7ull.w,q8ull.x,q8ull.y,q8ull.z,q8ull.w] );
 var KFlll = new THREE.QuaternionKeyframeTrack( skeleton.bones[82].name+'.quaternion', [ 0, 1, 2, 3, 4, 5, 6, 7], [q1lll.x,q1lll.y,q1lll.z,q1lll.w,q2lll.x,q2lll.y,q2lll.z,q2lll.w,q3lll.x,q3lll.y,q3lll.z,q3lll.w,q4lll.x,q4lll.y,q4lll.z,q4lll.w,q5lll.x,q5lll.y,q5lll.z,q5lll.w,q6lll.x,q6lll.y,q6lll.z,q6lll.w,q7lll.x,q7lll.y,q7lll.z,q7lll.w,q8lll.x,q8lll.y,q8lll.z,q8lll.w] );
 var KFfl = new THREE.QuaternionKeyframeTrack( skeleton.bones[83].name+'.quaternion', [ 0, 1, 2, 3, 4, 5, 6, 7], [q1fl.x,q1fl.y,q1fl.z,q1fl.w,q2fl.x,q2fl.y,q2fl.z,q2fl.w,q3fl.x,q3fl.y,q3fl.z,q3fl.w,q4fl.x,q4fl.y,q4fl.z,q4fl.w,q5fl.x,q5fl.y,q5fl.z,q5fl.w,q6fl.x,q6fl.y,q6fl.z,q6fl.w,q7fl.x,q7fl.y,q7fl.z,q7fl.w,q8fl.x,q8fl.y,q8fl.z,q8fl.w] );
-  
+
 var clip = new THREE.AnimationClip( 'Walk', 3, [ KFual,KFlal,KFhl,KFuar,KFlar,KFhr,KFull,KFlll,KFfl,KFulr,KFllr,KFfr] );
 var mixer = new THREE.AnimationMixer(player.children[0]);
 var AnimationAction = mixer.clipAction(clip);

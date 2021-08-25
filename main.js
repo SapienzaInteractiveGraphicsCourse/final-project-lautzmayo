@@ -50,7 +50,7 @@ function loadmodel(){
     plasticmodel = data[4];
     glassmodel = data[5];
     init();
-    //doStuff();
+    doStuff();
   },error => {
     console.log( 'An error happened:',error );
   });
@@ -81,10 +81,10 @@ function init() {
   goal.add(camera);
 
   //added animation (not working yet)
-  temp = ANIMATION.getAnimation(man,helper);
+  /* temp = ANIMATION.getAnimation(man,helper);
   mixer = temp[0];
   animaction = temp[1];
-  clock = temp[2];
+  clock = temp[2]; */
 
   //locate trash and trash collector 
   npaper = 3;
@@ -109,7 +109,13 @@ function init() {
   AmbientSound.setBuffer( HeartBeat );
   AmbientSound.setLoop(true);
  */
- 
+  var slider1 = document.getElementById("slider1");
+  slider1.addEventListener("input", rotatebone);
+  var slider2 = document.getElementById("slider2");
+  slider2.addEventListener("input", rotatebone);
+  var slider3 = document.getElementById("slider3");
+  slider3.addEventListener("input", rotatebone);
+
   window.addEventListener( 'resize', onWindowResize, false );
 
   //listeners for keyboard event
@@ -136,19 +142,19 @@ function animate() {
 function render(){
   
     renderer.render( scene, camera );
-    mixer.update(clock.getDelta());
+   // mixer.update(clock.getDelta());
     
 }
 
 function update(){
   //update man and camera position 
   dir = PLAYER.getPlayerDirection(man,camera,enabled,goal,follow);
-  if (dir.equals(new THREE.Vector3(0,0,0))){
+  /* if (dir.equals(new THREE.Vector3(0,0,0))){
         animaction.stop();
       }
       else{
         animaction.play();
-      }
+      } */
 
 }
 
@@ -160,9 +166,16 @@ function onWindowResize() {
   window.requestAnimationFrame(animate);
 }
 
-/* function doStuff() {
-   console.log(animaction.isRunning());
-   console.log(dir);
+ function doStuff() {
+   console.log(helper.bones[76].quaternion);
+   //console.log(dir);
    setTimeout(doStuff, 3000);
 }
-setTimeout(doStuff, 3000); */
+setTimeout(doStuff, 3000); 
+
+function rotatebone(){
+	var target1 = document.getElementById("slider1");
+  var target2 = document.getElementById("slider2");
+  var target3 = document.getElementById("slider3");
+  helper.bones[76].quaternion.setFromEuler(new THREE.Euler( target1.value, target2.value, target3.value, 'XYZ' ));
+}
