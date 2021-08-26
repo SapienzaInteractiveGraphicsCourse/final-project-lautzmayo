@@ -1,0 +1,42 @@
+#paper {
+    position: absolute;
+	width:33%;
+    left: 10%;
+    top: 0;
+    padding: 10px;
+    color : white;
+	text-align: center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 25px;
+    z-index: 1;
+	background-color: #ABBAEA;
+
+}
+#plastic {
+    position: absolute;
+	width:33%;
+	left: 33%;
+    top: 0;
+    padding: 10px;
+    color : white;
+	text-align: center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 25px;
+    z-index: 1;
+	background-color: #ABBAEA;
+
+}
+#glass {
+    position: absolute;
+	width:33%;
+    right: 10%;
+    top: 0;
+    padding: 10px;
+    color : white;
+	text-align: center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 25px;
+    z-index: 1;
+	background-color: #ABBAEA;
+
+}

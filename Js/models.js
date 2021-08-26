@@ -79,6 +79,7 @@ export function getPlastic() {
 				var newMaterial = new THREE.MeshStandardMaterial({ color: 0xffe600 })
 				const plasticMesh = gltf.scene
 				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material = newMaterial
+				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
 				plasticMesh.scale.set(plasticMesh.scale.x * scale, plasticMesh.scale.y * scale, plasticMesh.scale.z * scale)
 				resolve(plasticMesh)
 			},
@@ -104,6 +105,7 @@ export function getPaper() {
 				var newMaterial = new THREE.MeshStandardMaterial({ color: 0x002193 })
 				const paperMesh = gltf.scene
 				paperMesh.children[0].children[0].children[0].children[0].material = newMaterial
+				paperMesh.children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
 				paperMesh.scale.set(paperMesh.scale.x * scale, paperMesh.scale.y * scale, paperMesh.scale.z * scale)
 				resolve(paperMesh)
 			},
@@ -129,8 +131,8 @@ export function getGlass() {
 				var newMaterial = new THREE.MeshStandardMaterial({ color: 0x009321 })
 				const glassMesh = gltf.scene
 				glassMesh.children[0].children[0].children[0].children[1].material = newMaterial
+				glassMesh.children[0].children[0].children[0].children[1].material.side = THREE.DoubleSide
 				glassMesh.scale.set(glassMesh.scale.x * scale, glassMesh.scale.y * scale, glassMesh.scale.z * scale)
-
 				resolve(glassMesh)
 			},
 			function (xhr) {

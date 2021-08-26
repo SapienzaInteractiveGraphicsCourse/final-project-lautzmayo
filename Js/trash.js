@@ -1,7 +1,7 @@
 import * as THREE from "https://threejs.org/build/three.module.js"
 var pos = []
 
-export function locatePaper(nObject, objectMesh, scene) {
+export function locatePaper(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
 		//trashArray is a local copy of the array of objects
@@ -36,12 +36,13 @@ export function locatePaper(nObject, objectMesh, scene) {
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
+		intersectable.push(trashArray[i])
 	}
 
 	return [trashArray]
 }
 
-export function locatePlastic(nObject, objectMesh, scene) {
+export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
 		trashArray.push(objectMesh.clone())
@@ -70,12 +71,13 @@ export function locatePlastic(nObject, objectMesh, scene) {
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
+		intersectable.push(trashArray[i])
 	}
 
 	return [trashArray]
 }
 
-export function locateGlass(nObject, objectMesh, scene) {
+export function locateGlass(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
 		trashArray.push(objectMesh.clone())
@@ -104,6 +106,7 @@ export function locateGlass(nObject, objectMesh, scene) {
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
+		intersectable.push(trashArray[i])
 	}
 
 	return [trashArray]

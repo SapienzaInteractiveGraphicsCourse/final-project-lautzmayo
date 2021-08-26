@@ -28,6 +28,13 @@ var mixer, animaction, clock
 var clip
 var dir
 
+//for raycaster (to be finished)
+var pointer = new THREE.Vector2();
+var raycaster;
+var intersectable=[]
+var toCollect=false;
+var arrow = new THREE.Vector3();
+
 loadmodel()
 
 function loadmodel() {
@@ -57,6 +64,22 @@ function loadmodel() {
 }
 
 function init() {
+
+	const PaperDiv = document.createElement("div1");
+    PaperDiv.setAttribute("id", "paper");
+    PaperDiv.innerText = "PAPER:0";
+    document.body.appendChild(PaperDiv);
+
+    const PlasticDiv = document.createElement("div2");
+    PlasticDiv.setAttribute("id", "plastic");
+    PlasticDiv.innerText = "PLASTIC:0";
+    document.body.appendChild(PlasticDiv);
+
+    const GlassDiv = document.createElement("div3");
+    GlassDiv.setAttribute("id", "glass");
+    GlassDiv.innerText = "GLASS:0";
+    document.body.appendChild(GlassDiv);
+
 	enabled = CONTROL.init()
 
 	renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -87,12 +110,12 @@ function init() {
 	clock = temp[2]
 
 	//locate trash and trash collector
-	npaper = 3
-	paper = TRASH.locatePaper(npaper, papermodel, scene)
-	nplastic = 3
-	plastic = TRASH.locatePlastic(nplastic, plasticmodel, scene)
-	nglass = 3
-	glass = TRASH.locateGlass(nglass, glassmodel, scene)
+	npaper = 3;
+    paper = TRASH.locatePaper(npaper,papermodel,scene,intersectable);
+    nplastic = 3;
+    plastic = TRASH.locatePlastic(nplastic,plasticmodel,scene,intersectable);
+    nglass = 3;
+    glass = TRASH.locateGlass(nglass,glassmodel,scene,intersectable); 
 
 	ntrashcollector = 3
 	trashcollector = TRASH.locateTrashCollector(ntrashcollector, trashcanmodel, scene)
@@ -109,13 +132,14 @@ function init() {
   AmbientSound.setBuffer( HeartBeat );
   AmbientSound.setLoop(true);
  */
+ /*
 	var slider1 = document.getElementById("slider1")
 	slider1.addEventListener("input", rotatebone)
 	var slider2 = document.getElementById("slider2")
 	slider2.addEventListener("input", rotatebone)
 	var slider3 = document.getElementById("slider3")
 	slider3.addEventListener("input", rotatebone)
-
+*/
 	window.addEventListener("resize", onWindowResize, false)
 
 	//listeners for keyboard event
@@ -134,8 +158,16 @@ function init() {
 		},
 		false
 	)
+	renderer.domElement.addEventListener(
+		"pointerdown",
+		 function(event) {
+        // find intersections
+      		clicked(event);
+      		camera.updateMatrixWorld();
+    	}
+	)
 
-	window.requestAnimationFrame(animate)
+  window.requestAnimationFrame(animate);
 }
 
 function animate() {
@@ -187,4 +219,21 @@ function rotatebone() {
 	var target2 = document.getElementById("slider2")
 	var target3 = document.getElementById("slider3")
 	helper.bones[76].quaternion.setFromEuler(new THREE.Euler(target1.value, target2.value, target3.value, "XYZ"))
+}
+
+function clicked( event ) {
+    //set x and y value from the screen
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    //ray from camera to the point clicked
+    raycaster.setFromCamera( pointer, camera );
+    
+    var intersects = raycaster.intersectObjects(intersectable, true);
+      //if there is intersection enable collect 
+    if (intersects.length > 0) {
+    //DO SOMETHING
+    	console.log(intersects[0])
+        
+    }
 }

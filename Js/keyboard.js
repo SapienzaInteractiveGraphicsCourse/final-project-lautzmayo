@@ -7,7 +7,8 @@ export function init() {
 		s: false,
 		d: false,
 		escape: false,
-		r: 1,
+		r: false,
+		f:false,
 		l: false,
 		z: false,
 		old: 1,
@@ -37,8 +38,10 @@ export function keypressedAgent(event, enabled) {
 			enabled[event.key] = true
 			break
 		case "r":
-			enabled[event.key]++
-			if (enabled[event.key] == 2) enabled[event.key] = 0
+			enabled[event.key] = true
+			break
+		case "f":
+			enabled[event.key] = true
 			break
 		case "l":
 			enabled[event.key] = true
@@ -86,6 +89,12 @@ export function keyreleasedAgent(event, enabled) {
 			enabled[event.key] = false
 			break
 		case "c":
+			enabled[event.key] = false
+			break
+		case "r":
+			enabled[event.key] = false
+			break
+		case "f":
 			enabled[event.key] = false
 			break
 	}
