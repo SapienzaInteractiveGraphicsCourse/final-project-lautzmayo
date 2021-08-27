@@ -18,17 +18,17 @@ export function locatePaper(nObject, objectMesh, scene, intersectable) {
 		var z = Math.random() * (maxz - minz) + minz
 		while (
 			pos.includes([x, z]) ||
-			(x < -180 && z < -180) ||
-			(x < -180 && z > 180) ||
-			(x > 180 && z < -180) ||
-			(x > 180 && z > 180)
+			(x < -170 && z < -170) ||
+			(x < -170 && z > 170) ||
+			(x > 170 && z < -170) ||
+			(x > 170 && z > 170)
 		) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
 		//once it's ok the position is added to another vector that contains all the previous position
 		pos.push([x, z])
-		trashArray[i].position.set(x, 3, z)
+		trashArray[i].position.set(x, 2.8, z)
 	}
 	//changeMaterial is a function in order to avoid the material problem
 	//scene.add add the object in the scene
@@ -57,16 +57,16 @@ export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 		var z = Math.random() * (maxz - minz) + minz
 		while (
 			pos.includes([x, z]) ||
-			(x < -180 && z < -180) ||
-			(x < -180 && z > 180) ||
-			(x > 180 && z < -180) ||
-			(x > 180 && z > 180)
+			(x < -170 && z < -170) ||
+			(x < -170 && z > 170) ||
+			(x > 170 && z < -170) ||
+			(x > 170 && z > 170)
 		) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
 		pos.push([x, z])
-		trashArray[i].position.set(x, -32, z)
+		trashArray[i].position.set(x, -31, z)
 	}
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
@@ -92,16 +92,16 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 		var z = Math.random() * (maxz - minz) + minz
 		while (
 			pos.includes([x, z]) ||
-			(x < -180 && z < -180) ||
-			(x < -180 && z > 180) ||
-			(x > 180 && z < -180) ||
-			(x > 180 && z > 180)
+			(x < -170 && z < -170) ||
+			(x < -170 && z > 170) ||
+			(x > 170 && z < -170) ||
+			(x > 170 && z > 170)
 		) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
 		pos.push([x, z])
-		trashArray[i].position.set(x, 6.5, z)
+		trashArray[i].position.set(x, 5.8, z)
 	}
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])

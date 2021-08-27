@@ -5,30 +5,64 @@ export function init(map, man) {
 	scene = new THREE.Scene()
 	scene.background = new THREE.Color(0x00ccff)
 
-	var lights = []
-	lights[0] = new THREE.PointLight(0xffffff, 0.4, 0)
-	lights[1] = new THREE.PointLight(0xffffff, 0.3, 0)
-	lights[2] = new THREE.PointLight(0xffffff, 0.8, 0)
+	// add hemi lights
 
-	lights[0].position.set(0, 200, 0, 100)
-	lights[1].position.set(100, 200, 100)
-	lights[2].position.set(-100, -200, -100, 100)
+	var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.05 );
+    hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+    hemiLight.position.set( 0, 500, 0 );
+    scene.add( hemiLight );
+
+    // this is the Sun
+    var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    dirLight.color.setHSL( 0.1, 1, 0.95 );
+    dirLight.position.set( -1, 0.75, 1 );
+    dirLight.position.multiplyScalar( 50 );
+    scene.add( dirLight );
+
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = dirLight.shadow.mapSize.height = 1024*2;
+
+    var d = 30;
+
+    dirLight.shadow.camera.left = -d;
+    dirLight.shadow.camera.right = d;
+    dirLight.shadow.camera.top = d;
+    dirLight.shadow.camera.bottom = -d;
+
+    dirLight.shadow.camera.far = 3500;
+    dirLight.shadow.bias = -0.000001;
+    scene.add( dirLight );
+
+	//street lamps
+	var lights = []
+	lights[0] = new THREE.PointLight(0xffffbf,0.4)
+	lights[1] = new THREE.PointLight(0xffffbf,0.4)
+	lights[2] = new THREE.PointLight(0xffffbf,0.4)
+    lights[3] = new THREE.PointLight(0xffffbf,0.4)
+
+	lights[0].position.set(-240, 100, -180)
+	lights[1].position.set(100, 100, -290)
+	lights[2].position.set(-50, 100, 250)
+    lights[3].position.set(280, 100, 90)
 
 	scene.add(lights[0])
 	scene.add(lights[1])
 	scene.add(lights[2])
-	const light = new THREE.AmbientLight(0x404040) // soft white light
-	scene.add(light)
+	scene.add(lights[3])
+	
 	map.position.set(0, 0, 0)
 	changeMaterial(map)
 	scene.add(map)
 
 	var geo = new THREE.PlaneGeometry(10000, 10000)
-	var mat = new THREE.MeshBasicMaterial({ color: 0x000000 })
+	var mat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x050505 } );
+    mat.color.setHSL( 0.095, 1, 0.75 );
 	var box = new THREE.Mesh(geo, mat)
 	box.rotation.set(-1.57, 0, 0)
 	box.position.set(0, -2, 0)
 	scene.add(box)
+	box.receiveShadow = true;
 
 	man.position.set(0, 0, 0)
 	man.rotation.set(3.14, 0, 3.14)
@@ -47,7 +81,7 @@ export function init(map, man) {
 	camera.position.set(0, 75, 0)
 	camera.lookAt(scene.position)
 
-	return [scene, camera, map, man, helper]
+	return [scene, camera, map, man, helper, dirLight, hemiLight, lights]
 }
 
 function changeMaterial(model) {
