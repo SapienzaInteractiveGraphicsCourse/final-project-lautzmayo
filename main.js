@@ -8,6 +8,9 @@ import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 
+var times = 0
+var game;
+
 var man, map, trashcan
 var paper = []
 var plastic = []
@@ -40,7 +43,23 @@ var intersectable=[]
 var toCollect=false;
 var arrow = new THREE.Vector3();
 
-loadmodel()
+//MENU. ONCE CLICK ON START, all the stuffs are loaded
+window.onclick = function() {
+    var btn = document.getElementById("START");
+	
+	if(times==0){
+		btn.onclick = start();
+		btn.style.display = 'none';
+		times++
+		document.getElementById("Buttons").style.display = 'none';
+	}
+    
+}
+
+function start(){
+	loadmodel()
+}
+
 
 function loadmodel() {
 	//models are loaded
@@ -90,6 +109,7 @@ function init() {
 	renderer = new THREE.WebGLRenderer({ antialias: true })
 	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.setSize(window.innerWidth, window.innerHeight)
+	game=renderer.domElement;
 	document.body.appendChild(renderer.domElement)
 	renderer.shadowMap.enabled = true;
     renderer.shadowSide = THREE.CullFaceBack;
@@ -177,7 +197,7 @@ function init() {
 	window.addEventListener(
 		"keydown",
 		function (event) {
-			temp = CONTROL.keypressedAgent(event, enabled)
+			temp = CONTROL.keypressedAgent(event, enabled, game)
 			enabled = temp[0]
 		},
 		false
@@ -207,6 +227,16 @@ function animate() {
 		//COMMENTO BRUTALE
 		update()
 		render()
+		//console.log(enabled.l)
+		//console.log(enabled.stato)
+		/* if(enabled.l){
+		//console.log(enabled.escape)
+		document.getElementById("Buttons").style.display = 'flex';
+		}else{
+		//console.log(enabled.escape)
+		document.getElementById("Buttons").style.display = 'none';
+		} */
+		
 	}, 1000 / 60)
 }
 

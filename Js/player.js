@@ -60,6 +60,7 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
   if(enabled.f){
     camera.position.y-=1;
   }
+  
     return diranimation;
 }
 

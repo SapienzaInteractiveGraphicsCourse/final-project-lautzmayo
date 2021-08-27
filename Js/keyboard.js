@@ -1,3 +1,4 @@
+var buttons = document.getElementById( "Buttons" )
 export function init() {
 	var enabled = {
 		q: false,
@@ -17,7 +18,7 @@ export function init() {
 	}
 	return enabled
 }
-export function keypressedAgent(event, enabled) {
+export function keypressedAgent(event, enabled, game) {
 	switch (event.key) {
 		case "q":
 			enabled[event.key] = true
@@ -44,8 +45,15 @@ export function keypressedAgent(event, enabled) {
 			enabled[event.key] = true
 			break
 		case "l":
-			enabled[event.key] = true
-			break
+			enabled[event.key] = !enabled[event.key]
+			if(enabled[event.key]){
+				document.body.replaceChild(buttons,game)
+				buttons.style.display = 'flex';
+			}else{
+				buttons.style.display = 'flex';
+				document.body.replaceChild(game,buttons)
+			}
+      		break;
 		case "z":
 			enabled[event.key] = true
 			break
@@ -53,6 +61,9 @@ export function keypressedAgent(event, enabled) {
 			enabled[event.key] = true
 			break
 		case "c":
+			enabled[event.key] = true
+			break
+		case "escape":
 			enabled[event.key] = true
 			break
 	}
@@ -78,10 +89,7 @@ export function keyreleasedAgent(event, enabled) {
 			break
 		case "d":
 			enabled[event.key] = false
-			break
-		case "l":
-			enabled[event.key] = false
-			break
+			break 
 		case "z":
 			enabled[event.key] = false
 			break
@@ -95,6 +103,9 @@ export function keyreleasedAgent(event, enabled) {
 			enabled[event.key] = false
 			break
 		case "f":
+			enabled[event.key] = false
+			break
+		case "escape":
 			enabled[event.key] = false
 			break
 	}
