@@ -32,6 +32,7 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
   }
   velocity += ( speed - velocity ) * .3;
   man.translateZ( velocity );
+  
 
   if ( enabled.a ){
     man.rotateY(0.05);
@@ -50,9 +51,8 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
   goal.position.addScaledVector( dir, dis );
   goal.position.lerp(temp, 0.3);
   temp.setFromMatrixPosition(follow.matrixWorld);
-    
   camera.lookAt( man.position );
-
+  
 
   if(enabled.r){
     camera.position.y+=1;
@@ -60,7 +60,16 @@ export function getPlayerDirection(man, camera, enabled,goal,follow) {
   if(enabled.f){
     camera.position.y-=1;
   }
+
+  //se non vogliamo usare librerie per la fisica, questo controllo evita al personaggio di superare i bordi
+  if(man.position.x < -170 && (man.position.z < -170 || man.position.z > 170 ))
+    man.position.x+=2
+  if(man.position.x > 170  && (man.position.z < -170 || man.position.z > 170 ))
+    man.position.x-=2
+  if(man.position.z < -170 && (man.position.x < -170 || man.position.x > 170 ))
+    man.position.z+=2
+  if(man.position.z > 170 && (man.position.x < -170 || man.position.x > 170 ))
+    man.position.z-=2
   
     return diranimation;
 }
-

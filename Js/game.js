@@ -64,6 +64,35 @@ export function init(map, man) {
 	scene.add(box)
 	box.receiveShadow = true;
 
+ //borders se dobbiamo utilizzare qualche libreria per la fisica, sennò DELETE
+	const g = new THREE.BoxGeometry( 1600,100, 1600 )
+	const m = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+	const border1 = new THREE.Mesh( g, m );
+	const border2 = new THREE.Mesh( g, m );
+	const border3 = new THREE.Mesh( g, m );
+	const border4 = new THREE.Mesh( g, m );
+	border1.position.set(980,0,980);
+	border2.position.set(980,0,-980);
+	border3.position.set(-980,0,980);
+	border4.position.set(-980,0,-980);
+	border1.material.transparent = true ;
+	border2.material.transparent = true ;
+	border3.material.transparent = true ;
+	border4.material.transparent = true ;
+	border1.material.opacity = 0 ;
+	border2.material.opacity = 0 ;
+	border3.material.opacity = 0 ;
+	border4.material.opacity = 0 ;
+	scene.add( border1 );
+	scene.add( border2 );
+	scene.add( border3 );
+	scene.add( border4 );
+	var borders=[];
+	borders.push(border1)
+	borders.push(border2)
+	borders.push(border3)
+	borders.push(border4)
+ 
 	man.position.set(0, 0, 0)
 	man.rotation.set(3.14, 0, 3.14)
 	changeMaterial(man)
@@ -80,8 +109,9 @@ export function init(map, man) {
 	camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000)
 	camera.position.set(0, 75, 0)
 	camera.lookAt(scene.position)
+//Cancellare Borders se non utilizziamo librerie per la fisica ( anche in main.js aggiornare indici di temp)
 
-	return [scene, camera, map, man, helper, dirLight, hemiLight, lights]
+	return [scene, camera, map, borders, man, helper, dirLight, hemiLight, lights]
 }
 
 function changeMaterial(model) {
@@ -90,7 +120,7 @@ function changeMaterial(model) {
 
 		var prevMaterial = child.material
 
-		child.material = new THREE.MeshPhongMaterial()
+		child.material = new THREE.MeshLambertMaterial()
 
 		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
 	})

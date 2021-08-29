@@ -148,7 +148,7 @@ function changeMaterial(model) {
 
 		var prevMaterial = child.material
 
-		child.material = new THREE.MeshPhongMaterial()
+		child.material = new THREE.MeshLambertMaterial()
 
 		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
 	})

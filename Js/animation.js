@@ -18,6 +18,8 @@ import * as THREE from "../build/three.module.js"
  78: RIGHTFEET
  */
 /////////////////////////////////////////////////////////////////////////////
+//l'animazione si basa su keyframe, in ognuno di questi vanno definite l'orientazione dei singoli bones in termini di quaternions
+//qui sono stati definiti solo per la camminata in realtà
 //CONTACT  
       var q1ual = new THREE.Quaternion(0.5869630470760588,0.7213944155389754,0.3578294246896947,0.08380084380607711);
       var q1lal = new THREE.Quaternion(0.07185520084097083,-0.8910399791422927,0.07185520084097086,0.44240413175546867);
@@ -131,6 +133,8 @@ import * as THREE from "../build/three.module.js"
         var q8fl = new THREE.Quaternion(0.48924044209318857,0.24153165167072246,-0.15385128260905304,0.823793684062474);
 
 export function getAnimation(player, skeleton) {
+	//qui vengono definiti i singoli keyframe
+	//[2,4,5...] definisce per ogni track(q1,q2,q3,...) la posizione nel tempo (a 2sec q1, a 4sec q2, ecc.. )
 	var KFuar = new THREE.QuaternionKeyframeTrack(
 		skeleton.bones[47].name + ".quaternion",
 		[ 2, 8, 14, 20, 26, 32, 38, 44, 50],
@@ -635,7 +639,7 @@ export function getAnimation(player, skeleton) {
 			q1fl.w
 		]
 	)
-
+//infine viene creata la clip definendo la durata totale dell'animazione (in questo caso 50) e tutti i keyframe (arti coinvolti) dell'animazione
 var clip = new THREE.AnimationClip( 'Walk', 50, [ KFual,KFlal,KFhl,KFuar,KFlar,KFhr,KFull,KFlll,KFfl,KFulr,KFllr,KFfr] );
 var mixer = new THREE.AnimationMixer(player.children[0]);
 var AnimationAction = mixer.clipAction(clip);

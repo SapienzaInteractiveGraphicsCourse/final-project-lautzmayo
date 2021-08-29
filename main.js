@@ -8,10 +8,18 @@ import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 
+
 var times = 0
 var game;
 
+//MESH
 var man, map, trashcan
+
+//borders se vogliamo usare librerie per la fisica in modo tale da associare un body per ogni bordo (da controllare, dipende dalla libreria)
+var borders
+var bordersbody = ["","","",""]
+
+//array and vars models
 var paper = []
 var plastic = []
 var glass = []
@@ -36,7 +44,7 @@ var mixer, animaction, clock
 var clip
 var dir
 
-//for raycaster (to be finished)
+//for raycaster (to be finished)  N.B.:SE VOGLIAMO UTILIZZARLO, altrimenti DELETE
 var pointer = new THREE.Vector2();
 var raycaster;
 var intersectable=[]
@@ -44,22 +52,17 @@ var toCollect=false;
 var arrow = new THREE.Vector3();
 
 //MENU. ONCE CLICK ON START, all the stuffs are loaded
-window.onclick = function() {
-    var btn = document.getElementById("START");
-	
+var btn = document.getElementById("START");
+btn.addEventListener("click",begin)
+//after loading models, init game	
+function begin(){
 	if(times==0){
-		btn.onclick = start();
+		loadmodel();
 		btn.style.display = 'none';
 		times++
 		document.getElementById("Buttons").style.display = 'none';
 	}
-    
 }
-
-function start(){
-	loadmodel()
-}
-
 
 function loadmodel() {
 	//models are loaded
@@ -78,8 +81,10 @@ function loadmodel() {
 			papermodel = data[3]
 			plasticmodel = data[4]
 			glassmodel = data[5]
+
+
 			init()
-			periodicLogger()
+			//periodicLogger()
 		},
 		(error) => {
 			console.log("An error happened:", error)
@@ -88,7 +93,9 @@ function loadmodel() {
 }
 
 function init() {
-
+	
+	
+	//create div for trash counter ( TO BE UPDATE WITH COLLECTION OF TRASH)
 	const PaperDiv = document.createElement("div1");
     PaperDiv.setAttribute("id", "paper");
     PaperDiv.innerText = "PAPER:0";
@@ -113,21 +120,25 @@ function init() {
 	document.body.appendChild(renderer.domElement)
 	renderer.shadowMap.enabled = true;
     renderer.shadowSide = THREE.CullFaceBack;
+ 
 	var temp = GAME.init(mapmodel, manmodel)
-	//updated data option of scene,camera,map and man
+	//updated data option of scene,camera,map (with borders) , man and lights
 	scene = temp[0]
 	camera = temp[1]
 	map = temp[2]
-	man = temp[3]
-	helper = temp[4]
-	dirLight = temp[5];
-    hemiLight = temp[6];
-    lights = temp[7];
+	borders = temp[3]
+	man = temp[4]
+	helper = temp[5]
+	dirLight = temp[6];
+    hemiLight = temp[7];
+    lights = temp[8];
 
+	
 	//add fog to the scene
     scene.fog = new THREE.Fog(0x222233, 0, 20000);
     renderer.setClearColor( scene.fog.color, 1 );
 
+	//for sky rendering
 	var vertexShader = document.getElementById( 'vertexShader' ).textContent;
     var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
     var uniforms = {
@@ -143,7 +154,8 @@ function init() {
     var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
     sky = new THREE.Mesh( skyGeo, skyMat );
     scene.add( sky );
-	//setup camera orientation
+
+	//setup camera orientation (a questo punto la orbit non serve più in realtà, aggiungerla solo per animazioni e commentare qui)
 	//ORBIT :
 	goal = new THREE.Object3D()
 	follow = new THREE.Object3D()
@@ -151,7 +163,7 @@ function init() {
 	man.add(follow)
 	goal.add(camera)
 
-	//added animation (not working yet)
+	//added animation 
 	//ANIM :
 	temp = ANIMATION.getAnimation(man, helper)
 	mixer = temp[0]
@@ -159,6 +171,8 @@ function init() {
 	clock = temp[2]
 
 	//locate trash and trash collector
+	//intersectable è un array contenente gli oggetti che possono essere castati dal ray,
+	// se non vogliamo utilizzarlo ->Delete
 	npaper = 3;
     paper = TRASH.locatePaper(npaper,papermodel,scene,intersectable);
     nplastic = 3;
@@ -168,7 +182,8 @@ function init() {
 
 	ntrashcollector = 3
 	trashcollector = TRASH.locateTrashCollector(ntrashcollector, trashcanmodel, scene)
-
+	
+	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
 	/* 
   // instantiate a listener
   const audioListener = new THREE.AudioListener();
@@ -181,6 +196,8 @@ function init() {
   AmbientSound.setBuffer( HeartBeat );
   AmbientSound.setLoop(true);
  */
+
+ //Attivarli solo per creare l'animazione( anche da html), altrimenti si può cancellare
  /*
 	var slider1 = document.getElementById("slider1")
 	slider1.addEventListener("input", rotatebone)
@@ -189,6 +206,8 @@ function init() {
 	var slider3 = document.getElementById("slider3")
 	slider3.addEventListener("input", rotatebone)
 */
+
+//creazione raycaster
 	raycaster = new THREE.Raycaster();
 
 	window.addEventListener("resize", onWindowResize, false)
@@ -224,26 +243,20 @@ function init() {
 function animate() {
 	setTimeout(function () {
 		requestAnimationFrame(animate)
+		
 		//COMMENTO BRUTALE
 		update()
 		render()
-		//console.log(enabled.l)
-		//console.log(enabled.stato)
-		/* if(enabled.l){
-		//console.log(enabled.escape)
-		document.getElementById("Buttons").style.display = 'flex';
-		}else{
-		//console.log(enabled.escape)
-		document.getElementById("Buttons").style.display = 'none';
-		} */
 		
 	}, 1000 / 60)
 }
 
 function render() {
+	
 	renderer.render(scene, camera)
 	//ANIM :
 	mixer.update(clock.getDelta())
+	
 	daynightcycle();
 }
 
@@ -251,13 +264,16 @@ function update() {
 	//update man and camera position
 	//ORBIT :
 	//commenta
+	
 	dir = PLAYER.getPlayerDirection(man, camera, enabled, goal, follow)
+	
 	//ANIM :
 	if (dir.equals(new THREE.Vector3(0, 0, 0))) {
 		animaction.stop()
 	} else {
 		animaction.play()
 	}
+
 }
 
 function onWindowResize() {
@@ -271,7 +287,6 @@ function onWindowResize() {
 // periodically log
 function periodicLogger() {
 	//console.log(helper.bones[76].quaternion)
-	//console.log(dir);
 	setTimeout(periodicLogger, 3000)
 }
 
@@ -301,7 +316,7 @@ function clicked( event ) {
 }
 
 function daynightcycle(){
-    var time = new Date().getTime() * 0.0002;
+    var time = new Date().getTime() * 0.00002;
     // var time = 2.1;
 
     var nsin = Math.sin(time);
