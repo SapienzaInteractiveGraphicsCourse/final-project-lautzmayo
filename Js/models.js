@@ -11,8 +11,8 @@ export function getCharacter() {
 				let scale = 0.4
 				const playerMesh = gltf.scene
 				playerMesh.scale.set(playerMesh.scale.x * scale, playerMesh.scale.y * scale, playerMesh.scale.z * scale)
-				playerMesh.castShadow=true;
-				playerMesh.receiveShadow = true;
+				playerMesh.castShadow = true
+				playerMesh.receiveShadow = true
 				resolve(playerMesh)
 			},
 			function (xhr) {
@@ -34,8 +34,8 @@ export function getMap() {
 			"./Model/city/scene.gltf",
 			function (gltf) {
 				const mapMesh = gltf.scene
-				mapMesh.castShadow=true;
-				mapMesh.receiveShadow = true;
+				mapMesh.castShadow = true
+				mapMesh.receiveShadow = true
 				resolve(mapMesh)
 			},
 			function (xhr) {
@@ -59,8 +59,8 @@ export function getTrashCan() {
 				let scale = 35
 				const trashcanMesh = gltf.scene
 				trashcanMesh.scale.set(trashcanMesh.scale.x * scale, trashcanMesh.scale.y * scale, trashcanMesh.scale.z * scale)
-				trashcanMesh.castShadow=true;
-				trashcanMesh.receiveShadow = true;
+				trashcanMesh.castShadow = true
+				trashcanMesh.receiveShadow = true
 				resolve(trashcanMesh)
 			},
 			function (xhr) {
@@ -85,10 +85,11 @@ export function getPlastic() {
 				var newMaterial = new THREE.MeshStandardMaterial({ color: 0xffe600 })
 				const plasticMesh = gltf.scene
 				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material = newMaterial
-				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
+				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material.side =
+					THREE.DoubleSide
 				plasticMesh.scale.set(plasticMesh.scale.x * scale, plasticMesh.scale.y * scale, plasticMesh.scale.z * scale)
-				plasticMesh.castShadow=true;
-				plasticMesh.receiveShadow = true;
+				plasticMesh.castShadow = true
+				plasticMesh.receiveShadow = true
 				resolve(plasticMesh)
 			},
 			function (xhr) {
@@ -115,8 +116,8 @@ export function getPaper() {
 				paperMesh.children[0].children[0].children[0].children[0].material = newMaterial
 				paperMesh.children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
 				paperMesh.scale.set(paperMesh.scale.x * scale, paperMesh.scale.y * scale, paperMesh.scale.z * scale)
-				paperMesh.castShadow=true;
-				paperMesh.receiveShadow = true;
+				paperMesh.castShadow = true
+				paperMesh.receiveShadow = true
 				resolve(paperMesh)
 			},
 			function (xhr) {
@@ -143,8 +144,8 @@ export function getGlass() {
 				glassMesh.children[0].children[0].children[0].children[1].material = newMaterial
 				glassMesh.children[0].children[0].children[0].children[1].material.side = THREE.DoubleSide
 				glassMesh.scale.set(glassMesh.scale.x * scale, glassMesh.scale.y * scale, glassMesh.scale.z * scale)
-				glassMesh.castShadow=true;
-				glassMesh.receiveShadow = true;
+				glassMesh.castShadow = true
+				glassMesh.receiveShadow = true
 				resolve(glassMesh)
 			},
 			function (xhr) {
