@@ -5,7 +5,7 @@ export function init(map, man) {
 
 	scene = new Physijs.Scene()
 
-	scene.setGravity(new THREE.Vector3(0, -10, 0))
+	// scene.setGravity(new THREE.Vector3(0, -10, 0))
 	scene.background = new THREE.Color(0x00ccff)
 
 	// add hemi lights
@@ -127,7 +127,7 @@ export function init(map, man) {
 	scene.add(border2)
 	scene.add(border3)
 	scene.add(border4)
-	
+
 	var borders = []
 	borders.push(border1)
 	borders.push(border2)
@@ -135,9 +135,28 @@ export function init(map, man) {
 	borders.push(border4)
 
 	man.position.set(0, 0, 0)
-	man.rotation.set(3.14, 0, 3.14)
+	man.rotation.set(0, 0, 0)
 	changeMaterial(man)
+
 	scene.add(man)
+
+	let manCollisionBoxGeometry = new THREE.BoxGeometry(200, 200, 200)
+	let manCollisionBoxMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 })
+
+	let manCollisionBox = new Physijs.BoxMesh(manCollisionBoxGeometry, manCollisionBoxMaterial)
+
+	manCollisionBox.setAngularFactor = new THREE.Vector3(0, 0, 0)
+	manCollisionBox.setAngularVelocity = new THREE.Vector3(0, 0, 0)
+	manCollisionBox.setLinearFactor = new THREE.Vector3(0, 0, 0)
+	manCollisionBox.setLinearVelocity = new THREE.Vector3(0, 0, 0)
+
+	manCollisionBox.mass = 0
+
+	manCollisionBox.position.set(0, 0, 0)
+	manCollisionBox.rotation.set(0, 0, 0)
+
+	scene.add(manCollisionBox)
+	console.log(manCollisionBox)
 
 	//added skeleton helper to the character
 	var helper = new THREE.SkeletonHelper(man)
