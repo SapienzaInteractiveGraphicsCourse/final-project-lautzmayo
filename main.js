@@ -318,9 +318,16 @@ function clicked(event) {
 	var intersects = raycaster.intersectObjects(intersectable, true)
 	//if there is intersection enable collect
 	if (intersects.length > 0) {
-		//DO SOMETHING
-		console.log(intersects[0])
+		// console.log(intersects[0].object)
+		trashDisposal(intersects[0].object)
 	}
+}
+
+function trashDisposal(obj) {
+	while (obj.parent.name != "OSG_Scene") {
+		obj = obj.parent
+	}
+	scene.remove(obj.parent)
 }
 
 function daynightcycle() {
