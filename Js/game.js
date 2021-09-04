@@ -3,9 +3,8 @@ var camera
 export function init(map, man) {
 	var scene, camera
 
-	scene = new Physijs.Scene()
+	scene = new THREE.Scene()
 
-	scene.setGravity(new THREE.Vector3(0, -10, 0))
 	scene.background = new THREE.Color(0x00ccff)
 
 	// add hemi lights
@@ -64,7 +63,7 @@ export function init(map, man) {
 	var underlainPlaneMat = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x050505 })
 	underlainPlaneMat.color.setHSL(0.095, 1, 0.75)
 
-	var underlainPlaneBox = new Physijs.BoxMesh(underlainPlane, underlainPlaneMat)
+	var underlainPlaneBox = new THREE.Mesh(underlainPlane, underlainPlaneMat)
 	underlainPlaneBox.rotation.set(-1.57, 0, 0)
 	underlainPlaneBox.position.set(0, -2, 0)
 
@@ -80,28 +79,28 @@ export function init(map, man) {
 	//borders se dobbiamo utilizzare qualche libreria per la fisica, sennò DELETE
 	const g = new THREE.BoxGeometry(1600, 100, 1600)
 	const m = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-	const border1 = new Physijs.BoxMesh(g, m, 0)
+	const border1 = new THREE.Mesh(g, m, 0)
 
 	border1.setAngularFactor = new THREE.Vector3(0, 0, 0)
 	border1.setAngularVelocity = new THREE.Vector3(0, 0, 0)
 	border1.setLinearFactor = new THREE.Vector3(0, 0, 0)
 	border1.setLinearVelocity = new THREE.Vector3(0, 0, 0)
 
-	const border2 = new Physijs.BoxMesh(g, m, 0)
+	const border2 = new THREE.Mesh(g, m, 0)
 
 	border2.setAngularFactor = new THREE.Vector3(0, 0, 0)
 	border2.setAngularVelocity = new THREE.Vector3(0, 0, 0)
 	border2.setLinearFactor = new THREE.Vector3(0, 0, 0)
 	border2.setLinearVelocity = new THREE.Vector3(0, 0, 0)
 
-	const border3 = new Physijs.BoxMesh(g, m, 0)
+	const border3 = new THREE.Mesh(g, m, 0)
 
 	border3.setAngularFactor = new THREE.Vector3(0, 0, 0)
 	border3.setAngularVelocity = new THREE.Vector3(0, 0, 0)
 	border3.setLinearFactor = new THREE.Vector3(0, 0, 0)
 	border3.setLinearVelocity = new THREE.Vector3(0, 0, 0)
 
-	const border4 = new Physijs.BoxMesh(g, m, 0)
+	const border4 = new THREE.Mesh(g, m, 0)
 
 	border4.setAngularFactor = new THREE.Vector3(0, 0, 0)
 	border4.setAngularVelocity = new THREE.Vector3(0, 0, 0)
@@ -127,7 +126,7 @@ export function init(map, man) {
 	scene.add(border2)
 	scene.add(border3)
 	scene.add(border4)
-	
+
 	var borders = []
 	borders.push(border1)
 	borders.push(border2)
@@ -138,6 +137,13 @@ export function init(map, man) {
 	man.rotation.set(3.14, 0, 3.14)
 	changeMaterial(man)
 	scene.add(man)
+
+	// TODO:
+	// const physics = new ENABLE.ENABLE3D.AmmoPhysics(scene)
+	// physics.debug.enable(true)
+
+	// physics.add.existing(underlainPlaneBox, { shape: "box" })
+	// physics.add.existing(man, { shape: "box" })
 
 	//added skeleton helper to the character
 	var helper = new THREE.SkeletonHelper(man)

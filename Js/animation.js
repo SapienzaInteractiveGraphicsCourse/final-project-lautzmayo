@@ -2,20 +2,20 @@ import * as THREE from "../build/three.module.js"
 
 /////////////////////////////////////////////////////////////////////////////
 /* BODY PARTS
- 0: ROOT JOINT
- 6: HEAD
- 15: LEFTUPPERARM
- 16: LEFTLOWERARM
- 17: LEFTHAND
- 47: RIGHTUPPERARM
- 48: RIGHTLOWERARM
- 49: RIGHTHAND
- 81: LEFTUPPERLEG
- 82: LEFTLOWERLEG
- 83: LEFTFEET
- 76: RIGHTUPPERLEG
- 77: RIGHTLOWERLEG
- 78: RIGHTFEET
+0: ROOT JOINT
+6: HEAD
+15: LEFTUPPERARM
+16: LEFTLOWERARM
+17: LEFTHAND
+47: RIGHTUPPERARM
+48: RIGHTLOWERARM
+49: RIGHTHAND
+81: LEFTUPPERLEG
+82: LEFTLOWERLEG
+83: LEFTFEET
+76: RIGHTUPPERLEG
+77: RIGHTLOWERLEG
+78: RIGHTFEET
  */
 /////////////////////////////////////////////////////////////////////////////
 //l'animazione si basa su keyframe, in ognuno di questi vanno definite l'orientazione dei singoli bones in termini di quaternions

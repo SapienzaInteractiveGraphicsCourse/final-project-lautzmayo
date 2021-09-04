@@ -6,13 +6,10 @@ import * as PLAYER from "./Js/player.js"
 import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
+// import * as AMMOENABLE from "./build/enable3d/enable3d.ammoPhysics.0.23.0.min.js"
 
 var times = 0
 var game
-
-//PHISY JS
-Physijs.scripts.worker = "/build/physijs_worker.js"
-Physijs.scripts.ammo = "/build/ammo.js"
 
 //MESH
 var man, map, trashcan
@@ -22,51 +19,64 @@ var borders
 var bordersbody = ["", "", "", ""]
 
 //array and vars models
+// arrays for collectables
 var paper = []
 var plastic = []
 var glass = []
-var trashCollector = []
-var nPaper, nPlastic, nGlass, nTrashCollector
+
+// array for trash collectors
+var trashcollector = []
+
+var nPaper, nPlastic, nGlass, nTrashcollector
 var manModel, mapModel, trashcanModel, paperModel, plasticModel, glassModel
+
 //for camera
 var goal, follow
-var Distance = 200
+var distance = 200
 var camera, scene, renderer
+
 //for light
 var dirLight
 var hemiLight
 var lights
 var sky
+
 //for keyboard
 var enabled
+
 //skeleton of player
 var helper
+
 //for animation
-var mixer, animAction, clock
+var mixer, animaction, clock
 var clip
 var dir
 
-//for raycaster (to be finished)  N.B.:SE VOGLIAMO UTILIZZARLO, altrimenti DELETE
+// for raycaster (to be finished)  N.B.:SE VOGLIAMO UTILIZZARLO, altrimenti DELETE
 var pointer = new THREE.Vector2()
 var raycaster
 var intersectable = []
 var toCollect = false
 var arrow = new THREE.Vector3()
 
-//MENU. ONCE CLICK ON START, all the stuffs are loaded
+// Element and Callback function for initialization of game
 var btn = document.getElementById("START")
+
 btn.addEventListener("click", begin)
+
 //after loading models, init game
 function begin() {
 	if (times == 0) {
-		loadmodel()
+		loadModelsAndInit()
 		btn.style.display = "none"
 		times++
 		document.getElementById("Buttons").style.display = "none"
 	}
 }
 
-function loadmodel() {
+// called by start button
+// import gltf models and calls init function
+function loadModelsAndInit() {
 	//models are loaded
 	var manLoad = MODEL.getCharacter()
 	var mapLoad = MODEL.getMap()
@@ -85,7 +95,7 @@ function loadmodel() {
 			glassModel = data[5]
 
 			init()
-			//periodicLogger()
+			// periodicLogger()
 		},
 		(error) => {
 			console.log("An error happened:", error)
@@ -94,7 +104,7 @@ function loadmodel() {
 }
 
 function init() {
-	//create div for trash counter ( TO BE UPDATE WITH COLLECTION OF TRASH)
+	//create div for each trash counter ( TO BE UPDATE WITH COLLECTION OF TRASH)
 	const PaperDiv = document.createElement("div1")
 	PaperDiv.setAttribute("id", "paper")
 	PaperDiv.innerText = "PAPER:0"
@@ -110,8 +120,10 @@ function init() {
 	GlassDiv.innerText = "GLASS:0"
 	document.body.appendChild(GlassDiv)
 
+	// ANCHOR: what is enabled?
 	enabled = CONTROL.init()
 
+	// ANCHOR: what do this stuff does?
 	renderer = new THREE.WebGLRenderer({ antialias: true })
 	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.setSize(window.innerWidth, window.innerHeight)
@@ -120,17 +132,18 @@ function init() {
 	renderer.shadowMap.enabled = true
 	renderer.shadowSide = THREE.CullFaceBack
 
-	var temp = GAME.init(mapModel, manModel)
-	//updated data option of scene,camera,map (with borders) , man and lights
-	scene = temp[0]
-	camera = temp[1]
-	map = temp[2]
-	borders = temp[3]
-	man = temp[4]
-	helper = temp[5]
-	dirLight = temp[6]
-	hemiLight = temp[7]
-	lights = temp[8]
+	// requested and updated data option of
+	// scene, camera, map(with borders), man and lights
+	var gameInitAssets = GAME.init(mapModel, manModel)
+	scene = gameInitAssets[0]
+	camera = gameInitAssets[1]
+	map = gameInitAssets[2]
+	borders = gameInitAssets[3]
+	man = gameInitAssets[4]
+	helper = gameInitAssets[5]
+	dirLight = gameInitAssets[6]
+	hemiLight = gameInitAssets[7]
+	lights = gameInitAssets[8]
 
 	//add fog to the scene
 	scene.fog = new THREE.Fog(0x222233, 0, 20000)
@@ -162,16 +175,16 @@ function init() {
 	//ORBIT :
 	goal = new THREE.Object3D()
 	follow = new THREE.Object3D()
-	follow.position.z = -Distance
+	follow.position.z = -distance
 	man.add(follow)
 	goal.add(camera)
 
 	//added animation
 	//ANIM :
-	temp = ANIMATION.getAnimation(man, helper)
-	mixer = temp[0]
-	animAction = temp[1]
-	clock = temp[2]
+	gameInitAssets = ANIMATION.getAnimation(man, helper)
+	mixer = gameInitAssets[0]
+	animaction = gameInitAssets[1]
+	clock = gameInitAssets[2]
 
 	//locate trash and trash collector
 	//intersectable è un array contenente gli oggetti che possono essere castati dal ray,
@@ -183,22 +196,22 @@ function init() {
 	nGlass = 3
 	glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
-	nTrashCollector = 3
-	trashCollector = TRASH.locateTrashCollector(nTrashCollector, trashcanModel, scene)
+	nTrashcollector = 3
+	trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene)
 
 	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
 	/* 
-  	// instantiate a listener
-	const audioListener = new THREE.AudioListener();
+    // instantiate a listener
+    const audioListener = new THREE.AudioListener();
 
-	AmbientSound = new THREE.Audio( audioListener );
+    AmbientSound = new THREE.Audio( audioListener );
 
-	camera.add( audioListener );
-	scene.add( AmbientSound );
+    camera.add( audioListener );
+    scene.add( AmbientSound );
 
-	AmbientSound.setBuffer( HeartBeat );
-	AmbientSound.setLoop(true);
- */
+    AmbientSound.setBuffer( HeartBeat );
+    AmbientSound.setLoop(true);
+	*/
 
 	//Attivarli solo per creare l'animazione( anche da html), altrimenti si può cancellare
 	/*
@@ -219,8 +232,8 @@ function init() {
 	window.addEventListener(
 		"keydown",
 		function (event) {
-			temp = CONTROL.keypressedAgent(event, enabled, game)
-			enabled = temp[0]
+			gameInitAssets = CONTROL.keypressedAgent(event, enabled, game)
+			enabled = gameInitAssets[0]
 		},
 		false
 	)
@@ -244,15 +257,12 @@ function animate() {
 	setTimeout(function () {
 		requestAnimationFrame(animate)
 
-		//COMMENTO BRUTALE
 		update()
 		render()
 	}, 1000 / 60)
 }
 
 function render() {
-	scene.simulate()
-
 	renderer.render(scene, camera)
 
 	//ANIM :
@@ -270,9 +280,9 @@ function update() {
 
 	//ANIM :
 	if (dir.equals(new THREE.Vector3(0, 0, 0))) {
-		animAction.stop()
+		animaction.stop()
 	} else {
-		animAction.play()
+		animaction.play()
 	}
 }
 
@@ -294,7 +304,7 @@ function rotatebone() {
 	var target1 = document.getElementById("slider1")
 	var target2 = document.getElementById("slider2")
 	var target3 = document.getElementById("slider3")
-	helper.bones[76].quaternion.setFromEuler(new THREE.Euler(target1.value, target2.value, target3.value, "XYZ"))
+	// helper.bones[76].quaternion.setFromEuler(new THREE.Euler(target1.value, target2.value, target3.value, "XYZ"))
 }
 
 function clicked(event) {
@@ -317,13 +327,13 @@ function daynightcycle() {
 	var time = new Date().getTime() * 0.00002
 	// var time = 2.1;
 
-	var nsin = Math.sin(time)
-	var ncos = Math.cos(time)
+	var nSin = Math.sin(time)
+	var nCos = Math.cos(time)
 
 	// set the sun
-	dirLight.position.set(1500 * nsin, 2000 * nsin, 2000 * ncos)
+	dirLight.position.set(1500 * nSin, 2000 * nSin, 2000 * nCos)
 
-	if (nsin > 0.2) {
+	if (nSin > 0.2) {
 		//day
 		sky.material.uniforms.topColor.value.setRGB(0.25, 0.55, 1)
 		sky.material.uniforms.bottomColor.value.setRGB(1, 1, 1)
@@ -332,8 +342,8 @@ function daynightcycle() {
 		for (var i = 0; i < lights.length; i++) {
 			lights[i].intensity = 0.1
 		}
-	} else if (nsin < 0.2 && nsin > 0.0) {
-		var f = nsin / 0.2
+	} else if (nSin < 0.2 && nSin > 0.0) {
+		var f = nSin / 0.2
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
 			lights[i].intensity = 0.2

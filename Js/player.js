@@ -17,27 +17,27 @@ var speed = 0.0
 export function getPlayerDirection(man, camera, enabled, goal, follow) {
 	var dirZ = new THREE.Vector3(0, 0, -2)
 	var dirX = new THREE.Vector3(2, 0, 0)
-	var diranimation = new THREE.Vector3(0, 0, 0)
+	var dirAnimation = new THREE.Vector3(0, 0, 0)
 	speed = 0.0
 
 	if (enabled.w) {
 		speed = 1.75
-		diranimation.sub(dirZ)
+		dirAnimation.sub(dirZ)
 	}
 	if (enabled.s) {
 		speed = -1.75
-		diranimation.add(dirZ)
+		dirAnimation.add(dirZ)
 	}
 	velocity += (speed - velocity) * 0.3
 	man.translateZ(velocity)
 
 	if (enabled.a) {
 		man.rotateY(0.03)
-		diranimation.sub(dirX)
+		dirAnimation.sub(dirX)
 	}
 	if (enabled.d) {
 		man.rotateY(-0.03)
-		diranimation.add(dirX)
+		dirAnimation.add(dirX)
 	}
 
 	a.lerp(man.position, 0.1)
@@ -63,5 +63,5 @@ export function getPlayerDirection(man, camera, enabled, goal, follow) {
 	if (man.position.z < -170 && (man.position.x < -170 || man.position.x > 170)) man.position.z += 2
 	if (man.position.z > 170 && (man.position.x < -170 || man.position.x > 170)) man.position.z -= 2
 
-	return diranimation
+	return dirAnimation
 }
