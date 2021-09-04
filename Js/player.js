@@ -1,4 +1,5 @@
 import * as THREE from "../build/three.module.js"
+import { changeAnimation, animationClips, getCurrentAnimationClip } from "../main.js"
 
 var time = 0
 var newPosition = new THREE.Vector3()
@@ -13,30 +14,38 @@ var b = new THREE.Vector3()
 var Distance = 200
 var velocity = 0.0
 var speed = 0.0
+let rotationSpeed
+
+let walkSpeedValue = 5
+let rotationSpeedValue = 0.05
 
 export function getPlayerDirection(man, camera, enabled, goal, follow) {
 	var dirZ = new THREE.Vector3(0, 0, -2)
 	var dirX = new THREE.Vector3(2, 0, 0)
 	var dirAnimation = new THREE.Vector3(0, 0, 0)
 	speed = 0.0
+	rotationSpeed = 0.0
 
 	if (enabled.w) {
-		speed = 1.75
+		speed = walkSpeedValue
 		dirAnimation.sub(dirZ)
 	}
 	if (enabled.s) {
-		speed = -1.75
+		speed = -walkSpeedValue
 		dirAnimation.add(dirZ)
 	}
+
 	velocity += (speed - velocity) * 0.3
 	man.translateZ(velocity)
 
 	if (enabled.a) {
-		man.rotateY(0.03)
+		rotationSpeed = rotationSpeedValue
+		man.rotateY(rotationSpeed)
 		dirAnimation.sub(dirX)
 	}
 	if (enabled.d) {
-		man.rotateY(-0.03)
+		rotationSpeed = -rotationSpeedValue
+		man.rotateY(rotationSpeed)
 		dirAnimation.add(dirX)
 	}
 
@@ -62,6 +71,22 @@ export function getPlayerDirection(man, camera, enabled, goal, follow) {
 	if (man.position.x > 170 && (man.position.z < -170 || man.position.z > 170)) man.position.x -= 2
 	if (man.position.z < -170 && (man.position.x < -170 || man.position.x > 170)) man.position.z += 2
 	if (man.position.z > 170 && (man.position.x < -170 || man.position.x > 170)) man.position.z -= 2
+
+	let walkThreshold = 0.3
+	let rotationThreshold = 0.01
+	if (
+		(Math.abs(speed) >= walkThreshold || Math.abs(rotationSpeed) >= rotationThreshold) &&
+		getCurrentAnimationClip != animationClips.walk
+	) {
+		changeAnimation(animationClips.walk)
+	}
+	if (
+		Math.abs(speed) < walkThreshold &&
+		Math.abs(rotationSpeed) < rotationThreshold &&
+		getCurrentAnimationClip != animationClips.idle
+	) {
+		changeAnimation(animationClips.idle)
+	}
 
 	return dirAnimation
 }

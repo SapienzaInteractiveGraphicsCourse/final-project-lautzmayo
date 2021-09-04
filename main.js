@@ -6,7 +6,23 @@ import * as PLAYER from "./Js/player.js"
 import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
-// import * as AMMOENABLE from "./build/enable3d/enable3d.ammoPhysics.0.23.0.min.js"
+import { userInterface } from "./Js/userInterface.js"
+
+export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
+
+//ANCHOR: animatin clips struct
+export const animationClips = { none: null, walk: "walk", idle: "idle", collect: "collect", dispose: "dispose" }
+
+let currentAnimationClip = animationClips.none
+export function getCurrentAnimationClip() {
+	return currentAnimationClip
+}
+export function changeAnimation(clip) {
+	return (currentAnimationClip = clip)
+}
+
+//ANCHOR: ui
+let ui = new userInterface()
 
 var times = 0
 var game
@@ -104,21 +120,8 @@ function loadModelsAndInit() {
 }
 
 function init() {
-	//create div for each trash counter ( TO BE UPDATE WITH COLLECTION OF TRASH)
-	const PaperDiv = document.createElement("div1")
-	PaperDiv.setAttribute("id", "paper")
-	PaperDiv.innerText = "PAPER:0"
-	document.body.appendChild(PaperDiv)
-
-	const PlasticDiv = document.createElement("div2")
-	PlasticDiv.setAttribute("id", "plastic")
-	PlasticDiv.innerText = "PLASTIC:0"
-	document.body.appendChild(PlasticDiv)
-
-	const GlassDiv = document.createElement("div3")
-	GlassDiv.setAttribute("id", "glass")
-	GlassDiv.innerText = "GLASS:0"
-	document.body.appendChild(GlassDiv)
+	// TODO:
+	ui.makeCounter(trashTypes.paper)
 
 	// ANCHOR: what is enabled?
 	enabled = CONTROL.init()
@@ -246,7 +249,7 @@ function init() {
 	)
 	renderer.domElement.addEventListener("pointerdown", function (event) {
 		// find intersections
-		clicked(event)
+		raycastToTrashCollectables(event)
 		camera.updateMatrixWorld()
 	})
 
@@ -279,9 +282,9 @@ function update() {
 	dir = PLAYER.getPlayerDirection(man, camera, enabled, goal, follow)
 
 	//ANIM :
-	if (dir.equals(new THREE.Vector3(0, 0, 0))) {
+	if (currentAnimationClip == animationClips.idle) {
 		animaction.stop()
-	} else {
+	} else if (currentAnimationClip == animationClips.walk) {
 		animaction.play()
 	}
 }
@@ -307,7 +310,7 @@ function rotatebone() {
 	// helper.bones[76].quaternion.setFromEuler(new THREE.Euler(target1.value, target2.value, target3.value, "XYZ"))
 }
 
-function clicked(event) {
+function raycastToTrashCollectables(event) {
 	//set x and y value from the screen
 	pointer.x = (event.clientX / window.innerWidth) * 2 - 1
 	pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
@@ -319,15 +322,41 @@ function clicked(event) {
 	//if there is intersection enable collect
 	if (intersects.length > 0) {
 		// console.log(intersects[0].object)
-		trashDisposal(intersects[0].object)
+		trashInteraction(intersects[0].object, intersects[0].point)
 	}
 }
 
-function trashDisposal(obj) {
+// ANCHOR: trash disposal
+let maxDistanceToInteract = 50
+
+function trashInteraction(obj, pos) {
 	while (obj.parent.name != "OSG_Scene") {
 		obj = obj.parent
 	}
-	scene.remove(obj.parent)
+
+	let selectedObject = obj.parent
+
+	let manPos = new THREE.Vector2(man.position.x, man.position.z)
+	let trashPos = new THREE.Vector2(pos.x, pos.z)
+
+	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
+		man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
+
+		// TODO: many calculations have to be done, but this is not the time
+		// let worldDirection = new THREE.Vector3()
+		// man.getWorldDirection(worldDirection)
+		// let target = new THREE.Vector3().copy(man.position).add(worldDirection.multiplyScalar(manPos.distanceTo(trashPos)))
+
+		trashDisposal(selectedObject)
+	}
+}
+
+//ANCHOR: animation callback
+//mixer.addEventListener( 'finished', function( e ) { …} ); // properties of e: type, action and direction
+function trashDisposal(obj) {
+	ui.incrementCounter(obj.trashType)
+
+	scene.remove(obj)
 }
 
 function daynightcycle() {

@@ -134,7 +134,7 @@ export function init(map, man) {
 	borders.push(border4)
 
 	man.position.set(0, 0, 0)
-	man.rotation.set(3.14, 0, 3.14)
+	man.rotation.set(0, 0, 0)
 	changeMaterial(man)
 	scene.add(man)
 

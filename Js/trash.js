@@ -1,6 +1,7 @@
 import * as THREE from "https://threejs.org/build/three.module.js"
+import { trashTypes } from "../main.js"
 var pos = []
-
+let trashScaleFactor = 2
 export function locatePaper(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
@@ -28,15 +29,21 @@ export function locatePaper(nObject, objectMesh, scene, intersectable) {
 		}
 		//once it's ok the position is added to another vector that contains all the previous position
 		pos.push([x, z])
-		trashArray[i].position.set(x, 2.8, z)
+		trashArray[i].position.set(x, 2.8 * trashScaleFactor, z)
 	}
 	//changeMaterial is a function in order to avoid the material problem
 	//scene.add add the object in the scene
 	//return the array to main.js for other actions
 	for (var i = 0; i < nObject; i++) {
+		trashArray[i].scale.set(
+			trashArray[i].scale.x * trashScaleFactor,
+			trashArray[i].scale.y * trashScaleFactor,
+			trashArray[i].scale.z * trashScaleFactor
+		)
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
+		trashArray[i].trashType = trashTypes.paper
 	}
 
 	return [trashArray]
@@ -66,12 +73,18 @@ export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 			var z = Math.random() * (maxz - minz) + minz
 		}
 		pos.push([x, z])
-		trashArray[i].position.set(x, -31, z)
+		trashArray[i].position.set(x, -31 * trashScaleFactor, z)
 	}
 	for (var i = 0; i < nObject; i++) {
+		trashArray[i].scale.set(
+			trashArray[i].scale.x * trashScaleFactor,
+			trashArray[i].scale.y * trashScaleFactor,
+			trashArray[i].scale.z * trashScaleFactor
+		)
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
+		trashArray[i].trashType = trashTypes.plastic
 	}
 
 	return [trashArray]
@@ -101,12 +114,18 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 			var z = Math.random() * (maxz - minz) + minz
 		}
 		pos.push([x, z])
-		trashArray[i].position.set(x, 5.8, z)
+		trashArray[i].position.set(x, 5.8 * trashScaleFactor, z)
 	}
 	for (var i = 0; i < nObject; i++) {
+		trashArray[i].scale.set(
+			trashArray[i].scale.x * trashScaleFactor,
+			trashArray[i].scale.y * trashScaleFactor,
+			trashArray[i].scale.z * trashScaleFactor
+		)
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
+		trashArray[i].trashType = trashTypes.glass
 	}
 
 	return [trashArray]
