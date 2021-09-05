@@ -138,7 +138,7 @@ var trashmaterial = [
 	new THREE.MeshStandardMaterial({ color: 0x009321 })
 ]
 
-export function locateTrashCollector(nObject, objectMesh, scene) {
+export function locateTrashCollector(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
 		trashArray.push(objectMesh.clone())
@@ -156,6 +156,7 @@ export function locateTrashCollector(nObject, objectMesh, scene) {
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
+		intersectable.push(trashArray[i])
 	}
 
 	return [trashArray]

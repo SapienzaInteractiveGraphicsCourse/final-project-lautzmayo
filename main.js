@@ -9,6 +9,7 @@ import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
+export let currentTrash = trashTypes.none
 
 //ANCHOR: animatin clips struct
 export const animationClips = { none: null, walk: "walk", idle: "idle", collect: "collect", dispose: "dispose" }
@@ -72,6 +73,7 @@ var dir
 var pointer = new THREE.Vector2()
 var raycaster
 var intersectable = []
+let trashbinIntersectable = []
 var toCollect = false
 var arrow = new THREE.Vector3()
 
@@ -120,9 +122,6 @@ function loadModelsAndInit() {
 }
 
 function init() {
-	// TODO:
-	ui.makeCounter(trashTypes.paper)
-
 	// ANCHOR: what is enabled?
 	enabled = CONTROL.init()
 
@@ -200,7 +199,7 @@ function init() {
 	glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
 	nTrashcollector = 3
-	trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene)
+	trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
 
 	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
 	/* 
@@ -252,6 +251,8 @@ function init() {
 		raycastToTrashCollectables(event)
 		camera.updateMatrixWorld()
 	})
+
+	ui.toggleCounter("total", true)
 
 	window.requestAnimationFrame(animate)
 }
@@ -324,6 +325,12 @@ function raycastToTrashCollectables(event) {
 		// console.log(intersects[0].object)
 		trashInteraction(intersects[0].object, intersects[0].point)
 	}
+	let trashbinIntersects = raycaster.intersectObjects(trashbinIntersectable, true)
+	//if there is intersection
+	if (trashbinIntersects.length > 0) {
+		// console.log(trashbinIntersects[0].object)
+		trashbinInteraction(trashbinIntersects[0].object, trashbinIntersects[0].point)
+	}
 }
 
 // ANCHOR: trash disposal
@@ -340,14 +347,32 @@ function trashInteraction(obj, pos) {
 	let trashPos = new THREE.Vector2(pos.x, pos.z)
 
 	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
+		if (isTrashCollectable(selectedObject.trashType)) {
+			man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
+
+			// TODO: many calculations have to be done, but this is not the time
+			// let worldDirection = new THREE.Vector3()
+			// man.getWorldDirection(worldDirection)
+			// let target = new THREE.Vector3().copy(man.position).add(worldDirection.multiplyScalar(manPos.distanceTo(trashPos)))
+
+			trashDisposal(selectedObject)
+		}
+	}
+}
+function trashbinInteraction(obj, pos) {
+	while (obj.parent.name != "OSG_Scene") {
+		obj = obj.parent
+	}
+
+	let selectedObject = obj.parent
+
+	let manPos = new THREE.Vector2(man.position.x, man.position.z)
+	let trashPos = new THREE.Vector2(pos.x, pos.z)
+
+	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
 		man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
 
-		// TODO: many calculations have to be done, but this is not the time
-		// let worldDirection = new THREE.Vector3()
-		// man.getWorldDirection(worldDirection)
-		// let target = new THREE.Vector3().copy(man.position).add(worldDirection.multiplyScalar(manPos.distanceTo(trashPos)))
-
-		trashDisposal(selectedObject)
+		disposeCollectedTrash()
 	}
 }
 
@@ -357,6 +382,24 @@ function trashDisposal(obj) {
 	ui.incrementCounter(obj.trashType)
 
 	scene.remove(obj)
+}
+
+function isTrashCollectable(type) {
+	if (ui.getActiveCounter() == type) {
+		return true
+	} else if (ui.getActiveCounter() == trashTypes.none) {
+		ui.toggleCounter(type, true)
+		return true
+	} else {
+		console.log(`You are collecting ${ui.getActiveCounter()}, so you can't take any ${type}`)
+		return false
+	}
+}
+
+function disposeCollectedTrash() {
+	ui.incrementCounter("total", ui.getIntCounter(ui.getActiveCounter()))
+	ui.toggleCounter(trashTypes.none)
+	ui.resetCounters(false)
 }
 
 function daynightcycle() {
