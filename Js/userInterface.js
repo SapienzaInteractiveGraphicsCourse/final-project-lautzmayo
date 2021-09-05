@@ -17,6 +17,8 @@ export class userInterface {
 
 	#totalCounter
 
+	#maxItemsPerDelivery = 10
+
 	constructor() {
 		this.#rootNode = null
 
@@ -75,7 +77,7 @@ export class userInterface {
 				this.#${type}Div.appendChild(span)
 				
 				span = document.createElement("p")
-				span.innerText = this.#${type}Counter + "/10"
+				span.innerText = this.#${type}Counter + "/${this.#maxItemsPerDelivery.toString()}"
 				this.#${type}Div.appendChild(span)
 				
 				this.#rootNode.appendChild(this.#${type}Div)
@@ -126,15 +128,15 @@ export class userInterface {
 	// update counter visualizations
 	#updateCounterVisualization() {
 		if (this.#paperDiv != null) {
-			this.#paperDiv.children[1].innerText = `${this.#paperCounter} / 10`
+			this.#paperDiv.children[1].innerText = `${this.#paperCounter} / ${this.#maxItemsPerDelivery}`
 		}
 
 		if (this.#plasticDiv != null) {
-			this.#plasticDiv.children[1].innerText = `${this.#plasticCounter} / 10`
+			this.#plasticDiv.children[1].innerText = `${this.#plasticCounter} / ${this.#maxItemsPerDelivery}`
 		}
 
 		if (this.#glassDiv != null) {
-			this.#glassDiv.children[1].innerText = `${this.#glassCounter} / 10`
+			this.#glassDiv.children[1].innerText = `${this.#glassCounter} / ${this.#maxItemsPerDelivery}`
 		}
 
 		if (this.#totalDiv != null) {
@@ -175,5 +177,9 @@ export class userInterface {
 
 	#toggleCounterVisualization(type, isActive) {
 		eval(`this.#${type}Div.hidden = ${!isActive}`)
+	}
+
+	getMaxItemPerDelivery() {
+		return this.#maxItemsPerDelivery
 	}
 }

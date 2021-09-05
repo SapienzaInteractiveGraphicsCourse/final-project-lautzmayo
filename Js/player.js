@@ -16,7 +16,7 @@ var velocity = 0.0
 var speed = 0.0
 let rotationSpeed
 
-let walkSpeedValue = 5
+let walkSpeedValue = 4
 let rotationSpeedValue = 0.05
 
 export function getPlayerDirection(man, camera, enabled, goal, follow) {

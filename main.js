@@ -5,7 +5,7 @@ import * as CONTROL from "./Js/keyboard.js"
 import * as PLAYER from "./Js/player.js"
 import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
-import { OrbitControls } from "./jsm/controls/OrbitControls.js"
+// import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
@@ -359,6 +359,8 @@ function trashInteraction(obj, pos) {
 		}
 	}
 }
+
+// called when interacting with a trashbin
 function trashbinInteraction(obj, pos) {
 	while (obj.parent.name != "OSG_Scene") {
 		obj = obj.parent
@@ -380,12 +382,22 @@ function trashbinInteraction(obj, pos) {
 //mixer.addEventListener( 'finished', function( e ) { …} ); // properties of e: type, action and direction
 function trashDisposal(obj) {
 	ui.incrementCounter(obj.trashType)
-
+	spawnRandomTrash()
 	scene.remove(obj)
+}
+
+function spawnRandomTrash() {
+	let types = [trashTypes.paper, trashTypes.plastic, trashTypes.glass]
+	let whatToSpawn = types[Math.floor(Math.random() * types.length)]
+	eval(`TRASH.locate${whatToSpawn[0].toUpperCase() + whatToSpawn.substring(1)}(1, ${whatToSpawn}Model, scene, intersectable)`)
 }
 
 function isTrashCollectable(type) {
 	if (ui.getActiveCounter() == type) {
+		if (ui.getIntCounter(ui.getActiveCounter()) >= ui.getMaxItemPerDelivery()) {
+			console.log("You are carrying too much items, dispose of them before collecting more")
+			return false
+		}
 		return true
 	} else if (ui.getActiveCounter() == trashTypes.none) {
 		ui.toggleCounter(type, true)
@@ -396,14 +408,19 @@ function isTrashCollectable(type) {
 	}
 }
 
+// called when interacting with a trashbin close enough
 function disposeCollectedTrash(type) {
 	let increment = ui.getIntCounter(ui.getActiveCounter())
-	if (type == ui.getActiveCounter()) {
-		increment *= 2
+	if (increment > 0) {
+		if (type == ui.getActiveCounter()) {
+			increment *= 2
+		}
+		ui.incrementCounter("total", increment)
+		ui.toggleCounter(trashTypes.none)
+		ui.resetCounters(false)
+	} else {
+		console.log("You must first collect some trash, then come back to dispose of it")
 	}
-	ui.incrementCounter("total", increment)
-	ui.toggleCounter(trashTypes.none)
-	ui.resetCounters(false)
 }
 
 function daynightcycle() {

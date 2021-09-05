@@ -2,6 +2,7 @@ import * as THREE from "https://threejs.org/build/three.module.js"
 import { trashTypes } from "../main.js"
 var pos = []
 let trashScaleFactor = 2
+
 export function locatePaper(nObject, objectMesh, scene, intersectable) {
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
