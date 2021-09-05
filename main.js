@@ -372,7 +372,7 @@ function trashbinInteraction(obj, pos) {
 	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
 		man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
 
-		disposeCollectedTrash()
+		disposeCollectedTrash(selectedObject.trashType)
 	}
 }
 
@@ -396,8 +396,12 @@ function isTrashCollectable(type) {
 	}
 }
 
-function disposeCollectedTrash() {
-	ui.incrementCounter("total", ui.getIntCounter(ui.getActiveCounter()))
+function disposeCollectedTrash(type) {
+	let increment = ui.getIntCounter(ui.getActiveCounter())
+	if (type == ui.getActiveCounter()) {
+		increment *= 2
+	}
+	ui.incrementCounter("total", increment)
 	ui.toggleCounter(trashTypes.none)
 	ui.resetCounters(false)
 }

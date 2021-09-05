@@ -139,6 +139,7 @@ var trashmaterial = [
 ]
 
 export function locateTrashCollector(nObject, objectMesh, scene, intersectable) {
+	let trashbinType = [trashTypes.plastic, trashTypes.paper, trashTypes.glass]
 	var trashArray = []
 	for (var i = 0; i < nObject; i++) {
 		trashArray.push(objectMesh.clone())
@@ -152,6 +153,7 @@ export function locateTrashCollector(nObject, objectMesh, scene, intersectable) 
 		}
 		//set the color material of the object to green,yellow,blue
 		trashArray[i].children[0].children[0].children[0].children[0].material = trashmaterial[i]
+		trashArray[i].trashType = trashbinType[i]
 	}
 	for (var i = 0; i < nObject; i++) {
 		changeMaterial(trashArray[i])
