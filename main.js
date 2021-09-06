@@ -23,10 +23,10 @@ export function changeAnimation(clip) {
 	return (currentAnimationClip = clip)
 }
 
-let animTool = new animationTool()
-
 //ANCHOR: ui
 let ui = new userInterface()
+
+let animTool = new animationTool()
 
 var times = 0
 var game
@@ -65,7 +65,7 @@ var sky
 var enabled
 
 //skeleton of player
-var helper
+export var helper
 
 //for animation
 var mixer, animaction, clock
@@ -293,6 +293,10 @@ function init() {
 	if (!animTool.isAnimToolActive) {
 		ui.toggleCounter("total", true)
 	}
+
+	//ANCHOR: wrong placement but native javascript is inefficent
+	// set defount for bone rotation
+	animTool.changeBone()
 
 	window.requestAnimationFrame(animate)
 }

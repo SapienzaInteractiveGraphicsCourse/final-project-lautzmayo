@@ -89,12 +89,7 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 			changeAnimation(animationClips.idle)
 		}
 	} else {
-		let flySpeed = 2
-		if (enabled.w) {
-			
-		}
-		if (enabled.s) {
-		}
+		//
 	}
 
 	return dirAnimation
