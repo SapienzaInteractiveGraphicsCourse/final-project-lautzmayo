@@ -5,7 +5,7 @@ import * as CONTROL from "./Js/keyboard.js"
 import * as PLAYER from "./Js/player.js"
 import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
-// import { OrbitControls } from "./jsm/controls/OrbitControls.js"
+import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
 import { animationTool } from "./Js/animationTool.js"
 
@@ -104,6 +104,7 @@ animToolBtn.addEventListener("click", activateAnimTool)
 function activateAnimTool() {
 	if (confirm("you're going to activate a dev tool")) {
 		console.log("Opening animation tool")
+		animTool.toggleAnimationTool(true)
 		begin()
 	} else {
 		console.log("Click Start to play")
@@ -155,7 +156,7 @@ function init() {
 
 	// requested and updated data option of
 	// scene, camera, map(with borders), man and lights
-	var gameInitAssets = GAME.init(mapModel, manModel)
+	var gameInitAssets = GAME.init(mapModel, manModel, animTool)
 	scene = gameInitAssets[0]
 	camera = gameInitAssets[1]
 	map = gameInitAssets[2]
@@ -207,18 +208,35 @@ function init() {
 	animaction = gameInitAssets[1]
 	clock = gameInitAssets[2]
 
+	let orbitController
+	//ANCHOR:  ANIM TOOL
+	if (animTool.isAnimToolActive) {
+		orbitController = new OrbitControls(camera, renderer.domElement)
+		orbitController.minDistance = 50
+		orbitController.maxDistance = 500
+		orbitController.enablePan = true
+		orbitController.mouseButtons = {
+			LEFT: THREE.MOUSE.ROTATE,
+			MIDDLE: THREE.MOUSE.DOLLY,
+			RIGHT: THREE.MOUSE.PAN
+		}
+	}
+
 	//locate trash and trash collector
 	//intersectable è un array contenente gli oggetti che possono essere castati dal ray,
 	// se non vogliamo utilizzarlo ->Delete
-	nPaper = 3
-	paper = TRASH.locatePaper(nPaper, paperModel, scene, intersectable)
-	nPlastic = 3
-	plastic = TRASH.locatePlastic(nPlastic, plasticModel, scene, intersectable)
-	nGlass = 3
-	glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
+	//ANCHOR: ANIM TOOL TRIGGER
+	if (!animTool.isAnimToolActive) {
+		nPaper = 3
+		paper = TRASH.locatePaper(nPaper, paperModel, scene, intersectable)
+		nPlastic = 3
+		plastic = TRASH.locatePlastic(nPlastic, plasticModel, scene, intersectable)
+		nGlass = 3
+		glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
-	nTrashcollector = 3
-	trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
+		nTrashcollector = 3
+		trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
+	}
 
 	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
 	/* 
@@ -271,7 +289,10 @@ function init() {
 		camera.updateMatrixWorld()
 	})
 
-	ui.toggleCounter("total", true)
+	//ANCHOR: ANIM TOOL TRIGGER
+	if (!animTool.isAnimToolActive) {
+		ui.toggleCounter("total", true)
+	}
 
 	window.requestAnimationFrame(animate)
 }
@@ -291,7 +312,9 @@ function render() {
 	//ANIM :
 	mixer.update(clock.getDelta())
 
-	daynightcycle()
+	if (!animTool.isAnimToolActive) {
+		dayNightCycle()
+	}
 }
 
 function update() {
@@ -299,7 +322,7 @@ function update() {
 	//ORBIT :
 	//commenta
 
-	dir = PLAYER.getPlayerDirection(man, camera, enabled, goal, follow)
+	PLAYER.movePlayer(man, camera, enabled, goal, follow, animTool.isAnimToolActive)
 
 	//ANIM :
 	if (currentAnimationClip == animationClips.idle) {
@@ -445,7 +468,7 @@ function disposeCollectedTrash(type) {
 	}
 }
 
-function daynightcycle() {
+function dayNightCycle() {
 	var time = new Date().getTime() * 0.00002
 	// var time = 2.1;
 

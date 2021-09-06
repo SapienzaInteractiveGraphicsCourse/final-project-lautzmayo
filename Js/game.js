@@ -1,6 +1,6 @@
 import * as THREE from "../build/three.module.js"
 var camera
-export function init(map, man) {
+export function init(map, man, animTool) {
 	var scene, camera
 
 	scene = new THREE.Scene()
@@ -53,9 +53,12 @@ export function init(map, man) {
 	scene.add(lights[2])
 	scene.add(lights[3])
 
-	map.position.set(0, 0, 0)
-	changeMaterial(map)
-	scene.add(map)
+	//ANCHOR: ANIM TOOL TRIGGER
+	if (!animTool.isAnimToolActive) {
+		map.position.set(0, 0, 0)
+		changeMaterial(map)
+		scene.add(map)
+	}
 
 	// insert a black plane underneath all the scene
 	var underlainPlane = new THREE.PlaneGeometry(10000, 10000)
@@ -72,9 +75,9 @@ export function init(map, man) {
 	underlainPlaneBox.setLinearFactor = new THREE.Vector3(0, 0, 0)
 	underlainPlaneBox.setLinearVelocity = new THREE.Vector3(0, 0, 0)
 
-	scene.add(underlainPlaneBox)
-
 	underlainPlaneBox.receiveShadow = true
+
+	scene.add(underlainPlaneBox)
 
 	//borders se dobbiamo utilizzare qualche libreria per la fisica, sennò DELETE
 	const g = new THREE.BoxGeometry(1600, 100, 1600)

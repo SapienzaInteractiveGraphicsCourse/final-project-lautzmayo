@@ -1,6 +1,8 @@
 export class animationTool {
 	#isAnimToolActive = false
-
+	get isAnimToolActive() {
+		return this.#isAnimToolActive
+	}
 	#rootNode
 	#dropDown
 	#sliders
@@ -64,7 +66,7 @@ export class animationTool {
 		this.#sliderX.setAttribute("max", "3.14")
 		this.#sliderX.setAttribute("value", "0")
 		this.#sliderX.setAttribute("step", "0.01")
-		this.#sliderX.setAttribute("step", "animToolSliderX")
+		this.#sliderX.setAttribute("id", "animToolSliderX")
 		this.#sliderX.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderX)
 
@@ -79,7 +81,7 @@ export class animationTool {
 		this.#sliderY.setAttribute("max", "3.14")
 		this.#sliderY.setAttribute("value", "0")
 		this.#sliderY.setAttribute("step", "0.01")
-		this.#sliderY.setAttribute("step", "animToolSliderY")
+		this.#sliderY.setAttribute("id", "animToolSliderY")
 		this.#sliderY.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderY)
 
@@ -94,7 +96,7 @@ export class animationTool {
 		this.#sliderZ.setAttribute("max", "3.14")
 		this.#sliderZ.setAttribute("value", "0")
 		this.#sliderZ.setAttribute("step", "0.01")
-		this.#sliderZ.setAttribute("step", "animToolSliderZ")
+		this.#sliderZ.setAttribute("id", "animToolSliderZ")
 		this.#sliderZ.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderZ)
 	}
@@ -102,6 +104,11 @@ export class animationTool {
 	constructor() {
 		this.#isAnimToolActive = false
 		this.#makeUiItem()
+		this.#toggleVisualization(this.#rootNode, this.#isAnimToolActive)
+	}
+
+	toggleAnimationTool(active) {
+		this.#isAnimToolActive = active
 		this.#toggleVisualization(this.#rootNode, this.#isAnimToolActive)
 	}
 
