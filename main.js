@@ -7,6 +7,7 @@ import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 // import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
+import { animationTool } from "./Js/animationTool.js"
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
 export let currentTrash = trashTypes.none
@@ -21,6 +22,8 @@ export function getCurrentAnimationClip() {
 export function changeAnimation(clip) {
 	return (currentAnimationClip = clip)
 }
+
+let animTool = new animationTool()
 
 //ANCHOR: ui
 let ui = new userInterface()
@@ -79,6 +82,7 @@ var arrow = new THREE.Vector3()
 
 // Element and Callback function for initialization of game
 var btn = document.getElementById("START")
+let animToolBtn = document.getElementById("animToolBtn")
 
 btn.addEventListener("click", begin)
 
@@ -88,8 +92,21 @@ function begin() {
 		ui.setMainPageVisibility(false)
 		loadModelsAndInit()
 		btn.style.display = "none"
+		animToolBtn.style.display = "none"
 		times++
 		// document.getElementById("buttons").style.display = "none"
+	}
+}
+
+//ANCHOR: ANIMATION TOOL BUTTON CALLBACK
+animToolBtn.addEventListener("click", activateAnimTool)
+
+function activateAnimTool() {
+	if (confirm("you're going to activate a dev tool")) {
+		console.log("Opening animation tool")
+		begin()
+	} else {
+		console.log("Click Start to play")
 	}
 }
 

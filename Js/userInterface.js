@@ -82,6 +82,11 @@ export class userInterface {
 		btn.setAttribute("id", "START")
 		btn.innerText = "Start Game"
 		this.#mainPageDiv.appendChild(btn)
+
+		let debugBtn = document.createElement("button")
+		debugBtn.setAttribute("id", "animToolBtn")
+		debugBtn.innerText = "Enter Animation Tool"
+		this.#mainPageDiv.appendChild(debugBtn)
 	}
 
 	setMainPageVisibility(isActive) {
