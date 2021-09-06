@@ -6,45 +6,20 @@ export class animationTool {
 	get isAnimToolActive() {
 		return this.#isAnimToolActive
 	}
+
 	#rootNode
-	get rootNode() {
-		return this.#rootNode
-	}
+
 	#dropDown
-	get dropDown() {
-		return this.#dropDown
-	}
+
 	#sliders
-	get sliders() {
-		return this.#sliders
-	}
-
-	#sliderX
-	get sliderX() {
-		return this.#sliderX
-	}
 	#inputX
-	get inputX() {
-		return this.#inputX
-	}
-
-	#sliderY
-	get sliderY() {
-		return this.#sliderY
-	}
+	#sliderX
 	#inputY
-	get inputY() {
-		return this.#inputY
-	}
-
-	#sliderZ
-	get sliderZ() {
-		return this.#sliderZ
-	}
+	#sliderY
 	#inputZ
-	get inputZ() {
-		return this.#inputZ
-	}
+	#sliderZ
+
+	#logBtn
 
 	#bones = [
 		new boneTool(0, "ROOT"),
@@ -76,7 +51,7 @@ export class animationTool {
 		this.#dropDown.setAttribute("id", "animToolDropdown")
 		this.#dropDown.setAttribute("class", "animToolDropdown")
 		this.#rootNode.appendChild(this.#dropDown)
-		this.#dropDown.addEventListener("input", this.changeBone)
+		this.#dropDown.addEventListener("input", () => this.changeBone())
 
 		let a
 		this.#bones.forEach((b) => {
@@ -105,7 +80,7 @@ export class animationTool {
 		this.#inputX.setAttribute("step", "0.01")
 		this.#inputX.setAttribute("id", "animToolInputX")
 		this.#sliders.appendChild(this.#inputX)
-		this.#inputX.addEventListener("input", this.adjustSliders)
+		this.#inputX.addEventListener("input", () => this.adjustSliders())
 
 		this.#sliderX = document.createElement("input")
 		this.#sliderX.setAttribute("type", "range")
@@ -116,7 +91,7 @@ export class animationTool {
 		this.#sliderX.setAttribute("id", "animToolSliderX")
 		this.#sliderX.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderX)
-		this.#sliderX.addEventListener("input", this.rotatebone)
+		this.#sliderX.addEventListener("input", () => this.adjustInput()())
 
 		this.#sliders.appendChild(document.createElement("br"))
 		label = document.createElement("label")
@@ -131,7 +106,7 @@ export class animationTool {
 		this.#inputY.setAttribute("step", "0.01")
 		this.#inputY.setAttribute("id", "animToolInputY")
 		this.#sliders.appendChild(this.#inputY)
-		this.#inputY.addEventListener("input", this.adjustSliders)
+		this.#inputY.addEventListener("input", () => this.adjustSliders())
 
 		this.#sliderY = document.createElement("input")
 		this.#sliderY.setAttribute("type", "range")
@@ -142,7 +117,7 @@ export class animationTool {
 		this.#sliderY.setAttribute("id", "animToolSliderY")
 		this.#sliderY.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderY)
-		this.#sliderY.addEventListener("input", this.rotatebone)
+		this.#sliderY.addEventListener("input", () => this.adjustInput()())
 
 		this.#sliders.appendChild(document.createElement("br"))
 		label = document.createElement("label")
@@ -157,7 +132,7 @@ export class animationTool {
 		this.#inputZ.setAttribute("step", "0.01")
 		this.#inputZ.setAttribute("id", "animToolInputZ")
 		this.#sliders.appendChild(this.#inputZ)
-		this.#inputZ.addEventListener("input", this.adjustSliders)
+		this.#inputZ.addEventListener("input", () => this.adjustSliders())
 
 		this.#sliderZ = document.createElement("input")
 		this.#sliderZ.setAttribute("type", "range")
@@ -168,7 +143,19 @@ export class animationTool {
 		this.#sliderZ.setAttribute("id", "animToolSliderZ")
 		this.#sliderZ.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderZ)
-		this.#sliderZ.addEventListener("input", this.rotatebone)
+		this.#sliderZ.addEventListener("input", () => this.adjustInput())
+
+		this.#sliders.appendChild(document.createElement("br"))
+		label = document.createElement("h3")
+		label.innerText = "TOOLS"
+		this.#rootNode.appendChild(label)
+
+		this.#logBtn = document.createElement("button")
+		this.#logBtn.setAttribute("id", "animToolLogBtn")
+		this.#logBtn.innerText = "LOG"
+		this.#rootNode.appendChild(this.#logBtn)
+		this.#logBtn.addEventListener("click", () => console.log(this))
+		// TODO: ---
 	}
 
 	constructor() {
@@ -180,9 +167,6 @@ export class animationTool {
 	toggleAnimationTool(active) {
 		this.#isAnimToolActive = active
 		this.#toggleVisualization(this.#rootNode, this.#isAnimToolActive)
-		if (active) {
-			// this.changeBone()
-		}
 	}
 
 	#toggleVisualization(div, isActive) {
@@ -190,71 +174,37 @@ export class animationTool {
 	}
 
 	rotatebone() {
-		let drop = document.getElementById("animToolDropdown")
+		let boneId = this.#dropDown.options[this.#dropDown.selectedIndex].value
 
-		let s1 = document.getElementById("animToolSliderX")
-		let s2 = document.getElementById("animToolSliderY")
-		let s3 = document.getElementById("animToolSliderZ")
-
-		let n1 = document.getElementById("animToolInputX")
-		let n2 = document.getElementById("animToolInputY")
-		let n3 = document.getElementById("animToolInputZ")
-
-		n1.value = s1.value
-		n2.value = s2.value
-		n3.value = s3.value
-
-		let boneId = drop.options[drop.selectedIndex].value
-
-		helper.bones[boneId].quaternion.setFromEuler(new THREE.Euler(s1.value, s2.value, s3.value, "XYZ"))
+		helper.bones[boneId].quaternion.setFromEuler(
+			new THREE.Euler(this.#inputX.value, this.#inputY.value, this.#inputZ.value, "XYZ")
+		)
 	}
 
 	adjustSliders() {
-		let drop = document.getElementById("animToolDropdown")
-
-		let s1 = document.getElementById("animToolSliderX")
-		let s2 = document.getElementById("animToolSliderY")
-		let s3 = document.getElementById("animToolSliderZ")
-
-		let n1 = document.getElementById("animToolInputX")
-		let n2 = document.getElementById("animToolInputY")
-		let n3 = document.getElementById("animToolInputZ")
-
-		s1.value = n1.value
-		s2.value = n2.value
-		s3.value = n3.value
-
-		let boneId = drop.options[drop.selectedIndex].value
-
-		helper.bones[boneId].setRotationFromEuler(new THREE.Euler(s1.value, s2.value, s3.value, "XYZ"))
+		this.#sliderX.value = this.#inputX.value
+		this.#sliderY.value = this.#inputY.value
+		this.#sliderZ.value = this.#inputZ.value
+		this.rotatebone()
+	}
+	adjustInput() {
+		this.#inputX.value = this.#sliderX.value
+		this.#inputY.value = this.#sliderY.value
+		this.#inputZ.value = this.#sliderZ.value
+		this.rotatebone()
 	}
 
 	changeBone() {
-		let drop = document.getElementById("animToolDropdown")
-
-		let n1 = document.getElementById("animToolInputX")
-		let n2 = document.getElementById("animToolInputY")
-		let n3 = document.getElementById("animToolInputZ")
-
-		let boneId = drop.options[drop.selectedIndex].value
+		let boneId = this.#dropDown.options[this.#dropDown.selectedIndex].value
 
 		let rot = helper.bones[boneId].rotation
 		rot = new Vector3(rot.x.toFixed(2), rot.y.toFixed(2), rot.z.toFixed(2))
 
-		n1.value = rot.x
-		n2.value = rot.y
-		n3.value = rot.z
+		this.#inputX.value = rot.x
+		this.#inputY.value = rot.y
+		this.#inputZ.value = rot.z
 
-		// this.adjustSliders()
-		let s1 = document.getElementById("animToolSliderX")
-		let s2 = document.getElementById("animToolSliderY")
-		let s3 = document.getElementById("animToolSliderZ")
-
-		s1.value = n1.value
-		s2.value = n2.value
-		s3.value = n3.value
-
-		helper.bones[boneId].setRotationFromEuler(new THREE.Euler(s1.value, s2.value, s3.value, "XYZ"))
+		this.adjustSliders()
 	}
 }
 

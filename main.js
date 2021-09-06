@@ -84,7 +84,7 @@ var arrow = new THREE.Vector3()
 var btn = document.getElementById("START")
 let animToolBtn = document.getElementById("animToolBtn")
 
-btn.addEventListener("click", begin)
+btn.addEventListener("click", () => begin())
 
 //after loading models, init game
 function begin() {
@@ -99,7 +99,7 @@ function begin() {
 }
 
 //ANCHOR: ANIMATION TOOL BUTTON CALLBACK
-animToolBtn.addEventListener("click", activateAnimTool)
+animToolBtn.addEventListener("click", () => activateAnimTool())
 
 function activateAnimTool() {
 	if (confirm("you're going to activate a dev tool")) {
@@ -265,12 +265,12 @@ function init() {
 	//creazione raycaster
 	raycaster = new THREE.Raycaster()
 
-	window.addEventListener("resize", onWindowResize, false)
+	window.addEventListener("resize", () => onWindowResize(), false)
 
 	//listeners for keyboard event
 	window.addEventListener(
 		"keydown",
-		function (event) {
+		(event) => {
 			gameInitAssets = CONTROL.keypressedAgent(event, enabled, game)
 			enabled = gameInitAssets[0]
 		},
@@ -278,12 +278,12 @@ function init() {
 	)
 	window.addEventListener(
 		"keyup",
-		function (event) {
+		(event) => {
 			enabled = CONTROL.keyreleasedAgent(event, enabled)
 		},
 		false
 	)
-	renderer.domElement.addEventListener("pointerdown", function (event) {
+	renderer.domElement.addEventListener("pointerdown", (event) => {
 		// find intersections
 		raycastToTrashCollectables(event)
 		camera.updateMatrixWorld()
