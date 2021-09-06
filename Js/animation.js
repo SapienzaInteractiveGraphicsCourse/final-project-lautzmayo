@@ -20,6 +20,7 @@ import * as THREE from "../build/three.module.js"
 /////////////////////////////////////////////////////////////////////////////
 //l'animazione si basa su keyframe, in ognuno di questi vanno definite l'orientazione dei singoli bones in termini di quaternions
 //qui sono stati definiti solo per la camminata in realtà
+
 //CONTACT
 var q1ual = new THREE.Quaternion(0.5869630470760588, 0.7213944155389754, 0.3578294246896947, 0.08380084380607711)
 var q1lal = new THREE.Quaternion(0.07185520084097083, -0.8910399791422927, 0.07185520084097086, 0.44240413175546867)

@@ -416,7 +416,7 @@ function disposeCollectedTrash(type) {
 			increment *= 2
 			alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
 		} else {
-			alert("Wrong trashbin. Green is for glass, Blue for paper and Yellow for plastic. Preserve your environment")
+			alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
 		}
 		ui.incrementCounter("total", increment)
 		ui.toggleCounter(trashTypes.none)

@@ -135,7 +135,7 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 var trashcanpos = [new THREE.Vector3(190, 25, -350), new THREE.Vector3(-190, 25, 350), new THREE.Vector3(-190, 25, -350)]
 var trashmaterial = [
 	new THREE.MeshStandardMaterial({ color: 0xffe600 }),
-	new THREE.MeshStandardMaterial({ color: 0x002193 }),
+	new THREE.MeshStandardMaterial({ color: 0xffffff }),
 	new THREE.MeshStandardMaterial({ color: 0x009321 })
 ]
 

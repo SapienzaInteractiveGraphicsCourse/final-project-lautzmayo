@@ -111,7 +111,7 @@ export function getPaper() {
 			"./Model/Paper/scene.gltf",
 			function (gltf) {
 				let scale = 4.0
-				var newMaterial = new THREE.MeshStandardMaterial({ color: 0x002193 })
+				var newMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff })
 				const paperMesh = gltf.scene
 				paperMesh.children[0].children[0].children[0].children[0].material = newMaterial
 				paperMesh.children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
