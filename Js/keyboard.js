@@ -1,3 +1,5 @@
+import { pauseGame } from "../main.js"
+
 var buttons = document.getElementById("Buttons")
 export function init() {
 	var enabled = {
@@ -44,15 +46,9 @@ export function keypressedAgent(event, enabled, game) {
 		case "f":
 			enabled[event.key] = true
 			break
-		case "l":
+		case "p":
 			enabled[event.key] = !enabled[event.key]
-			if (enabled[event.key]) {
-				document.body.replaceChild(buttons, game)
-				buttons.style.display = "flex"
-			} else {
-				buttons.style.display = "flex"
-				document.body.replaceChild(game, buttons)
-			}
+			pauseGame(enabled[event.key])
 			break
 		case "z":
 			enabled[event.key] = true

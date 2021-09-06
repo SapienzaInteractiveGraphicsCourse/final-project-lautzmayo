@@ -85,10 +85,11 @@ btn.addEventListener("click", begin)
 //after loading models, init game
 function begin() {
 	if (times == 0) {
+		ui.setMainPageVisibility(false)
 		loadModelsAndInit()
 		btn.style.display = "none"
 		times++
-		document.getElementById("Buttons").style.display = "none"
+		// document.getElementById("buttons").style.display = "none"
 	}
 }
 
@@ -133,6 +134,7 @@ function init() {
 	document.body.appendChild(renderer.domElement)
 	renderer.shadowMap.enabled = true
 	renderer.shadowSide = THREE.CullFaceBack
+	renderer.domElement.id = "game"
 
 	// requested and updated data option of
 	// scene, camera, map(with borders), man and lights
@@ -463,4 +465,9 @@ function daynightcycle() {
 		sky.material.uniforms.topColor.value.setRGB(0, 0, 0)
 		sky.material.uniforms.bottomColor.value.setRGB(0, 0, 0)
 	}
+}
+
+export function pauseGame(isPaused) {
+	//TODO disable input
+	ui.setMainPageVisibility(isPaused)
 }

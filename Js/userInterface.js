@@ -3,6 +3,9 @@ import { trashTypes } from "../main.js"
 export class userInterface {
 	#rootNode
 
+	#mainPageDiv
+	#gameDiv
+
 	#selectedTrash
 
 	#paperDiv
@@ -22,6 +25,8 @@ export class userInterface {
 	constructor() {
 		this.#rootNode = null
 
+		this.#mainPageDiv = null
+
 		this.#selectedTrash = trashTypes.none
 
 		this.#paperDiv = null
@@ -40,6 +45,8 @@ export class userInterface {
 	}
 
 	#init() {
+		this.#makeMainPage()
+
 		if (this.#rootNode != null) {
 			document.removeChild(this.#rootNode)
 			this.#rootNode = null
@@ -55,6 +62,43 @@ export class userInterface {
 		this.#makeCounter(trashTypes.glass)
 
 		this.#makeTotalCounter()
+
+		this.setMainPageVisibility(true)
+		this.#gameDiv = null
+	}
+
+	#makeMainPage() {
+		this.#mainPageDiv = document.createElement("div")
+		this.#mainPageDiv.setAttribute("id", "mainPageItems")
+		document.body.appendChild(this.#mainPageDiv)
+
+		let img = document.createElement("img")
+		img.src = "/buttons_menu.png"
+		img.setAttribute("id", "buttons")
+		this.#mainPageDiv.appendChild(img)
+
+		let btn = document.createElement("button")
+		btn.setAttribute("class", "big-button")
+		btn.setAttribute("id", "START")
+		btn.innerText = "Start Game"
+		this.#mainPageDiv.appendChild(btn)
+	}
+
+	setMainPageVisibility(isActive) {
+		this.#mainPageDiv.hidden = !isActive
+		if (this.#gameDiv == null) {
+			this.#gameDiv = document.getElementById("game")
+		}
+		if (this.#gameDiv != null) {
+			if (isActive) {
+				document.body.removeChild(this.#gameDiv)
+			} else {
+				document.body.appendChild(this.#gameDiv)
+			}
+		}
+		if (this.#rootNode != null) {
+			this.#rootNode.hidden = isActive
+		}
 	}
 
 	#makeCounter(type) {
