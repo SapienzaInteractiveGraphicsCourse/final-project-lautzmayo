@@ -13,6 +13,7 @@ export function getCharacter() {
 				playerMesh.scale.set(playerMesh.scale.x * scale, playerMesh.scale.y * scale, playerMesh.scale.z * scale)
 				playerMesh.castShadow = true
 				playerMesh.receiveShadow = true
+				changeMaterial(playerMesh)
 				resolve(playerMesh)
 			},
 			function (xhr) {
@@ -36,6 +37,7 @@ export function getMap() {
 				const mapMesh = gltf.scene
 				mapMesh.castShadow = true
 				mapMesh.receiveShadow = true
+				changeMaterial(mapMesh)
 				resolve(mapMesh)
 			},
 			function (xhr) {
@@ -61,6 +63,7 @@ export function getTrashCan() {
 				trashcanMesh.scale.set(trashcanMesh.scale.x * scale, trashcanMesh.scale.y * scale, trashcanMesh.scale.z * scale)
 				trashcanMesh.castShadow = true
 				trashcanMesh.receiveShadow = true
+				changeMaterial(trashcanMesh)
 				resolve(trashcanMesh)
 			},
 			function (xhr) {
@@ -90,6 +93,7 @@ export function getPlastic() {
 				plasticMesh.scale.set(plasticMesh.scale.x * scale, plasticMesh.scale.y * scale, plasticMesh.scale.z * scale)
 				plasticMesh.castShadow = true
 				plasticMesh.receiveShadow = true
+				changeMaterial(plasticMesh)
 				resolve(plasticMesh)
 			},
 			function (xhr) {
@@ -118,6 +122,7 @@ export function getPaper() {
 				paperMesh.scale.set(paperMesh.scale.x * scale, paperMesh.scale.y * scale, paperMesh.scale.z * scale)
 				paperMesh.castShadow = true
 				paperMesh.receiveShadow = true
+				changeMaterial(paperMesh)
 				resolve(paperMesh)
 			},
 			function (xhr) {
@@ -146,6 +151,7 @@ export function getGlass() {
 				glassMesh.scale.set(glassMesh.scale.x * scale, glassMesh.scale.y * scale, glassMesh.scale.z * scale)
 				glassMesh.castShadow = true
 				glassMesh.receiveShadow = true
+				changeMaterial(glassMesh)
 				resolve(glassMesh)
 			},
 			function (xhr) {
@@ -158,4 +164,43 @@ export function getGlass() {
 		)
 	})
 	return myPromise
+}
+
+export function getStopWatch() {
+	const myPromise = new Promise((resolve, reject) => {
+		const gltfLoader = new GLTFLoader()
+		gltfLoader.load(
+			"./Model/StepWatch/scene.gltf",
+			function (gltf) {
+				let scale = 12
+				const StepWatchMesh = gltf.scene
+				StopWatchMesh.scale.set(StopWatchMesh.scale.x * scale, StopWatchMesh.scale.y * scale, StopWatchMesh.scale.z * scale)
+				StopWatchMesh.castShadow = true
+				StopWatchMesh.receiveShadow = true
+				changeMaterial(StopWatchMesh)
+				resolve(StopWatchMesh)
+			},
+			function (xhr) {
+				console.log((xhr.loaded / xhr.total) * 100 + "% loaded")
+			},
+			function (error) {
+				console.log("An error happened")
+				reject(error)
+			}
+		)
+	})
+	return myPromise
+}
+
+
+function changeMaterial(model) {
+	model.traverse((child) => {
+		if (!child.isMesh) return
+
+		var prevMaterial = child.material
+
+		child.material = new THREE.MeshLambertMaterial()
+
+		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
+	})
 }
