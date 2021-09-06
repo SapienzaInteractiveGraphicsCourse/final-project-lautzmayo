@@ -91,7 +91,7 @@ export class animationTool {
 		this.#sliderX.setAttribute("id", "animToolSliderX")
 		this.#sliderX.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderX)
-		this.#sliderX.addEventListener("input", () => this.adjustInput()())
+		this.#sliderX.addEventListener("input", () => this.adjustInput())
 
 		this.#sliders.appendChild(document.createElement("br"))
 		label = document.createElement("label")
@@ -117,7 +117,7 @@ export class animationTool {
 		this.#sliderY.setAttribute("id", "animToolSliderY")
 		this.#sliderY.setAttribute("orient", "horizontal")
 		this.#sliders.appendChild(this.#sliderY)
-		this.#sliderY.addEventListener("input", () => this.adjustInput()())
+		this.#sliderY.addEventListener("input", () => this.adjustInput())
 
 		this.#sliders.appendChild(document.createElement("br"))
 		label = document.createElement("label")
@@ -154,8 +154,7 @@ export class animationTool {
 		this.#logBtn.setAttribute("id", "animToolLogBtn")
 		this.#logBtn.innerText = "LOG"
 		this.#rootNode.appendChild(this.#logBtn)
-		this.#logBtn.addEventListener("click", () => console.log(this))
-		// TODO: ---
+		this.#logBtn.addEventListener("click", () => this.printAllQuaternions())
 	}
 
 	constructor() {
@@ -205,6 +204,17 @@ export class animationTool {
 		this.#inputZ.value = rot.z
 
 		this.adjustSliders()
+	}
+
+	printAllQuaternions() {
+		let ret = ""
+
+		let holder
+		this.#bones.forEach((b) => {
+			holder = helper.bones[b.boneId].quaternion
+			ret += `x: ${holder.x.toFixed(2)}, y: ${holder.y.toFixed(2)}, z: ${holder.z.toFixed(2)}\n`
+		})
+		alert("Actual Relevant Bones Rotations: \n" + ret)
 	}
 }
 
