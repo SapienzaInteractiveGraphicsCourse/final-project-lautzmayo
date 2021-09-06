@@ -395,7 +395,7 @@ function spawnRandomTrash() {
 function isTrashCollectable(type) {
 	if (ui.getActiveCounter() == type) {
 		if (ui.getIntCounter(ui.getActiveCounter()) >= ui.getMaxItemPerDelivery()) {
-			console.log("You are carrying too much items, dispose of them before collecting more")
+			alert("You are carrying too much items, dispose of them before collecting more")
 			return false
 		}
 		return true
@@ -403,7 +403,7 @@ function isTrashCollectable(type) {
 		ui.toggleCounter(type, true)
 		return true
 	} else {
-		console.log(`You are collecting ${ui.getActiveCounter()}, so you can't take any ${type}`)
+		alert(`You are collecting ${ui.getActiveCounter()}, so you can't take any ${type}`)
 		return false
 	}
 }
@@ -414,12 +414,15 @@ function disposeCollectedTrash(type) {
 	if (increment > 0) {
 		if (type == ui.getActiveCounter()) {
 			increment *= 2
+			alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
+		} else {
+			alert("Wrong trashbin. Green is for glass, Blue for paper and Yellow for plastic. Preserve your environment")
 		}
 		ui.incrementCounter("total", increment)
 		ui.toggleCounter(trashTypes.none)
 		ui.resetCounters(false)
 	} else {
-		console.log("You must first collect some trash, then come back to dispose of it")
+		alert("You must first collect some trash, then come back to dispose of it")
 	}
 }
 
