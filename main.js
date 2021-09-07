@@ -8,12 +8,14 @@ import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
 import { animationTool } from "./Js/animationTool.js"
+import { animationExec } from "./Js/animationExec.js"
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
 export let currentTrash = trashTypes.none
 
 //ANCHOR: animatin clips struct
 export const animationClips = { none: null, walk: "walk", idle: "idle", collect: "collect", dispose: "dispose" }
+let aniExec
 
 let currentAnimationClip = animationClips.none
 export function getCurrentAnimationClip() {
@@ -203,10 +205,13 @@ function init() {
 
 	//added animation
 	//ANIM :
-	gameInitAssets = ANIMATION.getAnimation(man, helper)
-	mixer = gameInitAssets[0]
-	animaction = gameInitAssets[1]
-	clock = gameInitAssets[2]
+	if (!animTool.isAnimToolActive) {
+		aniExec = new animationExec()
+		gameInitAssets = aniExec.prepareEnvironment(man, helper) //ANIMATION.getAnimation(man, helper)
+		mixer = gameInitAssets[0]
+		animaction = gameInitAssets[1]
+		clock = gameInitAssets[2]
+	}
 
 	let orbitController
 	//ANCHOR:  ANIM TOOL
@@ -314,9 +319,9 @@ function render() {
 	renderer.render(scene, camera)
 
 	//ANIM :
+	if (!animTool.isAnimToolActive) {
 	mixer.update(clock.getDelta())
 
-	if (!animTool.isAnimToolActive) {
 		dayNightCycle()
 	}
 }
@@ -329,9 +334,16 @@ function update() {
 	PLAYER.movePlayer(man, camera, enabled, goal, follow, animTool.isAnimToolActive)
 
 	//ANIM :
-	if (currentAnimationClip == animationClips.idle) {
-		animaction.stop()
-	} else if (currentAnimationClip == animationClips.walk) {
+	// if (currentAnimationClip == animationClips.idle) {
+	// 	animaction.stop()
+	// } else if (currentAnimationClip == animationClips.walk) {
+	// 	animaction.play()
+	// }
+	if (!animTool.isAnimToolActive) {
+		if (animaction.currentClip != currentAnimationClip) {
+			animaction.stop()
+			animaction = aniExec.getAnimation(helper, currentAnimationClip, mixer)
+		}
 		animaction.play()
 	}
 }

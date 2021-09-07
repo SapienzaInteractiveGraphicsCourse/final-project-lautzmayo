@@ -1,5 +1,47 @@
 import { Vector3 } from "../build/three.module.js"
 import { helper } from "../main.js"
+import { animationExec } from "./animationExec.js"
+import { animationClips } from "../main.js"
+
+class boneTool {
+	#boneId
+	#boneName
+	#short
+	constructor(id, name, s) {
+		this.#boneId = id
+		this.#boneName = name
+		this.#short = s
+	}
+
+	get boneId() {
+		return this.#boneId
+	}
+
+	get boneName() {
+		return this.#boneName
+	}
+
+	get short() {
+		return this.#short
+	}
+}
+
+export const bones = [
+	new boneTool(0, "ROOT", "root"),
+	new boneTool(6, "HEAD", "head"),
+	new boneTool(15, "LEFTUPPERARM", "lua"),
+	new boneTool(16, "LEFTLOWERARM", "lla"),
+	new boneTool(17, "LEFTHAND", "lh"),
+	new boneTool(47, "RIGHTUPPERARM", "rua"),
+	new boneTool(48, "RIGHTLOWERARM", "rla"),
+	new boneTool(49, "RIGHTHAND", "rh"),
+	new boneTool(81, "LEFTUPPERLEG", "lul"),
+	new boneTool(82, "LEFTLOWERLEG", "lll"),
+	new boneTool(83, "LEFTFEET", "lf"),
+	new boneTool(76, "RIGHTUPPERLEG", "rul"),
+	new boneTool(77, "RIGHTLOWERLEG", "rll"),
+	new boneTool(78, "RIGHTFEET", "rf")
+]
 
 export class animationTool {
 	#isAnimToolActive = false
@@ -20,23 +62,29 @@ export class animationTool {
 	#sliderZ
 
 	#logBtn
+	#constructAnimBtn
+
+	#keyFrameArray = []
 
 	#bones = [
-		new boneTool(0, "ROOT"),
-		new boneTool(6, "HEAD"),
-		new boneTool(15, "LEFTUPPERARM"),
-		new boneTool(16, "LEFTLOWERARM"),
-		new boneTool(17, "LEFTHAND"),
-		new boneTool(47, "RIGHTUPPERARM"),
-		new boneTool(48, "RIGHTLOWERARM"),
-		new boneTool(49, "RIGHTHAND"),
-		new boneTool(81, "LEFTUPPERLEG"),
-		new boneTool(82, "LEFTLOWERLEG"),
-		new boneTool(83, "LEFTFEET"),
-		new boneTool(76, "RIGHTUPPERLEG"),
-		new boneTool(77, "RIGHTLOWERLEG"),
-		new boneTool(78, "RIGHTFEET")
+		new boneTool(0, "ROOT", "root"),
+		new boneTool(6, "HEAD", "head"),
+		new boneTool(15, "LEFTUPPERARM", "lua"),
+		new boneTool(16, "LEFTLOWERARM", "lla"),
+		new boneTool(17, "LEFTHAND", "lh"),
+		new boneTool(47, "RIGHTUPPERARM", "rua"),
+		new boneTool(48, "RIGHTLOWERARM", "rla"),
+		new boneTool(49, "RIGHTHAND", "rh"),
+		new boneTool(81, "LEFTUPPERLEG", "lul"),
+		new boneTool(82, "LEFTLOWERLEG", "lll"),
+		new boneTool(83, "LEFTFEET", "lf"),
+		new boneTool(76, "RIGHTUPPERLEG", "rul"),
+		new boneTool(77, "RIGHTLOWERLEG", "rll"),
+		new boneTool(78, "RIGHTFEET", "rf")
 	]
+	get bones() {
+		return this.#bones
+	}
 
 	#makeUiItem() {
 		this.#rootNode = document.createElement("div")
@@ -71,6 +119,8 @@ export class animationTool {
 		label = document.createElement("label")
 		label.innerText = "X: "
 		this.#sliders.appendChild(label)
+
+		//TODO : add style auto fit width to numerical input
 
 		this.#inputX = document.createElement("input")
 		this.#inputX.setAttribute("type", "number")
@@ -152,9 +202,18 @@ export class animationTool {
 
 		this.#logBtn = document.createElement("button")
 		this.#logBtn.setAttribute("id", "animToolLogBtn")
+		this.#logBtn.setAttribute("class", "animToolLogBtn")
 		this.#logBtn.innerText = "LOG"
 		this.#rootNode.appendChild(this.#logBtn)
 		this.#logBtn.addEventListener("click", () => this.printAllQuaternions())
+
+		this.#rootNode.appendChild(document.createElement("br"))
+		this.#constructAnimBtn = document.createElement("button")
+		this.#constructAnimBtn.setAttribute("id", "constructAnimBtn")
+		this.#constructAnimBtn.setAttribute("class", "animToolLogBtn")
+		this.#constructAnimBtn.innerText = "Print current status for animation"
+		this.#rootNode.appendChild(this.#constructAnimBtn)
+		this.#constructAnimBtn.addEventListener("click", () => this.constructAnim())
 	}
 
 	constructor() {
@@ -162,6 +221,20 @@ export class animationTool {
 		this.#makeUiItem()
 		this.#toggleVisualization(this.#rootNode, this.#isAnimToolActive)
 	}
+
+	// test() {
+	// 	let aniExe = new animationExec()
+	// 	aniExe.getAnimation(null, null, animationClips.walk)
+	// }
+
+	//TODO: enhance tool by constructing full animation
+	// addCurrentToAnimArray() {
+	// 	let current = []
+	// }
+	// removeLastToAnimArray() {
+	// 	this.#keyFrameArray.pop()
+	// 	console.log(this.#keyFrameArray)
+	// }
 
 	toggleAnimationTool(active) {
 		this.#isAnimToolActive = active
@@ -175,9 +248,7 @@ export class animationTool {
 	rotatebone() {
 		let boneId = this.#dropDown.options[this.#dropDown.selectedIndex].value
 
-		helper.bones[boneId].quaternion.setFromEuler(
-			new THREE.Euler(this.#inputX.value, this.#inputY.value, this.#inputZ.value, "XYZ")
-		)
+		helper.bones[boneId].quaternion.setFromEuler(new THREE.Euler(this.#inputX.value, this.#inputY.value, this.#inputZ.value, "XYZ"))
 	}
 
 	adjustSliders() {
@@ -212,25 +283,20 @@ export class animationTool {
 		let holder
 		this.#bones.forEach((b) => {
 			holder = helper.bones[b.boneId].quaternion
-			ret += `x: ${holder.x.toFixed(2)}, y: ${holder.y.toFixed(2)}, z: ${holder.z.toFixed(2)}\n`
+			ret += `${holder.x.toFixed(2)}, ${holder.y.toFixed(2)}, ${holder.z.toFixed(2)}, ${holder.w.toFixed(2)}\n`
 		})
-		alert("Actual Relevant Bones Rotations: \n" + ret)
+		alert("Actual Relevant Bones Quaternions (x, y, z, w): \n" + ret)
 	}
-}
+	constructAnim() {
+		let ret = ""
 
-class boneTool {
-	#boneId
-	#boneName
-	constructor(id, name) {
-		this.#boneId = id
-		this.#boneName = name
-	}
-
-	get boneId() {
-		return this.#boneId
-	}
-
-	get boneName() {
-		return this.#boneName
+		let holder
+		this.#bones.forEach((b) => {
+			holder = helper.bones[b.boneId].quaternion
+			ret += `new THREE.Quaternion(${holder.x.toFixed(2)}, ${holder.y.toFixed(2)}, ${holder.z.toFixed(2)}, ${holder.w.toFixed(2)}), //${
+				b.short
+			}\n`
+		})
+		alert("copy this: \n[\n" + ret + "],")
 	}
 }
