@@ -26,7 +26,7 @@ export class animationExec {
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 
-		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, 55)
+		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, 40)
 	}
 
 	#prepareClip(mixer, clipName, timesteps, tracks, timescale) {

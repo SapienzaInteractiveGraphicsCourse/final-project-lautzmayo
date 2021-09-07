@@ -41,7 +41,6 @@ export function locatePaper(nObject, objectMesh, scene, intersectable) {
 			trashArray[i].scale.y * trashScaleFactor,
 			trashArray[i].scale.z * trashScaleFactor
 		)
-		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
 		trashArray[i].trashType = trashTypes.paper
@@ -82,7 +81,6 @@ export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 			trashArray[i].scale.y * trashScaleFactor,
 			trashArray[i].scale.z * trashScaleFactor
 		)
-		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
 		trashArray[i].trashType = trashTypes.plastic
@@ -123,7 +121,6 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 			trashArray[i].scale.y * trashScaleFactor,
 			trashArray[i].scale.z * trashScaleFactor
 		)
-		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
 		trashArray[i].trashType = trashTypes.glass
@@ -157,7 +154,6 @@ export function locateTrashCollector(nObject, objectMesh, scene, intersectable) 
 		trashArray[i].trashType = trashbinType[i]
 	}
 	for (var i = 0; i < nObject; i++) {
-		changeMaterial(trashArray[i])
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
 	}
@@ -165,14 +161,3 @@ export function locateTrashCollector(nObject, objectMesh, scene, intersectable) 
 	return [trashArray]
 }
 
-function changeMaterial(model) {
-	model.traverse((child) => {
-		if (!child.isMesh) return
-
-		var prevMaterial = child.material
-
-		child.material = new THREE.MeshLambertMaterial()
-
-		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
-	})
-}

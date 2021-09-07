@@ -56,7 +56,6 @@ export function init(map, man, animTool) {
 	//ANCHOR: ANIM TOOL TRIGGER
 	if (!animTool.isAnimToolActive) {
 		map.position.set(0, 0, 0)
-		changeMaterial(map)
 		scene.add(map)
 	}
 
@@ -138,7 +137,6 @@ export function init(map, man, animTool) {
 
 	man.position.set(0, 0, 0)
 	man.rotation.set(0, 0, 0)
-	changeMaterial(man)
 	scene.add(man)
 
 	// TODO:
@@ -166,14 +164,4 @@ export function init(map, man, animTool) {
 	return [scene, camera, map, borders, man, helper, dirLight, hemiLight, lights]
 }
 
-function changeMaterial(model) {
-	model.traverse((child) => {
-		if (!child.isMesh) return
 
-		var prevMaterial = child.material
-
-		child.material = new THREE.MeshLambertMaterial()
-
-		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
-	})
-}
