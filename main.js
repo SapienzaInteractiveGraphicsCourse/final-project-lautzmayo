@@ -15,9 +15,10 @@ export let currentTrash = trashTypes.none
 
 //ANCHOR: animatin clips struct
 export const animationClips = { none: null, walk: "walk", idle: "idle", collect: "collect", dispose: "dispose" }
+let currentAnimationClip = animationClips.none
+
 let aniExec
 
-let currentAnimationClip = animationClips.none
 export function getCurrentAnimationClip() {
 	return currentAnimationClip
 }
