@@ -172,7 +172,7 @@ button.big-button:active::before {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
-#animTool {
+.animTool {
 	position: fixed;
 	width: fit-content;
 	height: fit-content;
