@@ -1,3 +1,5 @@
+import { difficultyColors } from "./difficultyManager.js"
+
 export class gameover {
 	#gameOverDiv
 
@@ -5,11 +7,24 @@ export class gameover {
 		this.#gameOverDiv = document.createElement("div")
 		this.#gameOverDiv.setAttribute("id", "gameoverDiv")
 		this.#gameOverDiv.setAttribute("class", "gameover")
+
+		this.#gameOverDiv.style.backgroundColor =
+			difficultyColors[document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value]
+
 		// this.#gameOverDiv.hidden = true
 		document.body.appendChild(this.#gameOverDiv)
 
 		let documentItem = document.createElement("h1")
 		documentItem.innerText = "GAME OVER"
+		this.#gameOverDiv.append(documentItem)
+
+		this.#gameOverDiv.append(document.createElement("br"))
+
+		documentItem = document.createElement("h3")
+		documentItem.innerText =
+			"You played the " +
+			document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].innerText +
+			" level"
 		this.#gameOverDiv.append(documentItem)
 
 		this.#gameOverDiv.append(document.createElement("br"))

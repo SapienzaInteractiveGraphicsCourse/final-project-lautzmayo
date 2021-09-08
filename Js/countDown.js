@@ -11,7 +11,7 @@ export class countDown {
 	#timerText
 
 	#timerInt
-	#extraTimeInt = 5 //seconds
+	#extraTimeInt = 5000 //milliseconds
 
 	#stopwatchArray = []
 	#stopwatchModel
@@ -41,11 +41,11 @@ export class countDown {
 	}
 
 	stopwatchInteraction(obj) {
-		this.#timerInt += this.#extraTimeInt * 1000
+		this.#timerInt += this.#extraTimeInt
 		this.#sceneRef.remove(obj)
 		this.#updateTimer()
 		alert("More Time")
-		let h = Math.floor(Math.random() * (20000 - 5000 + 1) + 5000)
+		let h = Math.floor(Math.random() * (5000 - 500 + 1) + 500)
 		h = h * (this.#stopwatchArray.length + 1)
 		setTimeout(() => this.#instanciateStopwatch(), h)
 	}
@@ -63,7 +63,7 @@ export class countDown {
 			this.#isPlaying = false
 			gameOver()
 			this.#deleteTimer()
-			let go = new gameover()
+			new gameover()
 		}
 		if (repeat) {
 			setTimeout(() => {
@@ -86,7 +86,7 @@ export class countDown {
 		this.#timerText.innerText = "Time left\n" + Math.floor(this.#timerInt / 60 / 1000) + " : " + ((this.#timerInt / 1000) % 60)
 	}
 
-	constructor(nStopwatch, stopwatchModel, scene, intersectable) {
+	constructor(nStopwatch, stopwatchModel, scene, intersectable, t, x) {
 		this.#timerDiv = null
 
 		this.#nStopwatch = nStopwatch
@@ -94,7 +94,8 @@ export class countDown {
 		this.#sceneRef = scene
 		this.#intersectablesRef = intersectable
 
-		this.#timerInt = 5000 * 60
+		this.#timerInt = t
+		this.#extraTimeInt = x
 
 		this.#createTimer()
 		this.#instanciateStopwatch()

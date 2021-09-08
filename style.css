@@ -226,5 +226,5 @@ button.big-button:active::before {
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 25px;
 	z-index: 10;
-	background-color: rgba(255, 138, 138, 0.8);
+	background-color: rgba(75, 1, 1, 0.8);
 }

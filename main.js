@@ -10,6 +10,7 @@ import { animationTool } from "./Js/animationTool.js"
 import { animationExec } from "./Js/animationExec.js"
 import { countDown } from "./Js/countDown.js"
 import { pauseUI } from "./Js/pauseUI.js"
+import { difficultyManager } from "./Js/difficultyManager.js"
 
 export let isGameRunning = false
 
@@ -34,6 +35,8 @@ let ui = new userInterface()
 let pauseVisual = null
 
 let animTool = new animationTool()
+
+let diffMan = new difficultyManager()
 
 var times = 0
 var game
@@ -124,6 +127,14 @@ function activateAnimTool() {
 // called by start button
 // import gltf models and calls init function
 function loadModelsAndInit() {
+	//ANCHOR SET DIFFICULTY
+	const numItems =
+		diffMan.itemCount[document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value]
+	nGlass = numItems
+	nPaper = numItems
+	nPlastic = numItems
+	nStopwatch = Math.floor(numItems / 2)
+
 	//models are loaded
 	var manLoad = MODEL.getCharacter()
 	var mapLoad = MODEL.getMap()
@@ -250,7 +261,10 @@ function init() {
 		glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
 		nStopwatch = 3
-		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable)
+		const diffLvl = document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value
+		const t = diffMan.time[diffLvl]
+		const xtra = diffMan.bonusTime[diffLvl]
+		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
 
 		nTrashcollector = 3
 		trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
