@@ -88,8 +88,7 @@ export function getPlastic() {
 				var newMaterial = new THREE.MeshStandardMaterial({ color: 0xffe600 })
 				const plasticMesh = gltf.scene
 				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material = newMaterial
-				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material.side =
-					THREE.DoubleSide
+				plasticMesh.children[0].children[0].children[0].children[0].children[0].children[0].children[0].material.side = THREE.DoubleSide
 				plasticMesh.scale.set(plasticMesh.scale.x * scale, plasticMesh.scale.y * scale, plasticMesh.scale.z * scale)
 				plasticMesh.castShadow = true
 				plasticMesh.receiveShadow = true
@@ -173,7 +172,7 @@ export function getStopWatch() {
 			"./Model/StepWatch/scene.gltf",
 			function (gltf) {
 				let scale = 12
-				const StepWatchMesh = gltf.scene
+				const StopWatchMesh = gltf.scene
 				StopWatchMesh.scale.set(StopWatchMesh.scale.x * scale, StopWatchMesh.scale.y * scale, StopWatchMesh.scale.z * scale)
 				StopWatchMesh.castShadow = true
 				StopWatchMesh.receiveShadow = true
@@ -191,7 +190,6 @@ export function getStopWatch() {
 	})
 	return myPromise
 }
-
 
 function changeMaterial(model) {
 	model.traverse((child) => {

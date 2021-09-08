@@ -9,6 +9,9 @@ import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
 import { animationTool } from "./Js/animationTool.js"
 import { animationExec } from "./Js/animationExec.js"
+import { countDown } from "./Js/countDown.js"
+
+export let isGameRunning = false
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
 export let currentTrash = trashTypes.none
@@ -34,6 +37,8 @@ let animTool = new animationTool()
 var times = 0
 var game
 
+let timer
+
 //MESH
 var man, map, trashcan
 
@@ -46,12 +51,13 @@ var bordersbody = ["", "", "", ""]
 var paper = []
 var plastic = []
 var glass = []
+let stopwatch = []
 
 // array for trash collectors
 var trashcollector = []
 
-var nPaper, nPlastic, nGlass, nTrashcollector
-var manModel, mapModel, trashcanModel, paperModel, plasticModel, glassModel
+var nPaper, nPlastic, nGlass, nStopwatch, nTrashcollector
+var manModel, mapModel, trashcanModel, paperModel, plasticModel, glassModel, stopwatchModel
 
 //for camera
 var goal, follow
@@ -124,8 +130,9 @@ function loadModelsAndInit() {
 	var paperLoad = MODEL.getPaper()
 	var plasticLoad = MODEL.getPlastic()
 	var glassLoad = MODEL.getGlass()
+	let stopwatch = MODEL.getStopWatch()
 	//models are saved
-	Promise.all([manLoad, mapLoad, trashcanLoad, paperLoad, plasticLoad, glassLoad]).then(
+	Promise.all([manLoad, mapLoad, trashcanLoad, paperLoad, plasticLoad, glassLoad, stopwatch]).then(
 		(data) => {
 			manModel = data[0]
 			mapModel = data[1]
@@ -133,6 +140,7 @@ function loadModelsAndInit() {
 			paperModel = data[3]
 			plasticModel = data[4]
 			glassModel = data[5]
+			stopwatchModel = data[6]
 
 			init()
 			// periodicLogger()
@@ -240,6 +248,9 @@ function init() {
 		nGlass = 3
 		glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
+		nStopwatch = 3
+		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable)
+
 		nTrashcollector = 3
 		trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
 	}
@@ -298,11 +309,12 @@ function init() {
 	//ANCHOR: ANIM TOOL TRIGGER
 	if (!animTool.isAnimToolActive) {
 		ui.toggleCounter("total", true)
+	} else {
+		//ANCHOR: wrong placement but native javascript is inefficent
+		// set default for bone rotation
+		animTool.changeBone()
 	}
-
-	//ANCHOR: wrong placement but native javascript is inefficent
-	// set defount for bone rotation
-	animTool.changeBone()
+	isGameRunning = true
 
 	window.requestAnimationFrame(animate)
 }
@@ -311,8 +323,10 @@ function animate() {
 	setTimeout(function () {
 		requestAnimationFrame(animate)
 
-		update()
-		render()
+		if (timer.isPlaying && isGameRunning) {
+			update()
+			render()
+		}
 	}, 1000 / 60)
 }
 
@@ -321,7 +335,7 @@ function render() {
 
 	//ANIM :
 	if (!animTool.isAnimToolActive) {
-	mixer.update(clock.getDelta())
+		mixer.update(clock.getDelta())
 
 		dayNightCycle()
 	}
@@ -406,6 +420,10 @@ function trashInteraction(obj, pos) {
 	let trashPos = new THREE.Vector2(pos.x, pos.z)
 
 	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
+		if (selectedObject.trashType == "stopwatch") {
+			timer.stopwatchInteraction(selectedObject)
+			return
+		}
 		if (isTrashCollectable(selectedObject.trashType)) {
 			man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
 
@@ -525,6 +543,9 @@ function dayNightCycle() {
 }
 
 export function pauseGame(isPaused) {
-	//TODO disable input
-	ui.setMainPageVisibility(isPaused)
+	if (!animTool.isAnimToolActive) {
+		//TODO disable input
+		isGameRunning = !isPaused
+		ui.setMainPageVisibility(isPaused)
+	}
 }

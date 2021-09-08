@@ -18,13 +18,7 @@ export function locatePaper(nObject, objectMesh, scene, intersectable) {
 		//take a random number in the range min - max
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (
-			pos.includes([x, z]) ||
-			(x < -170 && z < -170) ||
-			(x < -170 && z > 170) ||
-			(x > 170 && z < -170) ||
-			(x > 170 && z > 170)
-		) {
+		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -62,13 +56,7 @@ export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (
-			pos.includes([x, z]) ||
-			(x < -170 && z < -170) ||
-			(x < -170 && z > 170) ||
-			(x > 170 && z < -170) ||
-			(x > 170 && z > 170)
-		) {
+		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -102,13 +90,7 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (
-			pos.includes([x, z]) ||
-			(x < -170 && z < -170) ||
-			(x < -170 && z > 170) ||
-			(x > 170 && z < -170) ||
-			(x > 170 && z > 170)
-		) {
+		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -124,6 +106,37 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 		scene.add(trashArray[i])
 		intersectable.push(trashArray[i])
 		trashArray[i].trashType = trashTypes.glass
+	}
+
+	return [trashArray]
+}
+export function locateStopwatch(nObject, objectMesh, scene, intersectable) {
+	var trashArray = []
+	for (var i = 0; i < nObject; i++) {
+		trashArray.push(objectMesh.clone())
+	}
+
+	let tf = trashScaleFactor / 1.5
+
+	for (var i = 0; i < nObject; i++) {
+		var maxx = 900
+		var minx = -900
+		var maxz = 900
+		var minz = -900
+		var x = Math.random() * (maxx - minx) + minx
+		var z = Math.random() * (maxz - minz) + minz
+		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
+			var x = Math.random() * (maxx - minx) + minx
+			var z = Math.random() * (maxz - minz) + minz
+		}
+		pos.push([x, z])
+		trashArray[i].position.set(x, 10 * tf, z)
+	}
+	for (var i = 0; i < nObject; i++) {
+		trashArray[i].scale.set(trashArray[i].scale.x * tf, trashArray[i].scale.y * tf, trashArray[i].scale.z * tf)
+		scene.add(trashArray[i])
+		intersectable.push(trashArray[i])
+		trashArray[i].trashType = "stopwatch"
 	}
 
 	return [trashArray]
@@ -160,4 +173,3 @@ export function locateTrashCollector(nObject, objectMesh, scene, intersectable) 
 
 	return [trashArray]
 }
-
