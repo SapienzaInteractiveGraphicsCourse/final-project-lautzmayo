@@ -1,4 +1,4 @@
-import * as THREE from "https://threejs.org/build/three.module.js"
+import * as THREE from "../build/three.module.js"
 import { trashTypes } from "../main.js"
 var pos = []
 let trashScaleFactor = 2

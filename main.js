@@ -3,7 +3,6 @@ import * as GAME from "./Js/game.js"
 import * as MODEL from "./Js/models.js"
 import * as CONTROL from "./Js/keyboard.js"
 import * as PLAYER from "./Js/player.js"
-import * as ANIMATION from "./Js/animation.js"
 import * as TRASH from "./Js/trash.js"
 import { OrbitControls } from "./jsm/controls/OrbitControls.js"
 import { userInterface } from "./Js/userInterface.js"
@@ -42,7 +41,7 @@ var game
 let timer
 
 //MESH
-var man, map, trashcan
+// var man, map, trashcan
 
 //borders se vogliamo usare librerie per la fisica in modo tale da associare un body per ogni bordo (da controllare, dipende dalla libreria)
 var borders
