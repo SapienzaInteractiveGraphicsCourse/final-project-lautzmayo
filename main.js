@@ -10,6 +10,7 @@ import { userInterface } from "./Js/userInterface.js"
 import { animationTool } from "./Js/animationTool.js"
 import { animationExec } from "./Js/animationExec.js"
 import { countDown } from "./Js/countDown.js"
+import { pauseUI } from "./Js/pauseUI.js"
 
 export let isGameRunning = false
 
@@ -31,6 +32,7 @@ export function changeAnimation(clip) {
 
 //ANCHOR: ui
 let ui = new userInterface()
+let pauseVisual = null
 
 let animTool = new animationTool()
 
@@ -542,10 +544,20 @@ function dayNightCycle() {
 	}
 }
 
-export function pauseGame(isPaused) {
+export function pauseGame() {
 	if (!animTool.isAnimToolActive) {
+		if (pauseVisual == null) {
+			pauseVisual = new pauseUI()
+		}
 		//TODO disable input
-		isGameRunning = !isPaused
-		ui.setMainPageVisibility(isPaused)
+		isGameRunning = !isGameRunning
+		// ui.setMainPageVisibility(isPaused)
+		pauseVisual.toggleVisibility(isGameRunning)
+	}
+}
+
+export function gameOver() {
+	if (!animTool.isAnimToolActive) {
+		isGameRunning = false
 	}
 }

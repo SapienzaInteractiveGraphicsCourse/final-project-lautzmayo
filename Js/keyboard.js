@@ -48,7 +48,7 @@ export function keypressedAgent(event, enabled, game) {
 			break
 		case "p":
 			enabled[event.key] = !enabled[event.key]
-			pauseGame(enabled[event.key])
+			pauseGame()
 			break
 		case "z":
 			enabled[event.key] = true

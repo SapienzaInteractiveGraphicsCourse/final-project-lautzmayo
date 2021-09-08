@@ -1,4 +1,5 @@
-import { isGameRunning } from "../main.js"
+import { gameOver, isGameRunning } from "../main.js"
+import { gameover } from "./gameover.js"
 import { locateStopwatch } from "./trash.js"
 export class countDown {
 	#isPlaying
@@ -20,8 +21,7 @@ export class countDown {
 
 	#createTimer() {
 		if (this.#timerDiv != null) {
-			document.body.removeChild(this.#timerDiv)
-			this.#timerDiv = null
+			this.#deleteTimer()
 			this.#createTimer()
 		}
 		this.#timerDiv = document.createElement("div")
@@ -51,18 +51,30 @@ export class countDown {
 	}
 
 	#passTime() {
+		let repeat = false
 		if (this.#timerInt >= 1000) {
 			if (isGameRunning) {
 				this.#timerInt -= 1000
 			}
 			this.#updateTimer()
+			repeat = true
+		}
+		if (this.#timerInt <= 0 && isGameRunning) {
+			this.#isPlaying = false
+			gameOver()
+			this.#deleteTimer()
+			let go = new gameover()
+		}
+		if (repeat) {
 			setTimeout(() => {
 				this.#passTime()
 			}, 1000)
 		}
-		if (this.#timerInt <= 0) {
-			this.#isPlaying = false
-		}
+	}
+
+	#deleteTimer() {
+		document.body.removeChild(this.#timerDiv)
+		this.#timerDiv = null
 	}
 
 	#instanciateStopwatch() {

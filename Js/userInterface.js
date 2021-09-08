@@ -77,11 +77,15 @@ export class userInterface {
 		img.setAttribute("id", "buttons")
 		this.#mainPageDiv.appendChild(img)
 
+		this.#mainPageDiv.appendChild(document.createElement("br"))
+
 		let btn = document.createElement("button")
 		btn.setAttribute("class", "big-button")
 		btn.setAttribute("id", "START")
 		btn.innerText = "Start Game"
 		this.#mainPageDiv.appendChild(btn)
+
+		this.#mainPageDiv.appendChild(document.createElement("br"))
 
 		let debugBtn = document.createElement("button")
 		debugBtn.setAttribute("id", "animToolBtn")
@@ -140,6 +144,7 @@ export class userInterface {
 		if (this.#totalDiv == null) {
 			this.#totalDiv = document.createElement("div")
 			this.#totalDiv.setAttribute("id", "total")
+			this.#totalDiv.setAttribute("value", this.#totalCounter)
 
 			this.#toggleCounterVisualization("total", false)
 
@@ -190,6 +195,7 @@ export class userInterface {
 
 		if (this.#totalDiv != null) {
 			this.#totalDiv.children[0].innerText = `Total Points: ${this.#totalCounter}`
+			this.#totalDiv.setAttribute("value", this.#totalCounter)
 		}
 	}
 
