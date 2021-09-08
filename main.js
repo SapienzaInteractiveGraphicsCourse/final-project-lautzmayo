@@ -41,7 +41,7 @@ var game
 let timer
 
 //MESH
-// var man, map, trashcan
+var man, map, trashcan
 
 //borders se vogliamo usare librerie per la fisica in modo tale da associare un body per ogni bordo (da controllare, dipende dalla libreria)
 var borders
