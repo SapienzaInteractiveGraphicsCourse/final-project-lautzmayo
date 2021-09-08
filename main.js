@@ -255,6 +255,8 @@ function init() {
 
 		nTrashcollector = 3
 		trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
+	} else {
+		timer = { isPlaying: true }
 	}
 
 	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
@@ -325,9 +327,11 @@ function animate() {
 	setTimeout(function () {
 		requestAnimationFrame(animate)
 
-		if (timer.isPlaying && isGameRunning) {
-			update()
-			render()
+		if (isGameRunning) {
+			if (timer.isPlaying || animTool.isAnimToolActive) {
+				update()
+				render()
+			}
 		}
 	}, 1000 / 60)
 }

@@ -19,12 +19,12 @@
 body {
 	font-family: "OpenSans", sans-serif;
 	font-size: 1rem;
-	line-height: 2;
+	line-height: 1.2;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin: 0;
-	min-height: 100vh;
+	/* min-height: 100vh; */
 	background: var(--backgroundColor);
 }
 button {

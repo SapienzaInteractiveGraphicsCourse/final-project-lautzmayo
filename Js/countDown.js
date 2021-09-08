@@ -29,7 +29,7 @@ export class countDown {
 		this.#timerDiv.setAttribute("class", "timer")
 		document.body.appendChild(this.#timerDiv)
 
-		this.#timerText = document.createElement("h1")
+		this.#timerText = document.createElement("h3")
 		this.#timerText.setAttribute("id", "timerText")
 		this.#timerText.innerText = "TIMER: 5.00"
 		this.#timerDiv.appendChild(this.#timerText)
@@ -83,7 +83,7 @@ export class countDown {
 	}
 
 	#updateTimer() {
-		this.#timerText.innerText = "Timer: " + this.#timerInt / 1000
+		this.#timerText.innerText = "Time left\n" + Math.floor(this.#timerInt / 60 / 1000) + " : " + ((this.#timerInt / 1000) % 60)
 	}
 
 	constructor(nStopwatch, stopwatchModel, scene, intersectable) {

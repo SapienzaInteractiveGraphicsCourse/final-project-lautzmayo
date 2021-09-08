@@ -125,6 +125,16 @@ export class animationTool {
 		this.#rootNode.setAttribute("class", "animTool")
 		document.body.appendChild(this.#rootNode)
 
+		let refreshBtn = document.createElement("button")
+		refreshBtn.setAttribute("class", "animToolLogBtn")
+		refreshBtn.innerText = "Back To Main Menu"
+		refreshBtn.addEventListener("click", () => {
+			location.reload()
+		})
+		this.#rootNode.appendChild(refreshBtn)
+
+		this.#rootNode.appendChild(document.createElement("br"))
+
 		let label = document.createElement("label")
 		label.innerText = "Bone: "
 		this.#rootNode.appendChild(label)
