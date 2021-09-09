@@ -1,4 +1,5 @@
 import { difficultyColors } from "./difficultyManager.js"
+import { PlayableSounds, soundManager } from "./soundManager.js"
 
 export class gameover {
 	#gameOverDiv

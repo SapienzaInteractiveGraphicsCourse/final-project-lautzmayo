@@ -11,7 +11,7 @@ import { animationExec } from "./Js/animationExec.js"
 import { countDown } from "./Js/countDown.js"
 import { pauseUI } from "./Js/pauseUI.js"
 import { difficultyManager } from "./Js/difficultyManager.js"
-import { soundManager } from "./Js/soundManager.js"
+import { PlayableSounds, soundManager } from "./Js/soundManager.js"
 
 export let isGameRunning = false
 
@@ -39,7 +39,7 @@ let animTool = new animationTool()
 
 let diffMan = new difficultyManager()
 
-let soundMan
+let soundMan = null
 
 var times = 0
 var game
@@ -195,7 +195,9 @@ function init() {
 	lights = gameInitAssets[8]
 
 	//ANCHOR audio
-	soundMan = new soundManager(camera)
+	if (!animTool.isAnimToolActive) {
+		soundMan = new soundManager()
+	}
 
 	//add fog to the scene
 	scene.fog = new THREE.Fog(0x222233, 0, 20000)
@@ -340,6 +342,11 @@ function init() {
 	isGameRunning = true
 	// setStartingTime()
 
+	if (soundMan != null) {
+		//ANCHOR BGM
+		soundMan.toggleSound(PlayableSounds.bgm, true)
+	}
+
 	window.requestAnimationFrame(animate)
 }
 
@@ -403,13 +410,6 @@ function periodicLogger() {
 	setTimeout(periodicLogger, 3000)
 }
 
-function rotatebone() {
-	var target1 = document.getElementById("slider1")
-	var target2 = document.getElementById("slider2")
-	var target3 = document.getElementById("slider3")
-	// helper.bones[76].quaternion.setFromEuler(new THREE.Euler(target1.value, target2.value, target3.value, "XYZ"))
-}
-
 function raycastToTrashCollectables(event) {
 	//set x and y value from the screen
 	pointer.x = (event.clientX / window.innerWidth) * 2 - 1
@@ -448,6 +448,8 @@ function trashInteraction(obj, pos) {
 	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
 		if (selectedObject.trashType == "stopwatch") {
 			timer.stopwatchInteraction(selectedObject)
+			//ANCHOR STOPWATCH
+			soundMan.toggleSound(PlayableSounds.stopwatch, true)
 			return
 		}
 		if (isTrashCollectable(selectedObject.trashType)) {
@@ -476,7 +478,6 @@ function trashbinInteraction(obj, pos) {
 
 	if (manPos.distanceTo(trashPos) <= maxDistanceToInteract) {
 		man.lookAt(new THREE.Vector3(trashPos.x, man.position.y, trashPos.y))
-
 		disposeCollectedTrash(selectedObject.trashType)
 	}
 }
@@ -484,6 +485,8 @@ function trashbinInteraction(obj, pos) {
 //ANCHOR: animation callback
 //mixer.addEventListener( 'finished', function( e ) { …} ); // properties of e: type, action and direction
 function trashDisposal(obj) {
+	//ANCHOR pickup
+	soundMan.toggleSound(PlayableSounds.pickup, true)
 	ui.incrementCounter(obj.trashType)
 	spawnRandomTrash()
 	scene.remove(obj)
@@ -517,8 +520,12 @@ function disposeCollectedTrash(type) {
 	if (increment > 0) {
 		if (type == ui.getActiveCounter()) {
 			increment *= 2
+			//ANCHOR TRASHDUMP
+			soundMan.toggleSound(PlayableSounds.trashDump, true)
 			alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
 		} else {
+			//ANCHOR TRASHDUMP
+			soundMan.toggleSound(PlayableSounds.trashDump, true)
 			alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
 		}
 		ui.incrementCounter("total", increment)
@@ -581,16 +588,19 @@ export function pauseGame() {
 		isGameRunning = !isGameRunning
 		// ui.setMainPageVisibility(isPaused)
 		pauseVisual.toggleVisibility(!isGameRunning)
+		//ANCHOR PAUSE
+		soundMan.toggleSound(PlayableSounds.bgm, isGameRunning)
 	}
 }
 
 export function gameOver() {
 	if (!animTool.isAnimToolActive) {
 		isGameRunning = false
+		soundMan.toggleSound(PlayableSounds.bgm, null)
+		soundMan.toggleSound(PlayableSounds.gameOver, true)
 	}
 }
 
 export function addListener(lis) {
 	camera.add(lis)
-	console.log(lis)
 }
