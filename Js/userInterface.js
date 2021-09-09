@@ -1,4 +1,5 @@
 import { trashTypes } from "../main.js"
+import { gitHubPagesSucks } from "./localTesting.js"
 
 export class userInterface {
 	#rootNode
@@ -74,6 +75,7 @@ export class userInterface {
 
 		let img = document.createElement("img")
 		img.src = "/final-project-lautzmayo/buttons_menu.png"
+		img.src = gitHubPagesSucks(img.src)
 		img.setAttribute("id", "buttons")
 		this.#mainPageDiv.appendChild(img)
 

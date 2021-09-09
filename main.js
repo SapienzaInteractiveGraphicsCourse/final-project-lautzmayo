@@ -12,7 +12,7 @@ import { countDown } from "./Js/countDown.js"
 import { pauseUI } from "./Js/pauseUI.js"
 import { difficultyManager } from "./Js/difficultyManager.js"
 import { PlayableSounds, soundManager } from "./Js/soundManager.js"
-
+export const isLocal = true
 export let isGameRunning = false
 
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }

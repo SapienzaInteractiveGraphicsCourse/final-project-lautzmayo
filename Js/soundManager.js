@@ -1,5 +1,6 @@
 import { Audio, AudioListener, AudioLoader } from "../build/three.module.js"
 import { addListener } from "../main.js"
+import { gitHubPagesSucks } from "./localTesting.js"
 export const PlayableSounds = { bgm: "bgm", gameOver: "gameOver", trashDump: "trashDump", stopwatch: "stopwatch", pickup: "pickup" }
 export class soundManager {
 	#bgm = new SoundItem("/final-project-lautzmayo/Audio/CityLife.mp3", "bgm", 0.5, true)
@@ -49,6 +50,12 @@ export class soundManager {
 	}
 
 	constructor() {
+		this.#bgm.clipSrc = gitHubPagesSucks(this.#bgm.clipSrc)
+		this.#gameOver.clipSrc = gitHubPagesSucks(this.#gameOver.clipSrc)
+		this.#trashDump.clipSrc = gitHubPagesSucks(this.#trashDump.clipSrc)
+		this.#stopwatch.clipSrc = gitHubPagesSucks(this.#stopwatch.clipSrc)
+		this.#pickup.clipSrc = gitHubPagesSucks(this.#pickup.clipSrc)
+
 		this.#loadAudio(this.#bgm)
 		this.#loadAudio(this.#gameOver)
 		this.#loadAudio(this.#trashDump)
