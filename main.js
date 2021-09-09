@@ -11,6 +11,7 @@ import { animationExec } from "./Js/animationExec.js"
 import { countDown } from "./Js/countDown.js"
 import { pauseUI } from "./Js/pauseUI.js"
 import { difficultyManager } from "./Js/difficultyManager.js"
+import { soundManager } from "./Js/soundManager.js"
 
 export let isGameRunning = false
 
@@ -37,6 +38,8 @@ let pauseVisual = null
 let animTool = new animationTool()
 
 let diffMan = new difficultyManager()
+
+let soundMan
 
 var times = 0
 var game
@@ -190,6 +193,9 @@ function init() {
 	dirLight = gameInitAssets[6]
 	hemiLight = gameInitAssets[7]
 	lights = gameInitAssets[8]
+
+	//ANCHOR audio
+	soundMan = new soundManager(camera)
 
 	//add fog to the scene
 	scene.fog = new THREE.Fog(0x222233, 0, 20000)
@@ -582,4 +588,9 @@ export function gameOver() {
 	if (!animTool.isAnimToolActive) {
 		isGameRunning = false
 	}
+}
+
+export function addListener(lis) {
+	camera.add(lis)
+	console.log(lis)
 }
