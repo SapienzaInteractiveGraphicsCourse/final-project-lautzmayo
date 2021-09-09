@@ -569,7 +569,7 @@ export function pauseGame() {
 		//TODO disable input
 		isGameRunning = !isGameRunning
 		// ui.setMainPageVisibility(isPaused)
-		pauseVisual.toggleVisibility(isGameRunning)
+		pauseVisual.toggleVisibility(!isGameRunning)
 	}
 }
 
