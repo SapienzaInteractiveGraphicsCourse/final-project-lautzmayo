@@ -68,24 +68,17 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 		}
 
 		//se non vogliamo usare librerie per la fisica, questo controllo evita al personaggio di superare i bordi
-		if (man.position.x < -170 && (man.position.z < -170 || man.position.z > 170)) man.position.x += 2
-		if (man.position.x > 170 && (man.position.z < -170 || man.position.z > 170)) man.position.x -= 2
-		if (man.position.z < -170 && (man.position.x < -170 || man.position.x > 170)) man.position.z += 2
-		if (man.position.z > 170 && (man.position.x < -170 || man.position.x > 170)) man.position.z -= 2
+		if (man.position.x < -170 && (man.position.z < -170 || man.position.z > 170)) man.position.x += walkSpeedValue * 0.9
+		if (man.position.x > 170 && (man.position.z < -170 || man.position.z > 170)) man.position.x -= walkSpeedValue * 0.9
+		if (man.position.z < -170 && (man.position.x < -170 || man.position.x > 170)) man.position.z += walkSpeedValue * 0.9
+		if (man.position.z > 170 && (man.position.x < -170 || man.position.x > 170)) man.position.z -= walkSpeedValue * 0.9
 
 		let walkThreshold = 0.3
 		let rotationThreshold = 0.01
-		if (
-			(Math.abs(speed) >= walkThreshold || Math.abs(rotationSpeed) >= rotationThreshold) &&
-			getCurrentAnimationClip != animationClips.walk
-		) {
+		if ((Math.abs(speed) >= walkThreshold || Math.abs(rotationSpeed) >= rotationThreshold) && getCurrentAnimationClip != animationClips.walk) {
 			changeAnimation(animationClips.walk)
 		}
-		if (
-			Math.abs(speed) < walkThreshold &&
-			Math.abs(rotationSpeed) < rotationThreshold &&
-			getCurrentAnimationClip != animationClips.idle
-		) {
+		if (Math.abs(speed) < walkThreshold && Math.abs(rotationSpeed) < rotationThreshold && getCurrentAnimationClip != animationClips.idle) {
 			changeAnimation(animationClips.idle)
 		}
 	} else {

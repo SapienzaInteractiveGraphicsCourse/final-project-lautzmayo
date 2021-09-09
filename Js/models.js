@@ -13,6 +13,7 @@ export function getCharacter() {
 				playerMesh.scale.set(playerMesh.scale.x * scale, playerMesh.scale.y * scale, playerMesh.scale.z * scale)
 				playerMesh.castShadow = true
 				playerMesh.receiveShadow = true
+				// shadows(playerMesh)
 				changeMaterial(playerMesh)
 				resolve(playerMesh)
 			},
@@ -37,6 +38,7 @@ export function getMap() {
 				const mapMesh = gltf.scene
 				mapMesh.castShadow = true
 				mapMesh.receiveShadow = true
+				// shadows(mapMesh)
 				changeMaterial(mapMesh)
 				resolve(mapMesh)
 			},
@@ -63,6 +65,7 @@ export function getTrashCan() {
 				trashcanMesh.scale.set(trashcanMesh.scale.x * scale, trashcanMesh.scale.y * scale, trashcanMesh.scale.z * scale)
 				trashcanMesh.castShadow = true
 				trashcanMesh.receiveShadow = true
+				// shadows(trashcanMesh)
 				changeMaterial(trashcanMesh)
 				resolve(trashcanMesh)
 			},
@@ -92,6 +95,7 @@ export function getPlastic() {
 				plasticMesh.scale.set(plasticMesh.scale.x * scale, plasticMesh.scale.y * scale, plasticMesh.scale.z * scale)
 				plasticMesh.castShadow = true
 				plasticMesh.receiveShadow = true
+				// shadows(plasticMesh)
 				changeMaterial(plasticMesh)
 				resolve(plasticMesh)
 			},
@@ -121,6 +125,7 @@ export function getPaper() {
 				paperMesh.scale.set(paperMesh.scale.x * scale, paperMesh.scale.y * scale, paperMesh.scale.z * scale)
 				paperMesh.castShadow = true
 				paperMesh.receiveShadow = true
+				// shadows(paperMesh)
 				changeMaterial(paperMesh)
 				resolve(paperMesh)
 			},
@@ -150,6 +155,7 @@ export function getGlass() {
 				glassMesh.scale.set(glassMesh.scale.x * scale, glassMesh.scale.y * scale, glassMesh.scale.z * scale)
 				glassMesh.castShadow = true
 				glassMesh.receiveShadow = true
+				// shadows(glassMesh)
 				changeMaterial(glassMesh)
 				resolve(glassMesh)
 			},
@@ -176,6 +182,7 @@ export function getStopWatch() {
 				StopWatchMesh.scale.set(StopWatchMesh.scale.x * scale, StopWatchMesh.scale.y * scale, StopWatchMesh.scale.z * scale)
 				StopWatchMesh.castShadow = true
 				StopWatchMesh.receiveShadow = true
+				// shadows(StopWatchMesh)
 				changeMaterial(StopWatchMesh)
 				resolve(StopWatchMesh)
 			},
@@ -201,4 +208,14 @@ function changeMaterial(model) {
 
 		THREE.MeshBasicMaterial.prototype.copy.call(child.material, prevMaterial)
 	})
+}
+
+function shadows(mesh) {
+	mesh.castShadow = true
+	mesh.receiveShadow = true
+	if (mesh.children.length >= 0) {
+		mesh.children.forEach((e) => {
+			shadows(e)
+		})
+	}
 }

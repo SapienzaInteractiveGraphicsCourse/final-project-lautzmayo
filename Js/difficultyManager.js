@@ -16,13 +16,13 @@ export class difficultyManager {
 		return this.#itemCount
 	}
 
-	#time = [180000, 120000, 60000, 30000, 5000] //millisec
+	#time = [180000, 120000, 60000, 30000, 15000] //millisec
 	// #time = [1000, 1000, 1000, 1000, 1000] //millisec
 	get time() {
 		return this.#time
 	}
 
-	#bonusTime = [5000, 10000, 15000, 5000, 180000] //millisec
+	#bonusTime = [5000, 10000, 15000, 30000, 180000] //millisec
 	get bonusTime() {
 		return this.#bonusTime
 	}

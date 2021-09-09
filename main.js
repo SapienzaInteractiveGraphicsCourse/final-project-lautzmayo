@@ -174,6 +174,7 @@ function init() {
 	game = renderer.domElement
 	document.body.appendChild(renderer.domElement)
 	renderer.shadowMap.enabled = true
+	// renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.shadowSide = THREE.CullFaceBack
 	renderer.domElement.id = "game"
 
@@ -253,17 +254,16 @@ function init() {
 	// se non vogliamo utilizzarlo ->Delete
 	//ANCHOR: ANIM TOOL TRIGGER
 	if (!animTool.isAnimToolActive) {
-		nPaper = 3
 		paper = TRASH.locatePaper(nPaper, paperModel, scene, intersectable)
-		nPlastic = 3
 		plastic = TRASH.locatePlastic(nPlastic, plasticModel, scene, intersectable)
-		nGlass = 3
 		glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
-		nStopwatch = 3
 		const diffLvl = document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value
 		const t = diffMan.time[diffLvl]
 		const xtra = diffMan.bonusTime[diffLvl]
+		if (nStopwatch == 0) {
+			nStopwatch = 1
+		}
 		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
 
 		nTrashcollector = 3
@@ -332,6 +332,7 @@ function init() {
 		animTool.changeBone()
 	}
 	isGameRunning = true
+	// setStartingTime()
 
 	window.requestAnimationFrame(animate)
 }
@@ -521,10 +522,14 @@ function disposeCollectedTrash(type) {
 		alert("You must first collect some trash, then come back to dispose of it")
 	}
 }
-
+// let st
+// function setStartingTime() {
+// 	st = new Date().getTime() * 0.00002
+// }
 function dayNightCycle() {
+	// var ct = new Date().getTime() * 0.00002
+	// var time = 3 + (ct - st) * 10
 	var time = new Date().getTime() * 0.00002
-	// var time = 2.1;
 
 	var nSin = Math.sin(time)
 	var nCos = Math.cos(time)
@@ -539,13 +544,13 @@ function dayNightCycle() {
 		var f = 1
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
-			lights[i].intensity = 0.1
+			lights[i].intensity = 0.2
 		}
 	} else if (nSin < 0.2 && nSin > 0.0) {
 		var f = nSin / 0.2
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
-			lights[i].intensity = 0.2
+			lights[i].intensity = 0.4
 		}
 		sky.material.uniforms.topColor.value.setRGB(0.25 * f, 0.55 * f, 1 * f)
 		sky.material.uniforms.bottomColor.value.setRGB(1 * f, 1 * f, 1 * f)
@@ -554,7 +559,7 @@ function dayNightCycle() {
 		var f = 0
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
-			lights[i].intensity = 0.4
+			lights[i].intensity = 0.8
 		}
 		sky.material.uniforms.topColor.value.setRGB(0, 0, 0)
 		sky.material.uniforms.bottomColor.value.setRGB(0, 0, 0)

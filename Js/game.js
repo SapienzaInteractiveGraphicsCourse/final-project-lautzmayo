@@ -33,8 +33,12 @@ export function init(map, man, animTool) {
 	dirLight.shadow.camera.bottom = -d
 
 	dirLight.shadow.camera.far = 3500
-	dirLight.shadow.bias = -0.000001
+	// dirLight.shadow.camera.near = 500
+	dirLight.shadow.bias = 0.000001
 	scene.add(dirLight)
+
+	// var shadowCameraHelper = new THREE.CameraHelper(dirLight.shadow.camera)
+	// shadowCameraHelper.visible = true
 
 	//street lamps
 	var lights = []
@@ -163,5 +167,3 @@ export function init(map, man, animTool) {
 
 	return [scene, camera, map, borders, man, helper, dirLight, hemiLight, lights]
 }
-
-
