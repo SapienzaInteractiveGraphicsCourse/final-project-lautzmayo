@@ -2,15 +2,15 @@ import { Audio, AudioListener, AudioLoader } from "../build/three.module.js"
 import { addListener } from "../main.js"
 export const PlayableSounds = { bgm: "bgm", gameOver: "gameOver", trashDump: "trashDump", stopwatch: "stopwatch", pickup: "pickup" }
 export class soundManager {
-	#bgm = new SoundItem("/Audio/CityLife.mp3", "bgm", 0.5, true)
+	#bgm = new SoundItem("/final-project-lautzmayo/Audio/CityLife.mp3", "bgm", 0.5, true)
 
-	#gameOver = new SoundItem("/Audio/Game over!.mp3", "gameOver", 0.5, true)
+	#gameOver = new SoundItem("/final-project-lautzmayo/Audio/Game over!.mp3", "gameOver", 0.5, true)
 
-	#trashDump = new SoundItem("/Audio/Trash.mp3", "trashDump", 0.25, false)
+	#trashDump = new SoundItem("/final-project-lautzmayo/Audio/Trash.mp3", "trashDump", 0.25, false)
 
-	#stopwatch = new SoundItem("/Audio/stopwatch.mp3", "stopwatch", 0.25, false)
+	#stopwatch = new SoundItem("/final-project-lautzmayo/Audio/stopwatch.mp3", "stopwatch", 0.25, false)
 
-	#pickup = new SoundItem("/Audio/pickUp.mp3", "pickup", 0.5, false)
+	#pickup = new SoundItem("/final-project-lautzmayo/Audio/pickUp.mp3", "pickup", 0.5, false)
 
 	#loadAudio(s) {
 		// create an AudioListener and add it to the camera

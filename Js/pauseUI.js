@@ -19,7 +19,7 @@ export class pauseUI {
 		this.#pauseDiv.append(document.createElement("br"))
 
 		documentItem = document.createElement("img")
-		documentItem.setAttribute("src", "/buttons_menu.png")
+		documentItem.setAttribute("src", "/final-project-lautzmayo/buttons_menu.png")
 		this.#pauseDiv.append(documentItem)
 
 		this.#pauseDiv.append(document.createElement("br"))

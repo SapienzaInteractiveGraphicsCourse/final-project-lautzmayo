@@ -73,7 +73,7 @@ export class userInterface {
 		document.body.appendChild(this.#mainPageDiv)
 
 		let img = document.createElement("img")
-		img.src = "/buttons_menu.png"
+		img.src = "/final-project-lautzmayo/buttons_menu.png"
 		img.setAttribute("id", "buttons")
 		this.#mainPageDiv.appendChild(img)
 
