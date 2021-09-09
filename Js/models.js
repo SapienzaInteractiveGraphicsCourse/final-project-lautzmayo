@@ -1,6 +1,5 @@
 import * as THREE from "../build/three.module.js"
 import { GLTFLoader } from "https://threejs.org/examples/jsm/loaders/GLTFLoader.js"
-import { BufferGeometryUtils } from "../jsm/utils/BufferGeometryUtils.js"
 
 export function getCharacter() {
 	const myPromise = new Promise((resolve, reject) => {
