@@ -2,11 +2,13 @@ import { AnimationMixer, Clock, QuaternionKeyframeTrack } from "../build/three.m
 import { animationClips } from "../main.js"
 import { idleData } from "./animationData/idleAnimation.js"
 import { walkData } from "./animationData/walkAnimation.js"
+import { disposeData } from "./animationData/disposeAnimation.js"
 import { bones } from "./animationTool.js"
 
 export class animationExec {
 	idle
 	walk
+	dispose
 
 	getAnimation(skeleton, clip, mixer) {
 		return eval(`this.#${clip}Animation(skeleton, mixer)`)
@@ -27,6 +29,15 @@ export class animationExec {
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 
 		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, 40)
+	}
+
+	#disposeAnimation(skeleton, mixer) {
+		let keyframeComponentsArray = this.#prepareArrays(this.dispose)
+		let timeSteps = [2, 8, 14, 20, 26, 32]
+
+		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
+
+		return this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, 5)
 	}
 
 	#prepareClip(mixer, clipName, timesteps, tracks, timescale) {
@@ -94,5 +105,6 @@ export class animationExec {
 	constructor() {
 		this.idle = idleData
 		this.walk = walkData
+		this.dispose = disposeData
 	}
 }
