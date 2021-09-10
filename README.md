@@ -1,52 +1,61 @@
 # Garbage Boy
 Final project for the course of Interactive Graphics 2020/2021.
 
-Student: Gabriele Maiorano 1961926;
+Student: Maiorano Gabriele 1961926;
 
-Student: Davide Lauterio 1934615;
-
+Student: Lauterio Davide 1934615;
 
 The aim of the game is to collect and throw the garbage in the correct bins before time runs out.
 You cannot collect items of different types at the same time.
-By collecting the hourglasses you will have extra time.
+By collecting the hourglasses you will have extra time. 
 
+---
 # Commands
 
--W: Move Forward
+- W: Move Forward
 
--S: Move Backward
+- S: Move Backward
 
--A: Rotate Left
+- A: Rotate Left
 
--D: Rotate Right
+- D: Rotate Right
 
--R: Raise Camera
+- R: Raise Camera
 
--F: Lower Camera
+- F: Lower Camera
 
--P: Pause Game
+- P: Pause Game
 
--Mouse: Interact with objects
+- Mouse: Interact with objects
 
-# Object
+---
+# Objects
 
 The different type of trash to be collected are:
 
--Paper;
+- Paper;
+  - With a correspondant White Trashbin;
 
--Plastic;
+- Plastic;
+  - With a correspondant Yellow Trashbin; 
 
--Glass;
+- Glass;
+  - With a correspondant Green Trashbin;
 
+Collect the Hourglasses to get more time.
+
+---
 # Play
 
 [Click here to play the game](https://sapienzainteractivegraphicscourse.github.io/final-project-lautzmayo/)
+---
 
-# Local
+---
+# Local 
 
-If you want to try the game in local, download the repository and then start the server in the folder of the game:
+If you want to try the game or experiment with the code in local, pull the repository and start a server in the root folder, where the index.html file is located, with the command:
 ```python
 python -m http.server
 ```
-Please note that in local, image and sounds are not available.
+<b>Please note</b>: To enable sound and images in local you have to remove all the intances of the string ``` "final-project-lautzmayo/" ``` from the code.
 
