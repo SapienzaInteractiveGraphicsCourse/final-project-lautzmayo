@@ -7,25 +7,29 @@ export function init(map, man, animTool) {
 
 	scene.background = new THREE.Color(0x00ccff)
 
+	const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+	light.intensity=1
+	scene.add( light );
+	
 	// add hemi lights
-
+	/*		
 	var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.05)
 	hemiLight.color.setHSL(0.6, 1, 0.6)
 	hemiLight.groundColor.setHSL(0.095, 1, 0.75)
-	hemiLight.position.set(0, 500, 0)
+	hemiLight.position.set(0, 200, 0)
 	scene.add(hemiLight)
-
+	*/
 	// this is the Sun
 	var dirLight = new THREE.DirectionalLight(0xffffff, 1)
 	dirLight.color.setHSL(0.1, 1, 0.95)
 	dirLight.position.set(-1, 0.75, 1)
-	dirLight.position.multiplyScalar(50)
+	dirLight.position.multiplyScalar(100)
 	scene.add(dirLight)
 
 	dirLight.castShadow = true
-	dirLight.shadow.mapSize.width = dirLight.shadow.mapSize.height = 1024 * 2
+	dirLight.shadow.mapSize.width = dirLight.shadow.mapSize.height = 1024 * 20
 
-	var d = 30
+	var d = 3000
 
 	dirLight.shadow.camera.left = -d
 	dirLight.shadow.camera.right = d
@@ -33,30 +37,29 @@ export function init(map, man, animTool) {
 	dirLight.shadow.camera.bottom = -d
 
 	dirLight.shadow.camera.far = 3500
-	// dirLight.shadow.camera.near = 500
-	dirLight.shadow.bias = 0.000001
+	dirLight.shadow.bias = -0.001
 	scene.add(dirLight)
-
-	// var shadowCameraHelper = new THREE.CameraHelper(dirLight.shadow.camera)
-	// shadowCameraHelper.visible = true
 
 	//street lamps
 	var lights = []
-	lights[0] = new THREE.PointLight(0xffffbf, 0.4)
-	lights[1] = new THREE.PointLight(0xffffbf, 0.4)
-	lights[2] = new THREE.PointLight(0xffffbf, 0.4)
-	lights[3] = new THREE.PointLight(0xffffbf, 0.4)
+	lights[0] = new THREE.PointLight(0xffffff)
+	lights[1] = new THREE.PointLight(0xffffff)
+	lights[2] = new THREE.PointLight(0xffffff)
+	lights[3] = new THREE.PointLight(0xffffff)
 
 	lights[0].position.set(-240, 100, -180)
 	lights[1].position.set(100, 100, -290)
 	lights[2].position.set(-50, 100, 250)
 	lights[3].position.set(280, 100, 90)
 
-	scene.add(lights[0])
-	scene.add(lights[1])
-	scene.add(lights[2])
-	scene.add(lights[3])
-
+	for(var i=0;i<lights.length;i++){
+		lights[i].castShadow = true;
+		lights[i].shadow.mapSize.width = 1024;
+		lights[i].shadow.mapSize.height = 1024;
+		lights[i].shadow.bias = -0.01
+		scene.add(lights[i])
+	}
+	
 	//ANCHOR: ANIM TOOL TRIGGER
 	if (!animTool.isAnimToolActive) {
 		map.position.set(0, 0, 0)
@@ -165,5 +168,6 @@ export function init(map, man, animTool) {
 	camera.lookAt(scene.position)
 	//Cancellare Borders se non utilizziamo librerie per la fisica ( anche in main.js aggiornare indici di temp)
 
-	return [scene, camera, map, borders, man, helper, dirLight, hemiLight, lights]
+	return [scene, camera, map, borders, man, helper, dirLight, lights]
+	//hemiLight removed
 }

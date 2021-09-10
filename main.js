@@ -177,7 +177,7 @@ function init() {
 	game = renderer.domElement
 	document.body.appendChild(renderer.domElement)
 	renderer.shadowMap.enabled = true
-	// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	//renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.shadowSide = THREE.CullFaceBack
 	renderer.domElement.id = "game"
 
@@ -191,8 +191,8 @@ function init() {
 	man = gameInitAssets[4]
 	helper = gameInitAssets[5]
 	dirLight = gameInitAssets[6]
-	hemiLight = gameInitAssets[7]
-	lights = gameInitAssets[8]
+	//hemiLight = gameInitAssets[7]
+	lights = gameInitAssets[7]
 
 	//ANCHOR audio
 	if (!animTool.isAnimToolActive) {
@@ -212,7 +212,7 @@ function init() {
 		offset: { type: "f", value: 33 },
 		exponent: { type: "f", value: 0.6 }
 	}
-	uniforms.topColor.value.copy(hemiLight.color)
+	//uniforms.topColor.value.copy(hemiLight.color)
 	scene.fog.color.copy(uniforms.bottomColor.value)
 
 	var skyGeo = new THREE.SphereGeometry(4000, 32, 15)
@@ -370,7 +370,7 @@ function render() {
 	if (!animTool.isAnimToolActive) {
 		mixer.update(clock.getDelta())
 
-		dayNightCycle()
+		dayNightCycle(0.01)
 	}
 }
 
@@ -535,15 +535,13 @@ function disposeCollectedTrash(type) {
 		alert("You must first collect some trash, then come back to dispose of it")
 	}
 }
-// let st
-// function setStartingTime() {
-// 	st = new Date().getTime() * 0.00002
-// }
-function dayNightCycle() {
-	// var ct = new Date().getTime() * 0.00002
-	// var time = 3 + (ct - st) * 10
-	var time = new Date().getTime() * 0.00002
 
+//day 0.12 | night 4.1
+var time = 4.1
+function dayNightCycle(dt) {
+
+	time+= dt/15
+	console.log(time)
 	var nSin = Math.sin(time)
 	var nCos = Math.cos(time)
 
@@ -557,7 +555,7 @@ function dayNightCycle() {
 		var f = 1
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
-			lights[i].intensity = 0.2
+			lights[i].intensity = 0.0
 		}
 	} else if (nSin < 0.2 && nSin > 0.0) {
 		var f = nSin / 0.2
@@ -569,7 +567,7 @@ function dayNightCycle() {
 		sky.material.uniforms.bottomColor.value.setRGB(1 * f, 1 * f, 1 * f)
 	} else {
 		//night
-		var f = 0
+		var f = 0.2
 		dirLight.intensity = f
 		for (var i = 0; i < lights.length; i++) {
 			lights[i].intensity = 0.8

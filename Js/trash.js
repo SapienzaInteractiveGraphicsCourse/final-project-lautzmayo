@@ -18,7 +18,7 @@ export function locatePaper(nObject, objectMesh, scene, intersectable) {
 		//take a random number in the range min - max
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
+		while (pos.includes([x, z]) || (x < -160 && z < -160) || (x < -160 && z > 160) || (x > 160 && z < -160) || (x > 160 && z > 160)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -56,7 +56,7 @@ export function locatePlastic(nObject, objectMesh, scene, intersectable) {
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
+		while (pos.includes([x, z]) || (x < -160 && z < -160) || (x < -160 && z > 160) || (x > 160 && z < -160) || (x > 160 && z > 160)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -90,7 +90,7 @@ export function locateGlass(nObject, objectMesh, scene, intersectable) {
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
+		while (pos.includes([x, z]) || (x < -160 && z < -160) || (x < -160 && z > 160) || (x > 160 && z < -160) || (x > 160 && z > 160)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
@@ -125,7 +125,7 @@ export function locateStopwatch(nObject, objectMesh, scene, intersectable) {
 		var minz = -900
 		var x = Math.random() * (maxx - minx) + minx
 		var z = Math.random() * (maxz - minz) + minz
-		while (pos.includes([x, z]) || (x < -170 && z < -170) || (x < -170 && z > 170) || (x > 170 && z < -170) || (x > 170 && z > 170)) {
+		while (pos.includes([x, z]) || (x < -160 && z < -160) || (x < -160 && z > 160) || (x > 160 && z < -160) || (x > 160 && z > 160)) {
 			var x = Math.random() * (maxx - minx) + minx
 			var z = Math.random() * (maxz - minz) + minz
 		}
