@@ -13,19 +13,29 @@ By collecting the hourglasses you will have extra time.
 # Commands
 
 -W: Move Forward
+
 -S: Move Backward
+
 -A: Rotate Left
+
 -D: Rotate Right
+
 -R: Raise Camera
+
 -F: Lower Camera
+
 -P: Pause Game
+
 -Mouse: Interact with objects
 
 # Object
 
 The different type of trash to be collected are:
+
 -Paper;
+
 -Plastic;
+
 -Glass;
 
 # Play
