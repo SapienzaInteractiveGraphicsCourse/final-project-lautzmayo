@@ -47,7 +47,8 @@ var game
 let timer
 
 //MESH
-var man, map, trashcan
+export var man
+var map, trashcan
 
 //borders se vogliamo usare librerie per la fisica in modo tale da associare un body per ogni bordo (da controllare, dipende dalla libreria)
 var borders
@@ -539,9 +540,8 @@ function disposeCollectedTrash(type) {
 //day 0.12 | night 4.1
 var time = 4.1
 function dayNightCycle(dt) {
-
-	time+= dt/15
-	console.log(time)
+	time += dt / 15
+	// console.log(time)
 	var nSin = Math.sin(time)
 	var nCos = Math.cos(time)
 

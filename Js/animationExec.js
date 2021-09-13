@@ -1,43 +1,67 @@
-import { AnimationMixer, Clock, QuaternionKeyframeTrack } from "../build/three.module.js"
+import { AnimationMixer, Clock, QuaternionKeyframeTrack, VectorKeyframeTrack } from "../build/three.module.js"
 import { animationClips } from "../main.js"
-import { idleData } from "./animationData/idleAnimation.js"
-import { walkData } from "./animationData/walkAnimation.js"
-import { disposeData } from "./animationData/disposeAnimation.js"
+import { idleData, idlePositions } from "./animationData/idleAnimation.js"
+import { walkData, walkPositions } from "./animationData/walkAnimation.js"
+import { disposeData, disposePositions } from "./animationData/disposeAnimation.js"
+import { collectData, collectPositions } from "./animationData/collectAnimation.js"
 import { bones } from "./animationTool.js"
 
 export class animationExec {
 	idle
+	idlePositions
 	walk
+	walkPositions
 	dispose
+	disposePositions
+	collect
+	collectPositions
 
 	getAnimation(skeleton, clip, mixer) {
+		//this should recognize if clip is not a wrong string
 		return eval(`this.#${clip}Animation(skeleton, mixer)`)
 	}
 
 	#idleAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.idle)
+		let keyframePositionsArray = this.#preparePositions(this.idlePositions)
 		let timeSteps = [2, 8, 14, 20]
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
+		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
 		return this.#prepareClip(mixer, animationClips.idle, timeSteps, tracks, 10)
 	}
 	#walkAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.walk)
+		let keyframePositionsArray = this.#preparePositions(this.walkPositions)
 		let timeSteps = [2, 8, 14, 20, 26, 32, 38, 44, 50]
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
+		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
 		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, 40)
 	}
 
 	#disposeAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.dispose)
+		let keyframePositionsArray = this.#preparePositions(this.disposePositions)
 		let timeSteps = [2, 8, 14, 20, 26, 32]
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
+		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
 		return this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, 5)
+	}
+
+	#collectAnimation(skeleton, mixer) {
+		let keyframeComponentsArray = this.#prepareArrays(this.collect)
+		let keyframePositionsArray = this.#preparePositions(this.collectPositions)
+		let timeSteps = [2, 8, 14, 20, 26, 32]
+
+		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
+		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
+
+		return this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, 5)
 	}
 
 	#prepareClip(mixer, clipName, timesteps, tracks, timescale) {
@@ -71,6 +95,9 @@ export class animationExec {
 		}
 		return tracks
 	}
+	#prepareVectorKeyframeTrack(array, timesteps) {
+		return new VectorKeyframeTrack(`man.children[0].position`, timesteps, array)
+	}
 
 	#prepareArrays(clipArray) {
 		let keyframePerBoneArray = []
@@ -102,9 +129,27 @@ export class animationExec {
 		return keyframeComponentsPerBoneArray
 	}
 
+	#preparePositions(clipArray) {
+		let ret = []
+		clipArray.forEach((e) => {
+			ret.push(e.x)
+			ret.push(e.y)
+			ret.push(e.z)
+		})
+		ret.push(clipArray[0].x)
+		ret.push(clipArray[0].y)
+		ret.push(clipArray[0].z)
+		return ret
+	}
+
 	constructor() {
 		this.idle = idleData
+		this.idlePositions = idlePositions
 		this.walk = walkData
+		this.walkPositions = walkPositions
 		this.dispose = disposeData
+		this.disposePositions = disposePositions
+		this.collect = collectData
+		this.collectPositions = collectPositions
 	}
 }

@@ -7,10 +7,10 @@ export function init(map, man, animTool) {
 
 	scene.background = new THREE.Color(0x00ccff)
 
-	const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-	light.intensity=1
-	scene.add( light );
-	
+	const light = new THREE.AmbientLight(0x404040) // soft white light
+	light.intensity = 1
+	scene.add(light)
+
 	// add hemi lights
 	/*		
 	var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.05)
@@ -52,14 +52,16 @@ export function init(map, man, animTool) {
 	lights[2].position.set(-50, 100, 250)
 	lights[3].position.set(280, 100, 90)
 
-	for(var i=0;i<lights.length;i++){
-		lights[i].castShadow = true;
-		lights[i].shadow.mapSize.width = 1024;
-		lights[i].shadow.mapSize.height = 1024;
-		lights[i].shadow.bias = -0.01
-		scene.add(lights[i])
+	if (!animTool.isAnimToolActive) {
+		for (var i = 0; i < lights.length; i++) {
+			lights[i].castShadow = true
+			lights[i].shadow.mapSize.width = 1024
+			lights[i].shadow.mapSize.height = 1024
+			lights[i].shadow.bias = -0.01
+			scene.add(lights[i])
+		}
 	}
-	
+
 	//ANCHOR: ANIM TOOL TRIGGER
 	if (!animTool.isAnimToolActive) {
 		map.position.set(0, 0, 0)

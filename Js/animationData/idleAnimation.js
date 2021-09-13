@@ -58,3 +58,4 @@ export let idleData = [
 	]
 ]
 export let idleNaming = ["standing", "forwardRightArm", "forwardLeftArm"]
+export let idlePositions = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0)]

@@ -1,11 +1,11 @@
 import { Euler, Quaternion, Vector3 } from "../build/three.module.js"
-import { helper } from "../main.js"
+import { helper, man } from "../main.js"
 import { animationExec } from "./animationExec.js"
 import { animationClips } from "../main.js"
-import { walkData, walkNaming } from "./animationData/walkAnimation.js"
-import { idleData, idleNaming } from "./animationData/idleAnimation.js"
-import { collectData, collectNaming } from "./animationData/collectAnimation.js"
-import { disposeData, disposeNaming } from "./animationData/disposeAnimation.js"
+import { walkData, walkNaming, walkPositions } from "./animationData/walkAnimation.js"
+import { idleData, idleNaming, idlePositions } from "./animationData/idleAnimation.js"
+import { collectData, collectNaming, collectPositions } from "./animationData/collectAnimation.js"
+import { disposeData, disposeNaming, disposePositions } from "./animationData/disposeAnimation.js"
 
 class boneTool {
 	#boneId
@@ -65,6 +65,14 @@ export class animationTool {
 	#inputZ
 	#sliderZ
 
+	#posSliders
+	#posInputX
+	#posSliderX
+	#posInputY
+	#posSliderY
+	#posInputZ
+	#posSliderZ
+
 	#toolDiv
 
 	#logBtn
@@ -76,6 +84,7 @@ export class animationTool {
 	#currentFrameLabel
 
 	#keyFrameArray = []
+	#keyFramePositions = []
 	#keyFrameNaming = []
 
 	#animPartsDiv
@@ -119,6 +128,93 @@ export class animationTool {
 
 	#availableAnimations = [animationClips.idle, animationClips.walk, animationClips.collect, animationClips.dispose]
 
+	#makePositionSliders() {
+		this.#posSliders.appendChild(document.createElement("br"))
+		let label = document.createElement("h3")
+		label.innerText = "Modify Position"
+		this.#posSliders.appendChild(label)
+
+		this.#posSliders.appendChild(document.createElement("br"))
+		label = document.createElement("label")
+		label.innerText = "X: "
+		this.#posSliders.appendChild(label)
+
+		this.#posInputX = document.createElement("input")
+		this.#posInputX.setAttribute("type", "number")
+		this.#posInputX.setAttribute("min", "-50")
+		this.#posInputX.setAttribute("max", "50")
+		this.#posInputX.setAttribute("value", "0.00")
+		this.#posInputX.setAttribute("step", "0.1")
+		this.#posInputX.setAttribute("id", "animToolPosInputX")
+		this.#posSliders.appendChild(this.#posInputX)
+		this.#posInputX.addEventListener("input", () => this.positionSliderAdjust())
+
+		this.#posSliderX = document.createElement("input")
+		this.#posSliderX.setAttribute("type", "range")
+		this.#posSliderX.setAttribute("min", "-50")
+		this.#posSliderX.setAttribute("max", "50")
+		this.#posSliderX.setAttribute("value", "0.00")
+		this.#posSliderX.setAttribute("step", "0.1")
+		this.#posSliderX.setAttribute("id", "posSliderX")
+		this.#posSliderX.setAttribute("orient", "horizontal")
+		this.#posSliders.appendChild(this.#posSliderX)
+		this.#posSliderX.addEventListener("input", () => this.positionInputAdjust())
+
+		this.#posSliders.appendChild(document.createElement("br"))
+		label = document.createElement("label")
+		label.innerText = "Y: "
+		this.#posSliders.appendChild(label)
+
+		this.#posInputY = document.createElement("input")
+		this.#posInputY.setAttribute("type", "number")
+		this.#posInputY.setAttribute("min", "-50")
+		this.#posInputY.setAttribute("max", "50")
+		this.#posInputY.setAttribute("value", "0.00")
+		this.#posInputY.setAttribute("step", "0.1")
+		this.#posInputY.setAttribute("id", "animToolPosInputY")
+		this.#posSliders.appendChild(this.#posInputY)
+		this.#posInputY.addEventListener("input", () => this.positionSliderAdjust())
+
+		this.#posSliderY = document.createElement("input")
+		this.#posSliderY.setAttribute("type", "range")
+		this.#posSliderY.setAttribute("min", "-50")
+		this.#posSliderY.setAttribute("max", "50")
+		this.#posSliderY.setAttribute("value", "0.00")
+		this.#posSliderY.setAttribute("step", "0.1")
+		this.#posSliderY.setAttribute("id", "posSliderY")
+		this.#posSliderY.setAttribute("orient", "horizontal")
+		this.#posSliders.appendChild(this.#posSliderY)
+		this.#posSliderY.addEventListener("input", () => this.positionInputAdjust())
+
+		this.#posSliders.appendChild(document.createElement("br"))
+		label = document.createElement("label")
+		label.innerText = "Z: "
+		this.#posSliders.appendChild(label)
+
+		this.#posInputZ = document.createElement("input")
+		this.#posInputZ.setAttribute("type", "number")
+		this.#posInputZ.setAttribute("min", "-50")
+		this.#posInputZ.setAttribute("max", "50")
+		this.#posInputZ.setAttribute("value", "0.00")
+		this.#posInputZ.setAttribute("step", "0.1")
+		this.#posInputZ.setAttribute("id", "animToolPosInputZ")
+		this.#posSliders.appendChild(this.#posInputZ)
+		this.#posInputZ.addEventListener("input", () => this.positionSliderAdjust())
+
+		this.#posSliderZ = document.createElement("input")
+		this.#posSliderZ.setAttribute("type", "range")
+		this.#posSliderZ.setAttribute("min", "-50")
+		this.#posSliderZ.setAttribute("max", "50")
+		this.#posSliderZ.setAttribute("value", "0.00")
+		this.#posSliderZ.setAttribute("step", "0.1")
+		this.#posSliderZ.setAttribute("id", "posSliderZ")
+		this.#posSliderZ.setAttribute("orient", "horizontal")
+		this.#posSliders.appendChild(this.#posSliderZ)
+		this.#posSliderZ.addEventListener("input", () => this.positionInputAdjust())
+
+		this.#posSliders.appendChild(document.createElement("br"))
+	}
+
 	#makeUiItem() {
 		this.#rootNode = document.createElement("div")
 		this.#rootNode.setAttribute("id", "animTool")
@@ -135,7 +231,13 @@ export class animationTool {
 
 		this.#rootNode.appendChild(document.createElement("br"))
 
-		let label = document.createElement("label")
+		let label = document.createElement("h3")
+		label.innerText = "Modify bones rotation"
+		this.#rootNode.appendChild(label)
+
+		this.#rootNode.appendChild(document.createElement("br"))
+
+		label = document.createElement("label")
 		label.innerText = "Bone: "
 		this.#rootNode.appendChild(label)
 
@@ -159,12 +261,16 @@ export class animationTool {
 		this.#sliders.setAttribute("id", "animToolSliders")
 		this.#rootNode.appendChild(this.#sliders)
 
+		this.#posSliders = document.createElement("div")
+		this.#posSliders.setAttribute("id", "animToolSlidersPos")
+		this.#rootNode.appendChild(this.#posSliders)
+
+		//TODO : add style auto fit width to numerical input
+
 		this.#sliders.appendChild(document.createElement("br"))
 		label = document.createElement("label")
 		label.innerText = "X: "
 		this.#sliders.appendChild(label)
-
-		//TODO : add style auto fit width to numerical input
 
 		this.#inputX = document.createElement("input")
 		this.#inputX.setAttribute("type", "number")
@@ -241,6 +347,8 @@ export class animationTool {
 
 		this.#sliders.appendChild(document.createElement("br"))
 
+		this.#makePositionSliders()
+
 		this.#toolDiv = document.createElement("div")
 		this.#toolDiv.setAttribute("id", "toolDiv")
 		this.#rootNode.appendChild(this.#toolDiv)
@@ -255,8 +363,8 @@ export class animationTool {
 		// this.#logBtn.innerText = "LOG"
 		// this.#rootNode.appendChild(this.#logBtn)
 		// this.#logBtn.addEventListener("click", () => this.printAllQuaternions())
-
 		// this.#toolDiv.appendChild(document.createElement("br"))
+
 		this.#constructAnimBtn = document.createElement("button")
 		this.#constructAnimBtn.setAttribute("id", "constructAnimBtn")
 		this.#constructAnimBtn.setAttribute("class", "animToolLogBtn")
@@ -381,8 +489,10 @@ export class animationTool {
 			holder = helper.bones[b.boneId].quaternion
 			ret.push(new Quaternion(holder.x, holder.y, holder.z, holder.w))
 		})
+
 		this.#keyFrameArray.push(ret)
 		this.#keyFrameNaming.push(this.#addCurrentTxt.value.toString())
+		this.#keyFramePositions.push(man.children[0].position)
 
 		this.#updateAnimationParts(true)
 	}
@@ -399,6 +509,8 @@ export class animationTool {
 
 		this.#keyFrameArray[i] = ret
 
+		this.#keyFramePositions[i] = new Vector3(this.#posSliderX.value, this.#posSliderY.value, this.#posSliderY.value)
+
 		this.#updateAnimationParts(true)
 	}
 
@@ -407,6 +519,7 @@ export class animationTool {
 
 		this.#keyFrameArray.splice(i, 1)
 		this.#keyFrameNaming.splice(i, 1)
+		this.#keyFramePositions.splice(i, 1)
 
 		this.#updateAnimationParts(true)
 	}
@@ -427,6 +540,11 @@ export class animationTool {
 		for (let i = 0; i < this.#keyFrameNaming.length; i++) {
 			let h = this.#keyFrameNaming[i]
 			ret += `"${h}", \n`
+		}
+		ret += `] \nexport let ${this.#currentClip}Positions = [\n`
+		for (let i = 0; i < this.#keyFramePositions.length; i++) {
+			let h = this.#keyFramePositions[i]
+			ret += `new THREE.Vector3(${h.x}, ${h.y}, ${h.z}), \n`
 		}
 		ret += "]"
 
@@ -519,15 +637,21 @@ export class animationTool {
 				this.adjustSliders()
 			}
 		}
+		this.#posInputX.value = this.#keyFramePositions[index].x
+		this.#posInputY.value = this.#keyFramePositions[index].y
+		this.#posInputZ.value = this.#keyFramePositions[index].z
+		this.positionSliderAdjust()
 	}
 
 	createAnimationArray(clip) {
 		if (clip != null && clip != "new") {
 			eval(`this.#keyFrameArray = ${clip}Data`)
 			eval(`this.#keyFrameNaming = ${clip}Naming`)
+			eval(`this.#keyFramePositions = ${clip}Positions`)
 		} else {
 			this.#keyFrameArray = []
 			this.#keyFrameNaming = []
+			this.#keyFramePositions = []
 		}
 		this.#currentClip = clip
 
@@ -567,6 +691,12 @@ export class animationTool {
 		helper.bones[boneId].quaternion.setFromEuler(new THREE.Euler(this.#inputX.value, this.#inputY.value, this.#inputZ.value, "XYZ"))
 	}
 
+	moveCharacter() {
+		let item = man.children[0]
+
+		item.position.set(this.#posInputX.value, this.#posInputY.value, this.#posInputZ.value)
+	}
+
 	adjustSliders() {
 		this.#sliderX.value = this.#inputX.value
 		this.#sliderY.value = this.#inputY.value
@@ -578,6 +708,19 @@ export class animationTool {
 		this.#inputY.value = this.#sliderY.value
 		this.#inputZ.value = this.#sliderZ.value
 		this.rotatebone()
+	}
+
+	positionSliderAdjust() {
+		this.#posSliderX.value = this.#posInputX.value
+		this.#posSliderY.value = this.#posInputY.value
+		this.#posSliderZ.value = this.#posInputZ.value
+		this.moveCharacter()
+	}
+	positionInputAdjust() {
+		this.#posInputX.value = this.#posSliderX.value
+		this.#posInputY.value = this.#posSliderY.value
+		this.#posInputZ.value = this.#posSliderZ.value
+		this.moveCharacter()
 	}
 
 	changeBone() {
@@ -601,8 +744,13 @@ export class animationTool {
 			holder = helper.bones[b.boneId].quaternion
 			ret += `${holder.x.toFixed(2)}, ${holder.y.toFixed(2)}, ${holder.z.toFixed(2)}, ${holder.w.toFixed(2)}\n`
 		})
-		alert("Actual Relevant Bones Quaternions (x, y, z, w): \n" + ret)
+		ret = "Actual Relevant Bones Quaternions (x, y, z, w): \n" + ret
+
+		ret += `\nPosition: \nX: ${this.#posSliderX.value}\nY: ${this.#posSliderY.value}\nZ: ${this.#posSliderZ.value}\n`
+
+		console.log(ret)
 	}
+
 	constructAnim() {
 		let ret = ""
 

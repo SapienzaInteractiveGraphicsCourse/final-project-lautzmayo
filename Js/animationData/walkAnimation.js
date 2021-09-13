@@ -153,3 +153,13 @@ export let walkData = [
 	]
 ]
 export let walkNaming = ["contact", "recoil", "passing", "highPoint", "contactMirror", "recoilMirror", "passingMirror", "highPointMirror"]
+export let walkPositions = [
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0),
+	new THREE.Vector3(0, 0, 0)
+]
