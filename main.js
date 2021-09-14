@@ -538,7 +538,7 @@ function disposeCollectedTrash(type) {
 }
 
 //day 0.12 | night 4.1
-var time = 4.1
+var time = 0.12
 function dayNightCycle(dt) {
 	time += dt / 15
 	// console.log(time)

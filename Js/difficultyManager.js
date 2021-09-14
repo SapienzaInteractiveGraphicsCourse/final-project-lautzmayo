@@ -22,7 +22,7 @@ export class difficultyManager {
 		return this.#time
 	}
 
-	#bonusTime = [5000, 10000, 15000, 30000, 180000] //millisec
+	#bonusTime = [5000 * 2, 10000 * 2, 15000 * 2, 30000 * 1.5, 180000] //millisec
 	get bonusTime() {
 		return this.#bonusTime
 	}

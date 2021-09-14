@@ -1,9 +1,11 @@
 import { AnimationMixer, Clock, QuaternionKeyframeTrack, VectorKeyframeTrack } from "../build/three.module.js"
 import { animationClips } from "../main.js"
+
 import { idleData, idlePositions } from "./animationData/idleAnimation.js"
 import { walkData, walkPositions } from "./animationData/walkAnimation.js"
 import { disposeData, disposePositions } from "./animationData/disposeAnimation.js"
 import { collectData, collectPositions } from "./animationData/collectAnimation.js"
+
 import { bones } from "./animationTool.js"
 
 export class animationExec {
@@ -31,6 +33,7 @@ export class animationExec {
 
 		return this.#prepareClip(mixer, animationClips.idle, timeSteps, tracks, 10)
 	}
+
 	#walkAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.walk)
 		let keyframePositionsArray = this.#preparePositions(this.walkPositions)
