@@ -1,5 +1,16 @@
 import * as THREE from "../build/three.module.js"
 var camera
+
+var lights = []
+var dirLight
+
+export function toggleShadows() {
+	dirLight.castShadow = !dirLight.castShadow
+	for (var i = 0; i < lights.length; i++) {
+		lights[i].castShadow = !lights[i].castShadow
+	}
+}
+
 export function init(map, man, animTool) {
 	var scene, camera
 
@@ -20,7 +31,7 @@ export function init(map, man, animTool) {
 	scene.add(hemiLight)
 	*/
 	// this is the Sun
-	var dirLight = new THREE.DirectionalLight(0xffffff, 1)
+	dirLight = new THREE.DirectionalLight(0xffffff, 1)
 	dirLight.color.setHSL(0.1, 1, 0.95)
 	dirLight.position.set(-1, 0.75, 1)
 	dirLight.position.multiplyScalar(100)
@@ -41,7 +52,6 @@ export function init(map, man, animTool) {
 	scene.add(dirLight)
 
 	//street lamps
-	var lights = []
 	lights[0] = new THREE.PointLight(0xffffff)
 	lights[1] = new THREE.PointLight(0xffffff)
 	lights[2] = new THREE.PointLight(0xffffff)

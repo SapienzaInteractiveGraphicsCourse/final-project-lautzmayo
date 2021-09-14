@@ -1,4 +1,5 @@
 import { trashTypes } from "../main.js"
+import { toggleShadows } from "./game.js"
 
 export class userInterface {
 	#rootNode
@@ -153,6 +154,15 @@ export class userInterface {
 			this.#totalDiv.appendChild(span)
 
 			this.#rootNode.appendChild(this.#totalDiv)
+
+			let ts = document.createElement("button")
+			ts.setAttribute("class", "animToolLogBtn")
+			ts.style.position = "absolute"
+			ts.style.right = "10px"
+			ts.style.top = "150px"
+			ts.innerText = "TOGGLE SHADOWS"
+			ts.addEventListener("click", () => toggleShadows())
+			this.#totalDiv.appendChild(ts)
 		}
 	}
 
