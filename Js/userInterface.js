@@ -1,4 +1,4 @@
-import { trashTypes } from "../main.js"
+import { pauseGame, trashTypes } from "../main.js"
 import { toggleShadows } from "./game.js"
 
 export class userInterface {
@@ -162,6 +162,15 @@ export class userInterface {
 			ts.style.top = "150px"
 			ts.innerText = "TOGGLE SHADOWS"
 			ts.addEventListener("click", () => toggleShadows())
+			this.#totalDiv.appendChild(ts)
+
+			ts = document.createElement("button")
+			ts.setAttribute("class", "animToolLogBtn")
+			ts.style.position = "absolute"
+			ts.style.right = "10px"
+			ts.style.top = "200px"
+			ts.innerText = "PAUSE"
+			ts.addEventListener("click", () => pauseGame())
 			this.#totalDiv.appendChild(ts)
 		}
 	}
