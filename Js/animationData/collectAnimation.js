@@ -138,7 +138,7 @@ export let collectPositions = [
 	new THREE.Vector3(0, 0, 0),
 	new THREE.Vector3(0, 0, 0),
 	new THREE.Vector3(0, 0, 0),
-	new THREE.Vector3(0, -45.6, -45.6),
+	new THREE.Vector3(0, -45.6, 0),
 	new THREE.Vector3(0, 0, 0),
 	new THREE.Vector3(0, 0, 0),
 	new THREE.Vector3(0, 0, 0)
