@@ -229,6 +229,21 @@ button.big-button:active::before {
 	background-color: rgba(75, 1, 1, 0.8);
 }
 
+.userMessage {
+	position: relative;
+	width: max-content;
+	height: fit-content;
+	/* left: 50%; */
+	/* top: 25%; */
+	padding: 5px;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	z-index: 1;
+	background-color: rgb(255, 255, 255);
+}
+
 @keyframes loadingScreen {
 	0% {
 		transform: scaleY(0.1);
@@ -249,5 +264,14 @@ button.big-button:active::before {
 	100% {
 		transform: scaleY(0.1);
 		background: rgb(255, 255, 255);
+	}
+}
+
+@keyframes userMessageAnimation {
+	0% {
+		background: #fff;
+	}
+	100% {
+		background: transparent;
 	}
 }

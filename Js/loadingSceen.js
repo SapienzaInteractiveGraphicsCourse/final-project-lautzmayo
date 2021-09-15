@@ -17,6 +17,7 @@ export function makeLoadingScreen() {
 	let middleDiv = document.createElement("div")
 	middleDiv.className = "middle"
 	middleDiv.style.position = "absolute"
+	middleDiv.style.transformOrigin = "center center"
 	middleDiv.style.top = "50%"
 	middleDiv.style.left = "50%"
 	middleDiv.style.transform = "translate (-50%, -50%)"
@@ -24,10 +25,12 @@ export function makeLoadingScreen() {
 	rootDiv.appendChild(middleDiv)
 
 	let bar
+	let text = ["L", "O", "A", "D", "I", "N", "G", ".", ".", "."]
 	for (let i = 0; i < 10; i++) {
 		bar = document.createElement("div")
 		bar.className = "bar bar" + i
-		bar.style.width = "6px"
+		bar.innerHTML = `<b>${text[i]}</b>`
+		bar.style.width = "15px"
 		bar.style.height = "60px"
 		bar.style.background = "white"
 		bar.style.display = "inline-block"

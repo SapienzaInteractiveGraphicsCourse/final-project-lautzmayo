@@ -13,6 +13,7 @@ import { pauseUI } from "./Js/pauseUI.js"
 import { difficultyManager } from "./Js/difficultyManager.js"
 import { PlayableSounds, soundManager } from "./Js/soundManager.js"
 import { makeLoadingScreen, removeLoadingScreen } from "./Js/loadingSceen.js"
+import { createNewUserMessage } from "./Js/userMessage.js"
 
 export const isLocal = true
 export let isGameRunning = false
@@ -521,7 +522,7 @@ function spawnRandomTrash() {
 function isTrashCollectable(type) {
 	if (ui.getActiveCounter() == type) {
 		if (ui.getIntCounter(ui.getActiveCounter()) >= ui.getMaxItemPerDelivery()) {
-			alert("You are carrying too much items, dispose of them before collecting more")
+			createNewUserMessage("You are carrying too much items, dispose of them before collecting more")
 			return false
 		}
 		return true
@@ -529,7 +530,7 @@ function isTrashCollectable(type) {
 		ui.toggleCounter(type, true)
 		return true
 	} else {
-		alert(`You are collecting ${ui.getActiveCounter()}, so you can't take any ${type}`)
+		createNewUserMessage(`You are collecting ${ui.getActiveCounter()}, so you can't take any ${type}`)
 		return false
 	}
 }
@@ -538,27 +539,29 @@ function isTrashCollectable(type) {
 function disposeCollectedTrash(type) {
 	let increment = ui.getIntCounter(ui.getActiveCounter())
 	if (increment > 0) {
+		createNewUserMessage(`Disposing of ${increment} units of ${ui.getActiveCounter()}`)
 		if (type == ui.getActiveCounter()) {
 			increment *= 2
 			//ANCHOR TRASHDUMP
 			isDisposePlaying = true
 			setTimeout(() => {
 				soundMan.toggleSound(PlayableSounds.trashDump, true)
-				alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
+				createNewUserMessage("Trash disposed in the correct trashbin. DOUBLE POINTS!")
 			}, 25 * aniExec.disposeTimescale * 1) //millisecs
 		} else {
 			//ANCHOR TRASHDUMP
 			isDisposePlaying = true
 			setTimeout(() => {
 				soundMan.toggleSound(PlayableSounds.trashDump, true)
-				alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
+				createNewUserMessage("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment", 10)
 			}, 25 * aniExec.disposeTimescale * 1) //millisecs
 		}
 		ui.incrementCounter("total", increment)
+		createNewUserMessage(`+${increment} points!`)
 		ui.toggleCounter(trashTypes.none)
 		ui.resetCounters(false)
 	} else {
-		alert("You must first collect some trash, then come back to dispose of it")
+		createNewUserMessage("You must first collect some trash, then come back to dispose of it")
 	}
 }
 

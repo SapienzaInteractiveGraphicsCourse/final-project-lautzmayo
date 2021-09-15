@@ -2,6 +2,7 @@ import { gameOver, isGameRunning } from "../main.js"
 import { gameover } from "./gameover.js"
 import { removeLoadingScreen } from "./loadingSceen.js"
 import { locateStopwatch } from "./trash.js"
+import { createNewUserMessage } from "./userMessage.js"
 export class countDown {
 	#isPlaying
 	get isPlaying() {
@@ -45,7 +46,7 @@ export class countDown {
 		this.#timerInt += this.#extraTimeInt
 		this.#sceneRef.remove(obj)
 		this.#updateTimer()
-		alert("More Time")
+		createNewUserMessage("More Time")
 		let h = Math.floor(Math.random() * (5000 - 500 + 1) + 500)
 		h = h * (this.#stopwatchArray.length + 1)
 		setTimeout(() => this.#instanciateStopwatch(), h)
