@@ -79,7 +79,7 @@ export let collectData = [
 export let collectNaming = ["collect1", "collect2", "collect3", "collect4"]
 export let collectPositions = [
 	new THREE.Vector3(0, 0, 0),
-	new THREE.Vector3(0, -9.8, -35),
-	new THREE.Vector3(0, -45.6, -60),
-	new THREE.Vector3(0, -45.6, -60)
+	new THREE.Vector3(0, -9.8, -13.8),
+	new THREE.Vector3(0, -35.1, -45.6),
+	new THREE.Vector3(0, -50, -45.6)
 ]

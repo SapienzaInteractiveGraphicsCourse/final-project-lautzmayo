@@ -18,7 +18,7 @@ let rotationSpeed
 let verticalSpeed = 1
 
 let walkSpeedValue = 2
-let rotationSpeedValue = 0.05
+let rotationSpeedValue = 0.025
 
 export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 	var dirZ = new THREE.Vector3(0, 0, -2)

@@ -504,10 +504,12 @@ function trashbinInteraction(obj, pos) {
 function trashDisposal(obj) {
 	isCollectPlaying = true
 	// setInterval(() => (isCollectPlaying = false), 10000)
-	soundMan.toggleSound(PlayableSounds.pickup, true)
-	ui.incrementCounter(obj.trashType)
-	spawnRandomTrash()
-	scene.remove(obj)
+	setTimeout(() => {
+		soundMan.toggleSound(PlayableSounds.pickup, true)
+		ui.incrementCounter(obj.trashType)
+		spawnRandomTrash()
+		scene.remove(obj)
+	}, 25 * aniExec.collectTimescale * 1) //millisecs
 }
 
 function spawnRandomTrash() {
@@ -539,14 +541,18 @@ function disposeCollectedTrash(type) {
 		if (type == ui.getActiveCounter()) {
 			increment *= 2
 			//ANCHOR TRASHDUMP
-			soundMan.toggleSound(PlayableSounds.trashDump, true)
 			isDisposePlaying = true
-			alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
+			setTimeout(() => {
+				soundMan.toggleSound(PlayableSounds.trashDump, true)
+				alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
+			}, 25 * aniExec.disposeTimescale * 1) //millisecs
 		} else {
 			//ANCHOR TRASHDUMP
-			soundMan.toggleSound(PlayableSounds.trashDump, true)
 			isDisposePlaying = true
-			alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
+			setTimeout(() => {
+				soundMan.toggleSound(PlayableSounds.trashDump, true)
+				alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
+			}, 25 * aniExec.disposeTimescale * 1) //millisecs
 		}
 		ui.incrementCounter("total", increment)
 		ui.toggleCounter(trashTypes.none)

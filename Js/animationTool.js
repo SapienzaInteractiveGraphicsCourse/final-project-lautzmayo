@@ -141,8 +141,8 @@ export class animationTool {
 
 		this.#posInputX = document.createElement("input")
 		this.#posInputX.setAttribute("type", "number")
-		this.#posInputX.setAttribute("min", "-50")
-		this.#posInputX.setAttribute("max", "50")
+		this.#posInputX.setAttribute("min", "-100")
+		this.#posInputX.setAttribute("max", "100")
 		this.#posInputX.setAttribute("value", "0.00")
 		this.#posInputX.setAttribute("step", "0.1")
 		this.#posInputX.setAttribute("id", "animToolPosInputX")
@@ -151,8 +151,8 @@ export class animationTool {
 
 		this.#posSliderX = document.createElement("input")
 		this.#posSliderX.setAttribute("type", "range")
-		this.#posSliderX.setAttribute("min", "-50")
-		this.#posSliderX.setAttribute("max", "50")
+		this.#posSliderX.setAttribute("min", "-100")
+		this.#posSliderX.setAttribute("max", "100")
 		this.#posSliderX.setAttribute("value", "0.00")
 		this.#posSliderX.setAttribute("step", "0.1")
 		this.#posSliderX.setAttribute("id", "posSliderX")
@@ -167,8 +167,8 @@ export class animationTool {
 
 		this.#posInputY = document.createElement("input")
 		this.#posInputY.setAttribute("type", "number")
-		this.#posInputY.setAttribute("min", "-50")
-		this.#posInputY.setAttribute("max", "50")
+		this.#posInputY.setAttribute("min", "-100")
+		this.#posInputY.setAttribute("max", "100")
 		this.#posInputY.setAttribute("value", "0.00")
 		this.#posInputY.setAttribute("step", "0.1")
 		this.#posInputY.setAttribute("id", "animToolPosInputY")
@@ -177,8 +177,8 @@ export class animationTool {
 
 		this.#posSliderY = document.createElement("input")
 		this.#posSliderY.setAttribute("type", "range")
-		this.#posSliderY.setAttribute("min", "-50")
-		this.#posSliderY.setAttribute("max", "50")
+		this.#posSliderY.setAttribute("min", "-100")
+		this.#posSliderY.setAttribute("max", "100")
 		this.#posSliderY.setAttribute("value", "0.00")
 		this.#posSliderY.setAttribute("step", "0.1")
 		this.#posSliderY.setAttribute("id", "posSliderY")
@@ -193,8 +193,8 @@ export class animationTool {
 
 		this.#posInputZ = document.createElement("input")
 		this.#posInputZ.setAttribute("type", "number")
-		this.#posInputZ.setAttribute("min", "-50")
-		this.#posInputZ.setAttribute("max", "50")
+		this.#posInputZ.setAttribute("min", "-100")
+		this.#posInputZ.setAttribute("max", "100")
 		this.#posInputZ.setAttribute("value", "0.00")
 		this.#posInputZ.setAttribute("step", "0.1")
 		this.#posInputZ.setAttribute("id", "animToolPosInputZ")
@@ -203,8 +203,8 @@ export class animationTool {
 
 		this.#posSliderZ = document.createElement("input")
 		this.#posSliderZ.setAttribute("type", "range")
-		this.#posSliderZ.setAttribute("min", "-50")
-		this.#posSliderZ.setAttribute("max", "50")
+		this.#posSliderZ.setAttribute("min", "-100")
+		this.#posSliderZ.setAttribute("max", "100")
 		this.#posSliderZ.setAttribute("value", "0.00")
 		this.#posSliderZ.setAttribute("step", "0.1")
 		this.#posSliderZ.setAttribute("id", "posSliderZ")
@@ -492,7 +492,7 @@ export class animationTool {
 
 		this.#keyFrameArray.push(ret)
 		this.#keyFrameNaming.push(this.#addCurrentTxt.value.toString())
-		this.#keyFramePositions.push(man.children[0].position)
+		this.#keyFramePositions.push(new Vector3(man.children[0].position.x, man.children[0].position.z, man.children[0].position.y))
 
 		this.#updateAnimationParts(true)
 	}
@@ -509,7 +509,7 @@ export class animationTool {
 
 		this.#keyFrameArray[i] = ret
 
-		this.#keyFramePositions[i] = new Vector3(this.#posSliderX.value, this.#posSliderY.value, this.#posSliderY.value)
+		this.#keyFramePositions[i] = new Vector3(this.#posSliderX.value, this.#posSliderY.value, this.#posSliderZ.value)
 
 		this.#updateAnimationParts(true)
 	}

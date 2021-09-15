@@ -12,19 +12,18 @@ export class animationExec {
 	idle
 	idleTimescale = 40
 	idlePositions
-	
+
 	walk
 	walkTimescale = 40
 	walkPositions
-	
+
 	dispose
-	disposeTimescale = 15
+	disposeTimescale = 25
 	disposePositions
-	
+
 	collect
-	collectTimescale = 15
+	collectTimescale = 40
 	collectPositions
-	
 
 	getAnimation(skeleton, clip, mixer) {
 		//this should recognize if clip is not a wrong string
@@ -35,8 +34,8 @@ export class animationExec {
 		let keyframeComponentsArray = this.#prepareArrays(this.idle)
 		let keyframePositionsArray = this.#preparePositions(this.idlePositions)
 		let timeSteps = []
-		for (let i = 0; i <= this.idle.length; i++) {
-			timeSteps.push(i * (50 / this.idle.length + 1))
+		for (let i = 0; i < this.idle.length; i++) {
+			timeSteps.push(i * (50 / this.idle.length))
 		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
@@ -52,8 +51,8 @@ export class animationExec {
 		let keyframeComponentsArray = this.#prepareArrays(this.walk)
 		let keyframePositionsArray = this.#preparePositions(this.walkPositions)
 		let timeSteps = []
-		for (let i = 0; i <= this.walk.length; i++) {
-			timeSteps.push(i * (50 / this.walk.length + 1))
+		for (let i = 0; i < this.walk.length; i++) {
+			timeSteps.push(i * (50 / this.walk.length))
 		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
@@ -66,8 +65,8 @@ export class animationExec {
 		let keyframeComponentsArray = this.#prepareArrays(this.dispose)
 		let keyframePositionsArray = this.#preparePositions(this.disposePositions)
 		let timeSteps = []
-		for (let i = 0; i <= this.dispose.length; i++) {
-			timeSteps.push(i * (50 / this.dispose.length + 1))
+		for (let i = 0; i < this.dispose.length; i++) {
+			timeSteps.push(i * (50 / this.dispose.length))
 		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
@@ -75,7 +74,7 @@ export class animationExec {
 
 		// console.log(this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, 5))
 		let aa = this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, this.disposeTimescale)
-		aa.setLoop(LoopPingPong, 1)
+		aa.setLoop(LoopPingPong, 2)
 		return aa
 	}
 
@@ -83,15 +82,15 @@ export class animationExec {
 		let keyframeComponentsArray = this.#prepareArrays(this.collect)
 		let keyframePositionsArray = this.#preparePositions(this.collectPositions)
 		let timeSteps = []
-		for (let i = 0; i <= this.collect.length; i++) {
-			timeSteps.push(i * (50 / this.collect.length + 1))
+		for (let i = 0; i < this.collect.length; i++) {
+			timeSteps.push(i * (50 / this.collect.length))
 		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
 		let aa = this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, this.collectTimescale)
-		aa.setLoop(LoopPingPong, 1)
+		aa.setLoop(LoopPingPong, 2)
 		return aa
 		// return this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, 10)
 	}
@@ -153,10 +152,10 @@ export class animationExec {
 				boneArray.push(q.z)
 				boneArray.push(q.w)
 			})
-			boneArray.push(b[0].x)
-			boneArray.push(b[0].y)
-			boneArray.push(b[0].z)
-			boneArray.push(b[0].w)
+			// boneArray.push(b[0].x)
+			// boneArray.push(b[0].y)
+			// boneArray.push(b[0].z)
+			// boneArray.push(b[0].w)
 			keyframeComponentsPerBoneArray.push(boneArray)
 		})
 		return keyframeComponentsPerBoneArray
@@ -169,9 +168,9 @@ export class animationExec {
 			ret.push(e.y)
 			ret.push(e.z)
 		})
-		ret.push(clipArray[0].x)
-		ret.push(clipArray[0].y)
-		ret.push(clipArray[0].z)
+		// ret.push(clipArray[0].x)
+		// ret.push(clipArray[0].y)
+		// ret.push(clipArray[0].z)
 		return ret
 	}
 
