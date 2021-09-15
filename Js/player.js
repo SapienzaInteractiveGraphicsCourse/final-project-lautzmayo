@@ -1,5 +1,5 @@
 import * as THREE from "../build/three.module.js"
-import { changeAnimation, animationClips, getCurrentAnimationClip } from "../main.js"
+import { changeAnimation, animationClips, getCurrentAnimationClip, isCollectPlaying, isDisposePlaying, setWalkTimescale } from "../main.js"
 
 var time = 0
 var newPosition = new THREE.Vector3()
@@ -15,8 +15,9 @@ var Distance = 200
 var velocity = 0.0
 var speed = 0.0
 let rotationSpeed
+let verticalSpeed = 1
 
-let walkSpeedValue = 4
+let walkSpeedValue = 2
 let rotationSpeedValue = 0.05
 
 export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
@@ -27,11 +28,11 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 	rotationSpeed = 0.0
 
 	if (!isAnimTool) {
-		if (enabled.w) {
+		if (!isCollectPlaying && !isDisposePlaying && enabled.w) {
 			speed = walkSpeedValue
 			dirAnimation.sub(dirZ)
 		}
-		if (enabled.s) {
+		if (!isCollectPlaying && !isDisposePlaying && enabled.s) {
 			speed = -walkSpeedValue
 			dirAnimation.add(dirZ)
 		}
@@ -39,12 +40,12 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 		velocity += (speed - velocity) * 0.3
 		man.translateZ(velocity)
 
-		if (enabled.a) {
+		if (!isCollectPlaying && !isDisposePlaying && enabled.a) {
 			rotationSpeed = rotationSpeedValue
 			man.rotateY(rotationSpeed)
 			dirAnimation.sub(dirX)
 		}
-		if (enabled.d) {
+		if (!isCollectPlaying && !isDisposePlaying && enabled.d) {
 			rotationSpeed = -rotationSpeedValue
 			man.rotateY(rotationSpeed)
 			dirAnimation.add(dirX)
@@ -60,11 +61,11 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 		temp.setFromMatrixPosition(follow.matrixWorld)
 		camera.lookAt(man.position)
 
-		if (enabled.r) {
-			camera.position.y += 1
+		if (!isCollectPlaying && !isDisposePlaying && enabled.r) {
+			camera.position.y += verticalSpeed
 		}
-		if (enabled.f) {
-			camera.position.y -= 1
+		if (!isCollectPlaying && !isDisposePlaying && enabled.f) {
+			camera.position.y -= verticalSpeed
 		}
 
 		//se non vogliamo usare librerie per la fisica, questo controllo evita al personaggio di superare i bordi
@@ -75,11 +76,20 @@ export function movePlayer(man, camera, enabled, goal, follow, isAnimTool) {
 
 		let walkThreshold = 0.3
 		let rotationThreshold = 0.01
+
 		if ((Math.abs(speed) >= walkThreshold || Math.abs(rotationSpeed) >= rotationThreshold) && getCurrentAnimationClip != animationClips.walk) {
+			setWalkTimescale(speed)
 			changeAnimation(animationClips.walk)
 		}
 		if (Math.abs(speed) < walkThreshold && Math.abs(rotationSpeed) < rotationThreshold && getCurrentAnimationClip != animationClips.idle) {
 			changeAnimation(animationClips.idle)
+		}
+
+		if (isCollectPlaying && getCurrentAnimationClip != animationClips.collect) {
+			changeAnimation(animationClips.collect)
+		}
+		if (isDisposePlaying && getCurrentAnimationClip != animationClips.dispose) {
+			changeAnimation(animationClips.dispose)
 		}
 	} else {
 		//

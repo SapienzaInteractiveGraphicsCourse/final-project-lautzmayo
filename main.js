@@ -15,6 +15,9 @@ import { PlayableSounds, soundManager } from "./Js/soundManager.js"
 export const isLocal = true
 export let isGameRunning = false
 
+export let isDisposePlaying = false
+export let isCollectPlaying = false
+
 export const trashTypes = { none: null, plastic: "plastic", paper: "paper", glass: "glass" }
 export let currentTrash = trashTypes.none
 
@@ -242,6 +245,15 @@ function init() {
 		mixer = gameInitAssets[0]
 		animaction = gameInitAssets[1]
 		clock = gameInitAssets[2]
+
+		mixer.addEventListener("finished", () => {
+			if (isCollectPlaying) {
+				isCollectPlaying = false
+			}
+			if (isDisposePlaying) {
+				isDisposePlaying = false
+			}
+		})
 	}
 
 	let orbitController
@@ -381,6 +393,8 @@ function update() {
 	//commenta
 
 	PLAYER.movePlayer(man, camera, enabled, goal, follow, animTool.isAnimToolActive)
+	// if (!isCollectPlaying && !isDisposePlaying) {
+	// }
 
 	//ANIM :
 	// if (currentAnimationClip == animationClips.idle) {
@@ -484,9 +498,9 @@ function trashbinInteraction(obj, pos) {
 }
 
 //ANCHOR: animation callback
-//mixer.addEventListener( 'finished', function( e ) { …} ); // properties of e: type, action and direction
 function trashDisposal(obj) {
-	//ANCHOR pickup
+	isCollectPlaying = true
+	// setInterval(() => (isCollectPlaying = false), 10000)
 	soundMan.toggleSound(PlayableSounds.pickup, true)
 	ui.incrementCounter(obj.trashType)
 	spawnRandomTrash()
@@ -523,10 +537,12 @@ function disposeCollectedTrash(type) {
 			increment *= 2
 			//ANCHOR TRASHDUMP
 			soundMan.toggleSound(PlayableSounds.trashDump, true)
+			isDisposePlaying = true
 			alert("Trash disposed in the correct trashbin. DOUBLE POINTS!")
 		} else {
 			//ANCHOR TRASHDUMP
 			soundMan.toggleSound(PlayableSounds.trashDump, true)
+			isDisposePlaying = true
 			alert("Wrong trashbin. Green is for glass, White for paper and Yellow for plastic. Preserve your environment")
 		}
 		ui.incrementCounter("total", increment)
@@ -601,4 +617,8 @@ export function gameOver() {
 
 export function addListener(lis) {
 	camera.add(lis)
+}
+
+export function setWalkTimescale(speed) {
+	aniExec.walkTimescale = speed == 0 ? Math.abs(aniExec.walkTimescale) : Math.abs(aniExec.walkTimescale) * Math.sign(speed)
 }

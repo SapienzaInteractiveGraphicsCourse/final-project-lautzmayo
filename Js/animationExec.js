@@ -1,4 +1,4 @@
-import { AnimationMixer, Clock, QuaternionKeyframeTrack, VectorKeyframeTrack } from "../build/three.module.js"
+import { AnimationMixer, Clock, LoopOnce, LoopPingPong, QuaternionKeyframeTrack, VectorKeyframeTrack } from "../build/three.module.js"
 import { animationClips } from "../main.js"
 
 import { idleData, idlePositions } from "./animationData/idleAnimation.js"
@@ -10,13 +10,21 @@ import { bones } from "./animationTool.js"
 
 export class animationExec {
 	idle
+	idleTimescale = 40
 	idlePositions
+	
 	walk
+	walkTimescale = 40
 	walkPositions
+	
 	dispose
+	disposeTimescale = 15
 	disposePositions
+	
 	collect
+	collectTimescale = 15
 	collectPositions
+	
 
 	getAnimation(skeleton, clip, mixer) {
 		//this should recognize if clip is not a wrong string
@@ -26,45 +34,66 @@ export class animationExec {
 	#idleAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.idle)
 		let keyframePositionsArray = this.#preparePositions(this.idlePositions)
-		let timeSteps = [2, 8, 14, 20]
+		let timeSteps = []
+		for (let i = 0; i <= this.idle.length; i++) {
+			timeSteps.push(i * (50 / this.idle.length + 1))
+		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
-		return this.#prepareClip(mixer, animationClips.idle, timeSteps, tracks, 10)
+		// return this.#prepareClip(mixer, animationClips.idle, timeSteps, tracks, this.idleTimescale)
+		let aa = this.#prepareClip(mixer, animationClips.idle, timeSteps, tracks, this.idleTimescale)
+		aa.setLoop(LoopPingPong)
+		return aa
 	}
 
 	#walkAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.walk)
 		let keyframePositionsArray = this.#preparePositions(this.walkPositions)
-		let timeSteps = [2, 8, 14, 20, 26, 32, 38, 44, 50]
+		let timeSteps = []
+		for (let i = 0; i <= this.walk.length; i++) {
+			timeSteps.push(i * (50 / this.walk.length + 1))
+		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
-		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, 40)
+		return this.#prepareClip(mixer, animationClips.walk, timeSteps, tracks, this.walkTimescale)
 	}
 
 	#disposeAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.dispose)
 		let keyframePositionsArray = this.#preparePositions(this.disposePositions)
-		let timeSteps = [2, 8, 14, 20, 26, 32]
+		let timeSteps = []
+		for (let i = 0; i <= this.dispose.length; i++) {
+			timeSteps.push(i * (50 / this.dispose.length + 1))
+		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
-		return this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, 5)
+		// console.log(this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, 5))
+		let aa = this.#prepareClip(mixer, animationClips.dispose, timeSteps, tracks, this.disposeTimescale)
+		aa.setLoop(LoopPingPong, 1)
+		return aa
 	}
 
 	#collectAnimation(skeleton, mixer) {
 		let keyframeComponentsArray = this.#prepareArrays(this.collect)
 		let keyframePositionsArray = this.#preparePositions(this.collectPositions)
-		let timeSteps = [2, 8, 14, 20, 26, 32]
+		let timeSteps = []
+		for (let i = 0; i <= this.collect.length; i++) {
+			timeSteps.push(i * (50 / this.collect.length + 1))
+		}
 
 		let tracks = this.#prepareQuaternionKeyframeTrack(skeleton, keyframeComponentsArray, timeSteps)
 		tracks.push(this.#prepareVectorKeyframeTrack(keyframePositionsArray, timeSteps))
 
-		return this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, 5)
+		let aa = this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, this.collectTimescale)
+		aa.setLoop(LoopPingPong, 1)
+		return aa
+		// return this.#prepareClip(mixer, animationClips.collect, timeSteps, tracks, 10)
 	}
 
 	#prepareClip(mixer, clipName, timesteps, tracks, timescale) {
@@ -72,6 +101,7 @@ export class animationExec {
 		var AnimationAction = mixer.clipAction(clip)
 		AnimationAction.timeScale = timescale
 		AnimationAction.currentClip = clipName
+		// console.log(AnimationAction.currentClip)
 		return AnimationAction
 	}
 	//infine viene creata la clip definendo la durata totale dell'animazione (in questo caso 50) e tutti i keyframe (arti coinvolti) dell'animazione
