@@ -282,9 +282,9 @@ function init() {
 		plastic = TRASH.locatePlastic(nPlastic, plasticModel, scene, intersectable)
 		glass = TRASH.locateGlass(nGlass, glassModel, scene, intersectable)
 
-		const diffLvl = document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value
-		const t = diffMan.time[diffLvl]
-		const xtra = diffMan.bonusTime[diffLvl]
+		// const diffLvl = document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value
+		// const t = diffMan.time[diffLvl]
+		// const xtra = diffMan.bonusTime[diffLvl]
 		if (nStopwatch == 0) {
 			nStopwatch = 1
 		}
@@ -356,7 +356,6 @@ function init() {
 		// set default for bone rotation
 		animTool.changeBone()
 	}
-	isGameRunning = true
 	// setStartingTime()
 
 	if (soundMan != null) {
@@ -628,6 +627,11 @@ export function setWalkTimescale(speed) {
 }
 
 export function resetTimer() {
+	isGameRunning = true
+	removeLoadingScreen()
+	const diffLvl = document.getElementById("difficultyLevel").options[document.getElementById("difficultyLevel").selectedIndex].value
+	const t = diffMan.time[diffLvl]
+	const xtra = diffMan.bonusTime[diffLvl]
 	if (!animTool.isAnimToolActive) {
 		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
 	} else {

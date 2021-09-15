@@ -1,6 +1,5 @@
 import { Audio, AudioListener, AudioLoader, LoadingManager } from "../build/three.module.js"
-import { addListener } from "../main.js"
-import { removeLoadingScreen } from "./loadingSceen.js"
+import { addListener, resetTimer } from "../main.js"
 export const PlayableSounds = { bgm: "bgm", gameOver: "gameOver", trashDump: "trashDump", stopwatch: "stopwatch", pickup: "pickup" }
 export class soundManager {
 	started = false
@@ -41,12 +40,7 @@ export class soundManager {
 			return
 		}
 		if (!this.started) {
-			removeLoadingScreen()
-			if (!animTool.isAnimToolActive) {
-				timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
-			} else {
-				timer = { isPlaying: true }
-			}
+			resetTimer()
 			this.started = true
 		}
 
