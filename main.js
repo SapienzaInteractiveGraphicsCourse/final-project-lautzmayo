@@ -14,7 +14,6 @@ import { difficultyManager } from "./Js/difficultyManager.js"
 import { PlayableSounds, soundManager } from "./Js/soundManager.js"
 import { makeLoadingScreen, removeLoadingScreen } from "./Js/loadingSceen.js"
 
-
 export const isLocal = true
 export let isGameRunning = false
 
@@ -289,12 +288,13 @@ function init() {
 		if (nStopwatch == 0) {
 			nStopwatch = 1
 		}
-		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
+		// timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
 
 		nTrashcollector = 3
 		trashcollector = TRASH.locateTrashCollector(nTrashcollector, trashcanModel, scene, trashbinIntersectable)
 	} else {
-		timer = { isPlaying: true }
+		// timer = { isPlaying: true }
+		resetTimer()
 	}
 
 	//AGGIUNGERE TRACCIA AUDIO, in teoria basta togliere il commento
@@ -625,4 +625,12 @@ export function addListener(lis) {
 
 export function setWalkTimescale(speed) {
 	aniExec.walkTimescale = speed == 0 ? Math.abs(aniExec.walkTimescale) : Math.abs(aniExec.walkTimescale) * Math.sign(speed)
+}
+
+export function resetTimer() {
+	if (!animTool.isAnimToolActive) {
+		timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
+	} else {
+		timer = { isPlaying: true }
+	}
 }

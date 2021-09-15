@@ -3,7 +3,7 @@ import { addListener } from "../main.js"
 import { removeLoadingScreen } from "./loadingSceen.js"
 export const PlayableSounds = { bgm: "bgm", gameOver: "gameOver", trashDump: "trashDump", stopwatch: "stopwatch", pickup: "pickup" }
 export class soundManager {
-	threeMan
+	started = false
 
 	#bgm = new SoundItem("/final-project-lautzmayo/Audio/CityLife.mp3", "bgm", 0.5, true)
 
@@ -40,7 +40,16 @@ export class soundManager {
 			setTimeout(() => this.toggleSound(name, isPlaying), 250)
 			return
 		}
-		removeLoadingScreen()
+		if (!this.started) {
+			removeLoadingScreen()
+			if (!animTool.isAnimToolActive) {
+				timer = new countDown(nStopwatch, stopwatchModel, scene, intersectable, t, xtra)
+			} else {
+				timer = { isPlaying: true }
+			}
+			this.started = true
+		}
+
 		if (isPlaying) {
 			s.play()
 		}
