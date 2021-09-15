@@ -12,6 +12,9 @@ import { countDown } from "./Js/countDown.js"
 import { pauseUI } from "./Js/pauseUI.js"
 import { difficultyManager } from "./Js/difficultyManager.js"
 import { PlayableSounds, soundManager } from "./Js/soundManager.js"
+import { makeLoadingScreen, removeLoadingScreen } from "./Js/loadingSceen.js"
+
+
 export const isLocal = true
 export let isGameRunning = false
 
@@ -109,6 +112,7 @@ btn.addEventListener("click", () => begin())
 //after loading models, init game
 function begin() {
 	if (times == 0) {
+		makeLoadingScreen()
 		ui.setMainPageVisibility(false)
 		loadModelsAndInit()
 		btn.style.display = "none"

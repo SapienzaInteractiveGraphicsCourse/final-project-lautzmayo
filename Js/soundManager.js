@@ -1,7 +1,10 @@
-import { Audio, AudioListener, AudioLoader } from "../build/three.module.js"
+import { Audio, AudioListener, AudioLoader, LoadingManager } from "../build/three.module.js"
 import { addListener } from "../main.js"
+import { removeLoadingScreen } from "./loadingSceen.js"
 export const PlayableSounds = { bgm: "bgm", gameOver: "gameOver", trashDump: "trashDump", stopwatch: "stopwatch", pickup: "pickup" }
 export class soundManager {
+	threeMan
+
 	#bgm = new SoundItem("/final-project-lautzmayo/Audio/CityLife.mp3", "bgm", 0.5, true)
 
 	#gameOver = new SoundItem("/final-project-lautzmayo/Audio/Game over!.mp3", "gameOver", 0.5, true)
@@ -37,6 +40,7 @@ export class soundManager {
 			setTimeout(() => this.toggleSound(name, isPlaying), 250)
 			return
 		}
+		removeLoadingScreen()
 		if (isPlaying) {
 			s.play()
 		}
@@ -49,6 +53,8 @@ export class soundManager {
 	}
 
 	constructor() {
+		this.threeMan = new LoadingManager()
+		this.threeMan.onLoad = () => console.log("loaded") //removeLoadingScreen()
 		this.#loadAudio(this.#bgm)
 		this.#loadAudio(this.#gameOver)
 		this.#loadAudio(this.#trashDump)

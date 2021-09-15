@@ -1,5 +1,6 @@
 import { gameOver, isGameRunning } from "../main.js"
 import { gameover } from "./gameover.js"
+import { removeLoadingScreen } from "./loadingSceen.js"
 import { locateStopwatch } from "./trash.js"
 export class countDown {
 	#isPlaying

@@ -228,3 +228,26 @@ button.big-button:active::before {
 	z-index: 10;
 	background-color: rgba(75, 1, 1, 0.8);
 }
+
+@keyframes loadingScreen {
+	0% {
+		transform: scaleY(0.1);
+		background: #fff;
+	}
+	25% {
+		transform: scaleY(1);
+		background: rgb(110, 255, 91);
+	}
+	50% {
+		transform: scaleY(0.1);
+		background: rgb(175, 255, 244);
+	}
+	75% {
+		transform: scaleY(1);
+		background: rgb(75, 87, 255);
+	}
+	100% {
+		transform: scaleY(0.1);
+		background: rgb(255, 255, 255);
+	}
+}
