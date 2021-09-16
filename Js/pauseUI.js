@@ -20,6 +20,8 @@ export class pauseUI {
 
 		documentItem = document.createElement("img")
 		documentItem.setAttribute("src", "/final-project-lautzmayo/buttons_menu.png")
+		documentItem.style.height = "75%"
+		documentItem.style.width = "auto"
 		this.#pauseDiv.append(documentItem)
 
 		this.#pauseDiv.append(document.createElement("br"))
