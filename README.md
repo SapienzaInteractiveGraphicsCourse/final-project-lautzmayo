@@ -59,7 +59,7 @@ Collect the Hourglasses to get more time.
 
 ## [Click here to play the game](https://sapienzainteractivegraphicscourse.github.io/final-project-lautzmayo/)
 
----
+The loading of the game scene may take a while. Please be patient. We had fun while spending time to make the animation of the loading screen, so you do not get annoyed!
 
 ---
 
