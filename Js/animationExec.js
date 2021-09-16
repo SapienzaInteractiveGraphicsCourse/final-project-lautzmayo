@@ -18,7 +18,7 @@ export class animationExec {
 	walkPositions
 
 	dispose
-	disposeTimescale = 25
+	disposeTimescale = 50
 	disposePositions
 
 	collect
@@ -165,8 +165,8 @@ export class animationExec {
 		let ret = []
 		clipArray.forEach((e) => {
 			ret.push(e.x)
+			ret.push(-e.z)
 			ret.push(e.y)
-			ret.push(e.z)
 		})
 		// ret.push(clipArray[0].x)
 		// ret.push(clipArray[0].y)

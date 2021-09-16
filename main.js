@@ -345,8 +345,10 @@ function init() {
 	)
 	renderer.domElement.addEventListener("pointerdown", (event) => {
 		// find intersections
-		raycastToTrashCollectables(event)
-		camera.updateMatrixWorld()
+		if (!isDisposePlaying && !isCollectPlaying) {
+			raycastToTrashCollectables(event)
+			camera.updateMatrixWorld()
+		}
 	})
 
 	//ANCHOR: ANIM TOOL TRIGGER

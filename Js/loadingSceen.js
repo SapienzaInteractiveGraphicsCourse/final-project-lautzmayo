@@ -25,17 +25,20 @@ export function makeLoadingScreen() {
 	rootDiv.appendChild(middleDiv)
 
 	let bar
-	let text = ["L", "O", "A", "D", "I", "N", "G", ".", ".", "."]
+	// let text = ["L", "O", "A", "D", "I", "N", "G", ".", ".", "."]
 	for (let i = 0; i < 10; i++) {
 		bar = document.createElement("div")
+		bar.style.position = "relative"
 		bar.className = "bar bar" + i
-		bar.innerHTML = `<b>${text[i]}</b>`
-		bar.style.width = "15px"
-		bar.style.height = "60px"
+		middleDiv.style.top = "50%"
+		middleDiv.style.left = "50%"
+		// bar.innerHTML = `<b>${text[i]}</b>`
+		bar.style.width = "12px" //"15px"
+		bar.style.height = "120px"
 		bar.style.background = "white"
 		bar.style.display = "inline-block"
-		bar.style.marginLeft = "2px"
-		bar.style.marginRight = "2px"
+		bar.style.marginLeft = "4px"
+		bar.style.marginRight = "4px"
 		bar.style.transformOrigin = "bottom center"
 		bar.style.animation = "loadingScreen 3s ease-in-out infinite"
 		bar.style.animationDelay = `${i / 10}s`
