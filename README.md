@@ -12,7 +12,7 @@ By collecting the hourglasses you will have extra time.
 
 # Read Our Report
 
-## [Click here to see the report](https://github.com/SapienzaInteractiveGraphicsCourse/final-project-lautzmayo/Report_GarbageBoy.pdf)
+## [Click here to see the report](https://sapienzainteractivegraphicscourse.github.io/final-project-lautzmayo/Report_GarbageBoy.pdf)
 
 ---
 
