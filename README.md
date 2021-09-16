@@ -65,7 +65,7 @@ The loading of the game scene may take a while. Please be patient. We had fun wh
 
 # Local
 
-If you want to try the game or experiment with the code in local, pull the repository and start a server in the root folder, where the index.html file is located, with the command:
+If you want to try the game or experiment with the code in local, pull the repository and start a server in the root folder, where the index.html file is located. One of the ways to do this is with the command:
 
 ```python
 python -m http.server
